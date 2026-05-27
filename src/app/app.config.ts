@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([authInterceptor]) // JWT auto added
+      withInterceptors([authInterceptor])
     ),
     provideAnimations(),
   ]

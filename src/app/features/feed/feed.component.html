@@ -1,0 +1,365 @@
+<div class="feed-wrapper">
+
+  <!-- ═══ LEFT — MAIN FEED ═══ -->
+  <div class="feed-main">
+
+    <!-- Feed Header -->
+    <div class="feed-header">
+      <h1 class="feed-title">
+        <span *ngIf="activeTab() === 'feed'">
+          🏠 My Feed
+        </span>
+        <span *ngIf="activeTab() === 'discover'">
+          🔍 Discover
+        </span>
+      </h1>
+
+      <!-- Tabs -->
+      <div class="feed-tabs">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'feed'"
+          (click)="switchTab('feed')">
+          My Feed
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'discover'"
+          (click)="switchTab('discover')">
+          Discover
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Skeletons -->
+    <div *ngIf="isLoading()">
+      <div
+        class="skeleton-card"
+        *ngFor="let s of skeletons">
+        <div class="skeleton-header">
+          <div class="skeleton skeleton-avatar"></div>
+          <div class="skeleton-info">
+            <div class="skeleton skeleton-name"></div>
+            <div class="skeleton skeleton-time"></div>
+          </div>
+        </div>
+        <div class="skeleton skeleton-content"></div>
+        <div class="skeleton skeleton-image"></div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div
+      class="empty-state"
+      *ngIf="!isLoading() && feedItems().length === 0">
+      <div class="empty-icon">🏛️</div>
+      <h3>No posts yet!</h3>
+      <p>Follow some churches to see their content here</p>
+      <button
+        class="btn-gold"
+        (click)="switchTab('discover')">
+        Discover Churches →
+      </button>
+    </div>
+
+    <!-- Feed Items -->
+    <div
+      class="feed-items"
+      *ngIf="!isLoading()">
+
+      <div
+        class="feed-card"
+        *ngFor="let item of feedItems()">
+
+        <!-- ── POST CARD ── -->
+        <ng-container *ngIf="item.itemType === 'POST'">
+
+          <!-- Card Header -->
+          <div class="card-header">
+            <div class="church-info">
+              <div class="church-avatar">
+                {{ getChurchInitials(item.churchName) }}
+              </div>
+              <div class="church-details">
+                <div class="church-name">
+                  {{ item.churchName }}
+                </div>
+                <div class="post-meta">
+                  <span class="post-type"
+                    [class]="'type-' + item.postType.toLowerCase()">
+                    {{ item.postType }}
+                  </span>
+                  <span class="dot">·</span>
+                  <span class="time-ago">
+                    {{ getTimeAgo(item.createdAt) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-type-badge post-badge">
+              📝 Post
+            </div>
+          </div>
+
+          <!-- Post Content -->
+          <div class="card-body">
+            <h3 class="card-title" *ngIf="item.title">
+              {{ item.title }}
+            </h3>
+            <p class="card-content">{{ item.content }}</p>
+            <div class="card-image"
+              *ngIf="item.imageUrl"
+              [style.backgroundImage]="
+                'url(' + item.imageUrl + ')'">
+            </div>
+          </div>
+
+          <!-- Post Actions -->
+          <div class="card-actions">
+            <button
+              class="action-btn"
+              [class.liked]="item.isLiked"
+              (click)="toggleLike(item)">
+              <span>{{ item.isLiked ? '❤️' : '🤍' }}</span>
+              <span>{{ item.likeCount }}</span>
+            </button>
+            <button class="action-btn">
+              <span>💬</span>
+              <span>{{ item.commentCount }}</span>
+            </button>
+            <button class="action-btn">
+              <span>🔗</span>
+              <span>Share</span>
+            </button>
+          </div>
+
+        </ng-container>
+
+        <!-- ── SERMON CARD ── -->
+        <ng-container *ngIf="item.itemType === 'SERMON'">
+
+          <div class="card-header">
+            <div class="church-info">
+              <div class="church-avatar">
+                {{ getChurchInitials(item.churchName) }}
+              </div>
+              <div class="church-details">
+                <div class="church-name">
+                  {{ item.churchName }}
+                </div>
+                <div class="post-meta">
+                  <span class="time-ago">
+                    {{ getTimeAgo(item.createdAt) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-type-badge sermon-badge">
+              🎵 Sermon
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <!-- Sermon Thumbnail -->
+            <div class="sermon-thumbnail"
+              [style.backgroundImage]="item.imageUrl ?
+                'url(' + item.imageUrl + ')' : 'none'">
+              <div class="play-overlay">
+                <div class="play-btn">▶</div>
+              </div>
+              <div class="sermon-thumbnail-placeholder"
+                *ngIf="!item.imageUrl">
+                🎵
+              </div>
+            </div>
+
+            <h3 class="card-title">{{ item.title }}</h3>
+            <p class="sermon-speaker">
+              🎤 {{ item.speaker }}
+              <span *ngIf="item.series">
+                · Series: {{ item.series }}
+              </span>
+            </p>
+            <p class="card-content"
+              *ngIf="item.content">
+              {{ item.content }}
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <button class="action-btn sermon-watch-btn">
+              <span>▶️</span>
+              <span>Watch Now</span>
+            </button>
+            <button class="action-btn">
+              <span>🔖</span>
+              <span>Save</span>
+            </button>
+            <button class="action-btn">
+              <span>🔗</span>
+              <span>Share</span>
+            </button>
+          </div>
+
+        </ng-container>
+
+        <!-- ── EVENT CARD ── -->
+        <ng-container *ngIf="item.itemType === 'EVENT'">
+
+          <div class="card-header">
+            <div class="church-info">
+              <div class="church-avatar">
+                {{ getChurchInitials(item.churchName) }}
+              </div>
+              <div class="church-details">
+                <div class="church-name">
+                  {{ item.churchName }}
+                </div>
+                <div class="post-meta">
+                  <span class="time-ago">
+                    {{ getTimeAgo(item.createdAt) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-type-badge event-badge">
+              📅 Event
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="event-banner">
+              <div class="event-date-box">
+                <div class="event-month">
+                  {{ getEventDate(item.eventDate)
+                    .split(' ')[1] }}
+                </div>
+                <div class="event-day">
+                  {{ getEventDate(item.eventDate)
+                    .split(' ')[0] }}
+                </div>
+              </div>
+              <div class="event-info">
+                <h3 class="card-title">{{ item.title }}</h3>
+                <p class="event-location">
+                  📍 {{ item.location || 'Online Event' }}
+                </p>
+                <p class="event-registrations">
+                  👥 {{ item.registrationCount }}
+                  people registered
+                </p>
+              </div>
+            </div>
+            <p class="card-content"
+              *ngIf="item.content">
+              {{ item.content }}
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <button class="action-btn event-register-btn">
+              <span>📅</span>
+              <span>Register Now</span>
+            </button>
+            <button class="action-btn">
+              <span>🔗</span>
+              <span>Share</span>
+            </button>
+          </div>
+
+        </ng-container>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ RIGHT — SIDEBAR ═══ -->
+  <div class="feed-sidebar">
+
+    <!-- Stats Card -->
+    <div class="sidebar-card" *ngIf="stats()">
+      <h3 class="sidebar-title">📊 My Activity</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">
+            {{ stats().followingCount }}
+          </div>
+          <div class="stat-label">Following</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            {{ stats().totalSermons }}
+          </div>
+          <div class="stat-label">Sermons</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            {{ stats().totalEvents }}
+          </div>
+          <div class="stat-label">Events</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            {{ stats().totalPosts }}
+          </div>
+          <div class="stat-label">Posts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="sidebar-card"
+      *ngIf="stats()?.upcomingEvents?.length > 0">
+      <h3 class="sidebar-title">📅 Upcoming Events</h3>
+      <div
+        class="upcoming-event"
+        *ngFor="let event of stats().upcomingEvents">
+        <div class="upcoming-date">
+          {{ getEventDate(event.eventDate) }}
+        </div>
+        <div class="upcoming-title">{{ event.title }}</div>
+        <div class="upcoming-church">
+          {{ event.churchName }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggested Churches -->
+    <div class="sidebar-card"
+      *ngIf="suggestedChurches().length > 0">
+      <h3 class="sidebar-title">⛪ Suggested Churches</h3>
+      <div
+        class="suggested-church"
+        *ngFor="let church of suggestedChurches()">
+        <div class="suggested-avatar">
+          {{ getChurchInitials(church.name) }}
+        </div>
+        <div class="suggested-info">
+          <div class="suggested-name">{{ church.name }}</div>
+          <div class="suggested-city">
+            📍 {{ church.city }}
+          </div>
+        </div>
+        <button
+          class="follow-btn"
+          (click)="followChurch(church.id)">
+          Follow
+        </button>
+      </div>
+    </div>
+
+    <!-- Quote Card -->
+    <div class="sidebar-card quote-card">
+      <div class="quote-icon">✝</div>
+      <p class="quote-text">
+        "For we are all one body in Christ,
+        and individually members one of another."
+      </p>
+      <p class="quote-ref">— Romans 12:5</p>
+    </div>
+
+  </div>
+
+</div>
