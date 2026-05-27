@@ -1,0 +1,367 @@
+<div class="landing-wrapper">
+
+  <!-- ═══ STARS BACKGROUND ═══ -->
+  <div class="stars-bg">
+    <div
+      *ngFor="let star of stars"
+      class="star"
+      [style.left.%]="star.x"
+      [style.top.%]="star.y"
+      [style.width.px]="star.size"
+      [style.height.px]="star.size"
+      [style.opacity]="star.opacity"
+      [style.animation-duration.s]="star.duration"
+      [style.animation-delay.s]="star.delay">
+    </div>
+  </div>
+
+  <!-- ═══ FLOATING PARTICLES ═══ -->
+  <div class="particles-bg">
+    <div
+      *ngFor="let p of particles"
+      class="particle"
+      [style.left.%]="p.x"
+      [style.top.%]="p.y"
+      [style.width.px]="p.size"
+      [style.height.px]="p.size"
+      [style.opacity]="p.opacity"
+      [style.animation-duration.s]="p.duration"
+      [style.animation-delay.s]="p.delay">
+    </div>
+  </div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="landing-nav">
+    <div class="nav-container">
+
+      <!-- Logo -->
+      <div class="nav-logo" (click)="navigateTo('/')">
+        <div class="logo-icon">✝</div>
+        <span class="logo-text">One<span class="text-gold-gradient">Body</span></span>
+      </div>
+
+      <!-- Nav Links -->
+      <div class="nav-links">
+        <a (click)="navigateTo('/discover')">Discover</a>
+        <a (click)="navigateTo('/sermons')">Sermons</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+      </div>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <button class="btn-outline" (click)="navigateTo('/auth/login')">
+          Sign In
+        </button>
+        <button class="btn-gold" (click)="navigateTo('/auth/register')">
+          Join Free ✨
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ═══ HERO SECTION ═══ -->
+  <section class="hero-section">
+
+    <!-- Cross Light Effect -->
+    <div class="cross-light"></div>
+
+    <div class="hero-content">
+
+      <!-- Badge -->
+      <div class="hero-badge">
+        <span>✝</span>
+        <span>Connecting the Body of Christ</span>
+      </div>
+
+      <!-- Main Heading -->
+      <h1 class="hero-title">
+        One Platform.<br>
+        <span class="text-gold-gradient">Every Church.</span><br>
+        <span class="text-electric-gradient">One Community.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-subtitle">
+        OneBody brings churches together on one powerful platform.
+        Follow your favourite churches, watch sermons, join events,
+        and pray together — all in one place.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="hero-actions">
+        <button class="btn-gold hero-btn" (click)="navigateTo('/auth/register')">
+          Start Your Journey ✨
+        </button>
+        <button class="btn-outline hero-btn" (click)="navigateTo('/discover')">
+          Explore Churches →
+        </button>
+      </div>
+
+      <!-- Social Proof -->
+      <div class="hero-social-proof">
+        <div class="avatars">
+          <div class="avatar" style="background: #C9A84C">P</div>
+          <div class="avatar" style="background: #4F8EF7">M</div>
+          <div class="avatar" style="background: #2ECC71">J</div>
+          <div class="avatar" style="background: #E74C3C">S</div>
+        </div>
+        <span>Join <strong>12,400+</strong> members already on OneBody</span>
+      </div>
+
+    </div>
+
+    <!-- Hero Visual -->
+    <div class="hero-visual">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+
+          <!-- App Preview -->
+          <div class="app-preview">
+            <div class="preview-header">
+              <span>✝ OneBody</span>
+              <span>🔔</span>
+            </div>
+            <div class="preview-card">
+              <div class="preview-church">
+                <div class="church-avatar">GF</div>
+                <div>
+                  <div class="preview-name">Grace Fellowship</div>
+                  <div class="preview-time">2 hours ago</div>
+                </div>
+              </div>
+              <div class="preview-content">
+                "Walking in Faith" — New Sermon
+              </div>
+              <div class="preview-actions">
+                <span>▶ Watch</span>
+                <span>👍 24</span>
+                <span>💬 8</span>
+              </div>
+            </div>
+            <div class="preview-card mt-2">
+              <div class="preview-event">
+                <span>📅</span>
+                <div>
+                  <div class="preview-name">Youth Conference</div>
+                  <div class="preview-time">June 15 | Hyderabad</div>
+                </div>
+              </div>
+              <button class="preview-btn">Register Now</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Floating badges -->
+      <div class="float-badge badge-1">
+        <span>🙏</span>
+        <span>128 Praying</span>
+      </div>
+      <div class="float-badge badge-2">
+        <span>⛪</span>
+        <span>248 Churches</span>
+      </div>
+      <div class="float-badge badge-3">
+        <span>🎵</span>
+        <span>1840 Sermons</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═══ STATS SECTION ═══ -->
+  <section class="stats-section" id="stats-section">
+    <div class="stats-container">
+      <div
+        class="stat-card"
+        *ngFor="let stat of stats">
+        <div class="stat-value">
+          {{ stat.value | number }}{{ stat.suffix }}
+        </div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES SECTION ═══ -->
+  <section class="features-section" id="features">
+    <div class="section-container">
+
+      <div class="section-header">
+        <p class="section-eyebrow">Why OneBody?</p>
+        <h2 class="section-title">
+          Everything Your Church <br>
+          <span class="text-gold-gradient">Needs in One Place</span>
+        </h2>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="features-grid">
+        <div
+          class="feature-card glass glass-hover"
+          *ngFor="let feature of features">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-desc">{{ feature.description }}</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ CHURCHES SECTION ═══ -->
+  <section class="churches-section" *ngIf="churches.length > 0">
+    <div class="section-container">
+
+      <div class="section-header">
+        <p class="section-eyebrow">Our Community</p>
+        <h2 class="section-title">
+          Featured <span class="text-gold-gradient">Churches</span>
+        </h2>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="churches-grid">
+        <div
+          class="church-card glass glass-hover"
+          *ngFor="let church of churches"
+          (click)="navigateTo('/church/' + church.slug)">
+
+          <!-- Church Banner -->
+          <div class="church-banner">
+            <div class="church-initials">
+              {{ getChurchInitials(church.name) }}
+            </div>
+            <div *ngIf="church.verified" class="verified-badge">
+              ✅ Verified
+            </div>
+          </div>
+
+          <!-- Church Info -->
+          <div class="church-info">
+            <h3>{{ church.name }}</h3>
+            <p>📍 {{ church.city }}</p>
+            <p>👥 {{ church.followerCount | number }} followers</p>
+            <button class="btn-gold church-follow-btn">
+              Follow +
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <button class="btn-outline"
+          (click)="navigateTo('/discover')">
+          View All Churches →
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="testimonials-section">
+    <div class="section-container">
+
+      <div class="section-header">
+        <p class="section-eyebrow">Testimonials</p>
+        <h2 class="section-title">
+          What Leaders <span class="text-gold-gradient">Say</span>
+        </h2>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="testimonials-grid">
+        <div
+          class="testimonial-card glass"
+          *ngFor="let t of testimonials">
+          <div class="quote-icon">"</div>
+          <p class="testimonial-text">{{ t.text }}</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">{{ t.avatar }}</div>
+            <div>
+              <div class="author-name">{{ t.name }}</div>
+              <div class="author-church">{{ t.church }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ CTA SECTION ═══ -->
+  <section class="cta-section">
+    <div class="cta-container glass">
+      <div class="cta-cross">✝</div>
+      <h2 class="cta-title">
+        Ready to Join the <br>
+        <span class="text-gold-gradient">OneBody Community?</span>
+      </h2>
+      <p class="cta-subtitle">
+        Join thousands of believers already connecting,
+        worshipping and growing together.
+      </p>
+      <div class="cta-actions">
+        <button class="btn-gold cta-btn"
+          (click)="navigateTo('/auth/register')">
+          Create Free Account ✨
+        </button>
+        <button class="btn-outline cta-btn"
+          (click)="navigateTo('/auth/register')">
+          Register Your Church ⛪
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="landing-footer">
+    <div class="footer-container">
+
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-icon">✝</div>
+          <span class="logo-text">
+            One<span class="text-gold-gradient">Body</span>
+          </span>
+        </div>
+        <p>Connecting the Body of Christ, Worldwide.</p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a (click)="navigateTo('/discover')">Discover</a>
+          <a (click)="navigateTo('/sermons')">Sermons</a>
+          <a>Events</a>
+          <a>Prayer Wall</a>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <a (click)="navigateTo('/auth/register')">Join Free</a>
+          <a>Register Church</a>
+          <a>For Pastors</a>
+          <a>For Members</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a>About Us</a>
+          <a>Contact</a>
+          <a>Privacy Policy</a>
+          <a>Terms of Service</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 OneBody. Built with ❤️ for the Church.</p>
+    </div>
+  </footer>
+
+</div>

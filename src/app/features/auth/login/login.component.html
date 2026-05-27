@@ -1,0 +1,188 @@
+<div class="auth-wrapper">
+
+  <!-- Stars Background -->
+  <div class="stars-bg">
+    <div
+      *ngFor="let star of stars"
+      class="star"
+      [style.left.%]="star.x"
+      [style.top.%]="star.y"
+      [style.width.px]="star.size"
+      [style.height.px]="star.size"
+      [style.opacity]="star.opacity"
+      [style.animation-duration.s]="star.duration"
+      [style.animation-delay.s]="star.delay">
+    </div>
+  </div>
+
+  <!-- Left Side — Branding -->
+  <div class="auth-left">
+
+    <div class="brand-section">
+      <div class="brand-logo" routerLink="/">
+        <div class="logo-icon">✝</div>
+        <span class="logo-text">
+          One<span class="gold">Body</span>
+        </span>
+      </div>
+
+      <div class="brand-content">
+        <h1>Welcome Back<br>
+          <span class="gold-text">Beloved! 🙏</span>
+        </h1>
+        <p>
+          Continue your journey with the OneBody community.
+          Your churches, sermons and prayer wall await you.
+        </p>
+
+        <!-- Features List -->
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="feature-icon">⛪</span>
+            <span>Follow churches across India</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🎵</span>
+            <span>Watch sermons anytime</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🙏</span>
+            <span>Pray with the community</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">📅</span>
+            <span>Discover events near you</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Cards Preview -->
+    <div class="preview-cards">
+      <div class="preview-card card-1">
+        <span>👥</span>
+        <div>
+          <div class="card-value">12,400+</div>
+          <div class="card-label">Members</div>
+        </div>
+      </div>
+      <div class="preview-card card-2">
+        <span>⛪</span>
+        <div>
+          <div class="card-value">248+</div>
+          <div class="card-label">Churches</div>
+        </div>
+      </div>
+      <div class="preview-card card-3">
+        <span>🎵</span>
+        <div>
+          <div class="card-value">1,840+</div>
+          <div class="card-label">Sermons</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Side — Login Form -->
+  <div class="auth-right">
+    <div class="auth-form-container">
+
+      <!-- Header -->
+      <div class="form-header">
+        <h2>Sign In</h2>
+        <p>Enter your credentials to continue</p>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-alert" *ngIf="errorMessage()">
+        <span>⚠️</span>
+        <span>{{ errorMessage() }}</span>
+      </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-wrapper"
+            [class.error]="isInvalid('email')">
+            <span class="input-icon">📧</span>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="pastor@church.com"
+              autocomplete="email"/>
+          </div>
+          <span class="error-text"
+            *ngIf="isInvalid('email')">
+            Please enter a valid email
+          </span>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper"
+            [class.error]="isInvalid('password')">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"/>
+            <span
+              class="password-toggle"
+              (click)="togglePassword()">
+              {{ showPassword() ? '🙈' : '👁️' }}
+            </span>
+          </div>
+          <span class="error-text"
+            *ngIf="isInvalid('password')">
+            Password must be at least 6 characters
+          </span>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="forgot-password">
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="isLoading()">
+          <span *ngIf="!isLoading()">
+            Sign In ✨
+          </span>
+          <span *ngIf="isLoading()" class="loading">
+            <span class="spinner"></span>
+            Signing In...
+          </span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>Don't have an account?</span>
+      </div>
+
+      <!-- Register Link -->
+      <button
+        class="register-btn"
+        routerLink="/auth/register">
+        Create Free Account →
+      </button>
+
+      <!-- Back to Home -->
+      <div class="back-home">
+        <a routerLink="/">← Back to Home</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>

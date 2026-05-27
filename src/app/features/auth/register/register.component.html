@@ -1,0 +1,214 @@
+<div class="auth-wrapper">
+
+  <!-- Stars -->
+  <div class="stars-bg">
+    <div *ngFor="let star of stars" class="star"
+      [style.left.%]="star.x"
+      [style.top.%]="star.y"
+      [style.width.px]="star.size"
+      [style.height.px]="star.size"
+      [style.opacity]="star.opacity"
+      [style.animation-duration.s]="star.duration"
+      [style.animation-delay.s]="star.delay">
+    </div>
+  </div>
+
+  <!-- Left Side -->
+  <div class="auth-left">
+    <div class="brand-section">
+      <div class="brand-logo" routerLink="/">
+        <div class="logo-icon">✝</div>
+        <span class="logo-text">
+          One<span class="gold">Body</span>
+        </span>
+      </div>
+
+      <div class="brand-content">
+        <h1>Join the<br>
+          <span class="gold-text">OneBody Family! 🙏</span>
+        </h1>
+        <p>
+          Whether you are a church leader or a believer
+          looking to grow — OneBody has a place for you.
+        </p>
+
+        <!-- Role Benefits -->
+        <div class="role-benefits">
+
+          <div class="benefit-section">
+            <h4>👤 As a Member</h4>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Follow multiple churches</span>
+            </div>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Watch unlimited sermons</span>
+            </div>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Join events & gatherings</span>
+            </div>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Post prayer requests</span>
+            </div>
+          </div>
+
+          <div class="benefit-section">
+            <h4>⛪ As a Church Admin</h4>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Register your church</span>
+            </div>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Upload sermons & events</span>
+            </div>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Manage your congregation</span>
+            </div>
+            <div class="benefit-item">
+              <span>✅</span>
+              <span>Analytics dashboard</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side -->
+  <div class="auth-right">
+    <div class="auth-form-container">
+
+      <div class="form-header">
+        <h2>Create Account</h2>
+        <p>Join thousands of believers on OneBody</p>
+      </div>
+
+      <!-- Role Selector -->
+      <div class="role-selector">
+        <div
+          class="role-option"
+          [class.active]="selectedRole() === 'MEMBER'"
+          (click)="selectRole('MEMBER')">
+          <span class="role-emoji">👤</span>
+          <div>
+            <div class="role-name">Member</div>
+            <div class="role-desc">I want to follow churches</div>
+          </div>
+          <span class="role-check"
+            *ngIf="selectedRole() === 'MEMBER'">✓</span>
+        </div>
+
+        <div
+          class="role-option"
+          [class.active]="selectedRole() === 'CHURCH_ADMIN'"
+          (click)="selectRole('CHURCH_ADMIN')">
+          <span class="role-emoji">⛪</span>
+          <div>
+            <div class="role-name">Church Admin</div>
+            <div class="role-desc">I manage a church</div>
+          </div>
+          <span class="role-check"
+            *ngIf="selectedRole() === 'CHURCH_ADMIN'">✓</span>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-alert" *ngIf="errorMessage()">
+        <span>⚠️</span>
+        <span>{{ errorMessage() }}</span>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <!-- Name -->
+        <div class="form-group">
+          <label>Full Name</label>
+          <div class="input-wrapper"
+            [class.error]="isInvalid('name')">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Pastor John / Your Name"/>
+          </div>
+          <span class="error-text" *ngIf="isInvalid('name')">
+            Name must be at least 2 characters
+          </span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-wrapper"
+            [class.error]="isInvalid('email')">
+            <span class="input-icon">📧</span>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="your@email.com"/>
+          </div>
+          <span class="error-text" *ngIf="isInvalid('email')">
+            Please enter a valid email
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper"
+            [class.error]="isInvalid('password')">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Min 6 characters"/>
+            <span class="password-toggle"
+              (click)="togglePassword()">
+              {{ showPassword() ? '🙈' : '👁️' }}
+            </span>
+          </div>
+          <span class="error-text"
+            *ngIf="isInvalid('password')">
+            Password must be at least 6 characters
+          </span>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="isLoading()">
+          <span *ngIf="!isLoading()">
+            Create Account ✨
+          </span>
+          <span *ngIf="isLoading()" class="loading">
+            <span class="spinner"></span>
+            Creating Account...
+          </span>
+        </button>
+
+      </form>
+
+      <div class="divider">
+        <span>Already have an account?</span>
+      </div>
+
+      <button class="login-btn" routerLink="/auth/login">
+        Sign In →
+      </button>
+
+      <div class="back-home">
+        <a routerLink="/">← Back to Home</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>

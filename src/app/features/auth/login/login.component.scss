@@ -1,0 +1,424 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  background: #060919;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stars */
+.stars-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--duration, 2s)
+      ease-in-out infinite alternate;
+  }
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; }
+  to   { opacity: 1; }
+}
+
+/* Left Side */
+.auth-left {
+  flex: 1;
+  background: linear-gradient(
+    135deg,
+    #0A0E27 0%,
+    #111530 50%,
+    #0A0E27 100%
+  );
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  border-right: 1px solid rgba(201, 168, 76, 0.1);
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+
+  /* Glow effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(201, 168, 76, 0.06) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  margin-bottom: 60px;
+
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #060919;
+    font-weight: bold;
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+
+    .gold {
+      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+}
+
+.brand-content {
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+
+    .gold-text {
+      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  p {
+    color: #8892B0;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    max-width: 400px;
+  }
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #8892B0;
+    font-size: 15px;
+
+    .feature-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+/* Preview Cards */
+.preview-cards {
+  display: flex;
+  gap: 16px;
+
+  .preview-card {
+    background: rgba(17, 21, 48, 0.8);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    backdrop-filter: blur(10px);
+
+    span:first-child { font-size: 24px; }
+
+    .card-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-label {
+      color: #8892B0;
+      font-size: 12px;
+    }
+
+    &.card-1 { animation: float 4s ease-in-out infinite; }
+    &.card-2 { animation: float 5s ease-in-out infinite 1s; }
+    &.card-3 { animation: float 6s ease-in-out infinite 2s; }
+  }
+}
+
+/* Right Side */
+.auth-right {
+  flex: 0 0 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 900px) {
+    flex: 1;
+  }
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 420px;
+
+  .form-header {
+    margin-bottom: 36px;
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #8892B0;
+      font-size: 15px;
+    }
+  }
+}
+
+/* Error Alert */
+.error-alert {
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e74c3c;
+  font-size: 14px;
+  margin-bottom: 24px;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 24px;
+
+  label {
+    display: block;
+    color: #8892B0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(17, 21, 48, 0.8);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    &:focus-within {
+      border-color: #C9A84C;
+      box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+    }
+
+    &.error {
+      border-color: rgba(231, 76, 60, 0.5);
+    }
+
+    .input-icon {
+      padding: 0 14px;
+      font-size: 18px;
+    }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 15px;
+      padding: 16px 14px 16px 0;
+      font-family: 'Inter', sans-serif;
+
+      &::placeholder { color: #8892B0; }
+    }
+
+    .password-toggle {
+      padding: 0 16px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: opacity 0.3s;
+
+      &:hover { opacity: 0.8; }
+    }
+  }
+
+  .error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 6px;
+    display: block;
+    animation: slideUp 0.3s ease-out;
+  }
+}
+
+/* Forgot Password */
+.forgot-password {
+  text-align: right;
+  margin-bottom: 32px;
+  margin-top: -12px;
+
+  a {
+    color: #C9A84C;
+    font-size: 13px;
+    text-decoration: none;
+    transition: opacity 0.3s;
+
+    &:hover { opacity: 0.8; }
+  }
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #C9A84C, #E2C17A);
+  color: #060919;
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 24px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(201, 168, 76, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(6, 9, 25, 0.3);
+    border-top-color: #060919;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin-bottom: 16px;
+
+  span {
+    color: #8892B0;
+    font-size: 14px;
+  }
+}
+
+/* Register Button */
+.register-btn {
+  width: 100%;
+  background: transparent;
+  color: #C9A84C;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 24px;
+
+  &:hover {
+    background: rgba(201, 168, 76, 0.08);
+    border-color: #C9A84C;
+    transform: translateY(-2px);
+  }
+}
+
+/* Back Home */
+.back-home {
+  text-align: center;
+
+  a {
+    color: #8892B0;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s;
+
+    &:hover { color: #C9A84C; }
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
