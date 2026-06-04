@@ -19,6 +19,7 @@ export interface FeedItem {
   location: string;
   isOnline: boolean;
   registrationCount: number;
+  isRegistered: boolean; 
 
   // Post fields
   likeCount: number;
@@ -88,4 +89,18 @@ export class FeedService {
       `${this.api}/churches/public`
     );
   }
+
+  // Register for event
+registerForEvent(eventId: number): Observable<any> {
+  return this.http.post(
+    `${this.api}/events/${eventId}/register`, {}
+  );
+}
+
+// Cancel event registration
+cancelRegistration(eventId: number): Observable<any> {
+  return this.http.delete(
+    `${this.api}/events/${eventId}/register`
+  );
+}
 }

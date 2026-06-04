@@ -217,3 +217,32 @@ html, body {
   pointer-events: none;
   z-index: 0;
 }
+
+/* ── Fix Browser Autofill White Background ── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #111530 inset !important;
+  -webkit-text-fill-color: white !important;
+  caret-color: white !important;
+  border-radius: 12px !important;
+}
+
+/* Dark datetime picker */
+input[type="datetime-local"] {
+  color-scheme: dark;
+  background: rgba(6, 9, 25, 0.6) !important;
+  border: 1px solid rgba(201, 168, 76, 0.2) !important;
+  border-radius: 12px !important;
+  color: white !important;
+  padding: 14px 16px !important;
+  width: 100% !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 15px !important;
+  outline: none !important;
+
+  &:focus {
+    border-color: #C9A84C !important;
+  }
+}

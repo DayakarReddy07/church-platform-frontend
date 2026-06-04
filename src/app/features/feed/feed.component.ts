@@ -142,4 +142,56 @@ export class FeedComponent implements OnInit {
       .substring(0, 2)
       .toUpperCase();
   }
+
+  registerForEvent(item: FeedItem) {
+  if (item.isRegistered) {
+    // Cancel registration
+    this.feedService
+      .cancelRegistration(item.id)
+      .subscribe({
+        next: () => {
+          this.feedItems.update(items =>
+            items.map(i => {
+              if (i.id === item.id &&
+                  i.itemType === 'EVENT') {
+                return {
+                  ...i,
+                  isRegistered: false,
+                  registrationCount:
+                    (i.registrationCount || 0) - 1
+                };
+              }
+              return i;
+            })
+          );
+        }
+      });
+  } else {
+    // Register
+    this.feedService
+      .registerForEvent(item.id)
+      .subscribe({
+        next: () => {
+          this.feedItems.update(items =>
+            items.map(i => {
+              if (i.id === item.id &&
+                  i.itemType === 'EVENT') {
+                return {
+                  ...i,
+                  isRegistered: true,
+                  registrationCount:
+                    (i.registrationCount || 0) + 1
+                };
+              }
+              return i;
+            })
+          );
+        },
+        error: (err) => {
+          alert(err.error?.message ||
+            'Registration failed!');
+        }
+      });
+  }
+}
 }

@@ -1,1 +1,303 @@
-<p>prayer works!</p>
+<div class="prayer-wrapper">
+
+  <!-- ═══ CANDLES BACKGROUND ═══ -->
+  <div class="candles-bg">
+    <div
+      class="candle-flame"
+      *ngFor="let candle of candles"
+      [style.left.%]="candle.x"
+      [style.animation-delay.s]="candle.delay"
+      [style.animation-duration.s]="candle.duration">
+    </div>
+  </div>
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="prayer-header">
+
+    <div class="header-content">
+      <div class="prayer-icon">🕯️</div>
+      <div>
+        <h1 class="prayer-title">Prayer Wall</h1>
+        <p class="prayer-subtitle">
+          "Bear one another's burdens,
+          and so fulfill the law of Christ."
+          <span class="verse-ref">— Galatians 6:2</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      class="submit-prayer-btn"
+      (click)="toggleForm()">
+      <span>🙏</span>
+      <span>{{ showSubmitForm() ?
+        'Close' : 'Share Prayer Request' }}</span>
+    </button>
+
+  </div>
+
+  <!-- ═══ SUBMIT FORM ═══ -->
+  <div
+    class="submit-form-container"
+    *ngIf="showSubmitForm()">
+
+    <!-- Success State -->
+    <div class="success-state" *ngIf="submitSuccess()">
+      <div class="success-icon">🙏</div>
+      <h3>Prayer Request Submitted!</h3>
+      <p>The community is praying for you ❤️</p>
+    </div>
+
+    <!-- Form -->
+    <form
+      [formGroup]="prayerForm"
+      (ngSubmit)="submitPrayer()"
+      *ngIf="!submitSuccess()">
+
+      <div class="form-header">
+        <div class="user-avatar">
+          {{ getUserInitials() }}
+        </div>
+        <div>
+          <div class="user-name">
+            {{ authService.currentUser()?.name }}
+          </div>
+          <div class="user-label">Sharing a prayer request</div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="form-group">
+        <textarea
+          formControlName="content"
+          placeholder="Share your prayer request with the community... God hears every prayer 🙏"
+          rows="4">
+        </textarea>
+        <div class="char-count"
+          [class.near-limit]="getCharCount() > 400">
+          {{ getCharCount() }}/500
+        </div>
+        <span class="error-text"
+          *ngIf="prayerForm.get('content')?.invalid &&
+                 prayerForm.get('content')?.touched">
+          Please enter at least 10 characters
+        </span>
+      </div>
+
+      <!-- Privacy Toggle -->
+      <div class="privacy-toggle">
+        <div class="privacy-options">
+
+          <div
+            class="privacy-option"
+            [class.active]="prayerForm.get('isPublic')?.value"
+            (click)="prayerForm.patchValue({isPublic: true})">
+            <span>🌐</span>
+            <div>
+              <div class="option-title">Public</div>
+              <div class="option-desc">
+                Community can see & pray
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="privacy-option"
+            [class.active]="!prayerForm.get('isPublic')?.value"
+            (click)="prayerForm.patchValue({isPublic: false})">
+            <span>🔒</span>
+            <div>
+              <div class="option-title">Private</div>
+              <div class="option-desc">
+                Only you can see this
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="isSubmitting()">
+        <span *ngIf="!isSubmitting()">
+          🙏 Submit Prayer Request
+        </span>
+        <span *ngIf="isSubmitting()">
+          Submitting...
+        </span>
+      </button>
+
+    </form>
+  </div>
+
+  <!-- ═══ TABS ═══ -->
+  <div class="prayer-tabs">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'all'"
+      (click)="switchTab('all')">
+      🌐 Community Prayers
+      <span class="tab-count">
+        {{ prayers().length }}
+      </span>
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'mine'"
+      (click)="switchTab('mine')">
+      👤 My Prayers
+    </button>
+  </div>
+
+  <!-- ═══ LOADING ═══ -->
+  <div *ngIf="isLoading()" class="prayers-grid">
+    <div
+      class="skeleton-prayer"
+      *ngFor="let s of [1,2,3,4,5,6]">
+      <div class="skeleton skeleton-text-lg"></div>
+      <div class="skeleton skeleton-text-sm"></div>
+      <div class="skeleton skeleton-text-sm"></div>
+    </div>
+  </div>
+
+  <!-- ═══ COMMUNITY PRAYERS ═══ -->
+  <div
+    class="prayers-grid"
+    *ngIf="!isLoading() && activeTab() === 'all'">
+
+    <!-- Empty State -->
+    <div
+      class="empty-prayers"
+      *ngIf="prayers().length === 0">
+      <div>🕯️</div>
+      <h3>No prayer requests yet</h3>
+      <p>Be the first to share a prayer request!</p>
+    </div>
+
+    <!-- Prayer Cards -->
+    <div
+      class="prayer-card"
+      *ngFor="let prayer of prayers()">
+
+      <!-- Candle Glow -->
+      <div class="card-glow"></div>
+
+      <!-- Card Header -->
+      <div class="prayer-card-header">
+        <div class="prayer-avatar">
+          {{ prayer.userName.charAt(0).toUpperCase() }}
+        </div>
+        <div class="prayer-meta">
+          <div class="prayer-user">
+            {{ prayer.userName }}
+          </div>
+          <div class="prayer-time">
+            <span *ngIf="prayer.churchName" class="prayer-church">
+              ⛪ {{ prayer.churchName }} ·
+            </span>
+            {{ getTimeAgo(prayer.createdAt) }}
+          </div>
+        </div>
+        <div class="privacy-badge">
+          <span *ngIf="prayer.isPublic">🌐</span>
+          <span *ngIf="!prayer.isPublic">🔒</span>
+        </div>
+      </div>
+
+      <!-- Prayer Content -->
+      <p class="prayer-content">{{ prayer.content }}</p>
+
+      <!-- Prayer Footer -->
+      <div class="prayer-footer">
+
+        <!-- Praying Count -->
+        <div class="praying-count">
+          <span>🙏</span>
+          <span>
+            <strong>{{ prayer.prayerCount }}</strong>
+            {{ prayer.prayerCount === 1 ?
+              'person' : 'people' }} praying
+          </span>
+        </div>
+
+        <!-- Pray Button -->
+        <button
+          class="pray-btn"
+          [class.praying]="prayer.isPraying"
+          (click)="togglePraying(prayer)">
+          <span>🙏</span>
+          <span>{{
+            prayer.isPraying ?
+            'Praying ✓' :
+            "I'm Praying"
+          }}</span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ═══ MY PRAYERS TAB ═══ -->
+  <div
+    class="prayers-grid"
+    *ngIf="!isLoading() && activeTab() === 'mine'">
+
+    <div
+      class="empty-prayers"
+      *ngIf="myPrayers().length === 0">
+      <div>🙏</div>
+      <h3>No prayer requests yet</h3>
+      <p>Share your first prayer request!</p>
+      <button
+        class="submit-prayer-btn"
+        (click)="toggleForm(); switchTab('all')">
+        Share Prayer Request
+      </button>
+    </div>
+
+    <div
+      class="prayer-card"
+      *ngFor="let prayer of myPrayers()">
+
+      <div class="card-glow"></div>
+
+      <div class="prayer-card-header">
+        <div class="prayer-avatar">
+          {{ prayer.userName.charAt(0).toUpperCase() }}
+        </div>
+        <div class="prayer-meta">
+          <div class="prayer-user">{{ prayer.userName }}</div>
+          <div class="prayer-time">
+            {{ getTimeAgo(prayer.createdAt) }}
+          </div>
+        </div>
+        <div class="privacy-badge"
+          [class.private]="!prayer.isPublic">
+          <span *ngIf="prayer.isPublic">🌐 Public</span>
+          <span *ngIf="!prayer.isPublic">🔒 Private</span>
+        </div>
+      </div>
+
+      <p class="prayer-content">{{ prayer.content }}</p>
+
+      <div class="prayer-footer">
+        <div class="praying-count">
+          <span>🙏</span>
+          <span>
+            <strong>{{ prayer.prayerCount }}</strong>
+            people praying
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

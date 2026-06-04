@@ -258,14 +258,17 @@
           </div>
 
           <div class="card-actions">
-            <button class="action-btn event-register-btn">
-              <span>📅</span>
-              <span>Register Now</span>
-            </button>
-            <button class="action-btn">
-              <span>🔗</span>
-              <span>Share</span>
-            </button>
+           <!-- Find this in EVENT CARD section -->
+<button class="action-btn event-register-btn"
+  [class.registered]="item.isRegistered"
+  (click)="registerForEvent(item)">
+  <span>📅</span>
+  <span>{{
+    item.isRegistered ?
+    'Registered ✓' :
+    'Register Now'
+  }}</span>
+</button>
           </div>
 
         </ng-container>

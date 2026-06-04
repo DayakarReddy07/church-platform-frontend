@@ -48,14 +48,38 @@
       </div>
 
       <!-- Nav Actions -->
-      <div class="nav-actions">
-        <button class="btn-outline" (click)="navigateTo('/auth/login')">
-          Sign In
-        </button>
-        <button class="btn-gold" (click)="navigateTo('/auth/register')">
-          Join Free ✨
-        </button>
-      </div>
+<!-- Nav Actions -->
+<div class="nav-actions">
+
+  <!-- Not logged in -->
+  <ng-container *ngIf="!authService.isLoggedIn()">
+    <button
+      class="btn-outline"
+      (click)="navigateTo('/auth/login')">
+      Sign In
+    </button>
+    <button
+      class="btn-gold"
+      (click)="navigateTo('/auth/register')">
+      Join Free ✨
+    </button>
+  </ng-container>
+
+  <!-- Logged in -->
+  <ng-container *ngIf="authService.isLoggedIn()">
+    <button
+      class="btn-outline"
+      (click)="navigateTo('/app/feed')">
+      My Feed 🏠
+    </button>
+    <div
+      class="nav-avatar"
+      (click)="navigateTo('/app/feed')">
+      {{ getUserInitials() }}
+    </div>
+  </ng-container>
+
+</div>
 
     </div>
   </nav>

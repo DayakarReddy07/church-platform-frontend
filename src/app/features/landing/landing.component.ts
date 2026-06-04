@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } fr
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -93,7 +94,8 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    public authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -163,22 +165,32 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Watch for stats section visibility
   setupScrollAnimation() {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            this.animateStats();
-          }
-        });
-      },
-      { threshold: 0.3 }
+  // Wait for DOM to be ready
+  setTimeout(() => {
+    const statsSection = document.getElementById(
+      'stats-section'
     );
 
-    const statsSection = document.getElementById('stats-section');
     if (statsSection) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              this.animateStats();
+              // Stop observing after animation
+              observer.disconnect();
+            }
+          });
+        },
+        { threshold: 0.1 } // trigger when 10% visible
+      );
       observer.observe(statsSection);
+    } else {
+      // If section not found just animate
+      setTimeout(() => this.animateStats(), 1000);
     }
-  }
+  }, 300);
+}
 
   // Load churches from API
   loadChurches() {
@@ -236,4 +248,14 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
       .substring(0, 2)
       .toUpperCase();
   }
+
+  getUserInitials(): string {
+  const name = this.authService
+    .currentUser()?.name || '';
+  return name.split(' ')
+    .map(w => w[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase();
+}
 }

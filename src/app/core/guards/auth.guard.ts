@@ -1,15 +1,25 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import {
+  CanActivateFn,
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot
+} from '@angular/router';
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
   const router = inject(Router);
   const token = localStorage.getItem('onebody_token');
 
   if (token) {
-    return true; // logged in → allow access
+    return true;
   }
 
-  //  not logged in → go to login
-  router.navigate(['/auth/login']);
+  // Save attempted URL for redirect after login
+  router.navigate(['/auth/login'], {
+    queryParams: { returnUrl: state.url }
+  });
   return false;
 };

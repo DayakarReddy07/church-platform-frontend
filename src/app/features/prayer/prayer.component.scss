@@ -1,0 +1,603 @@
+/* ═══════════════════════════════════════
+   OneBody Prayer Wall
+   ═══════════════════════════════════════ */
+
+.prayer-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── Candles Background ──────────────── */
+.candles-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.candle-flame {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 60px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(201, 168, 76, 0.15) 50%,
+    rgba(201, 168, 76, 0.3) 100%
+  );
+  border-radius: 50% 50% 0 0;
+  animation: flicker ease-in-out infinite alternate;
+  filter: blur(2px);
+}
+
+@keyframes flicker {
+  0%   {
+    transform: scaleX(1) scaleY(1);
+    opacity: 0.3;
+  }
+  50%  {
+    transform: scaleX(1.2) scaleY(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scaleX(0.8) scaleY(0.9);
+    opacity: 0.4;
+  }
+}
+
+/* ── Prayer Header ───────────────────── */
+.prayer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .prayer-icon {
+      font-size: 48px;
+      animation: flicker 3s ease-in-out infinite alternate;
+    }
+  }
+
+  .prayer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+  }
+
+  .prayer-subtitle {
+    color: #8892B0;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.6;
+
+    .verse-ref {
+      color: #C9A84C;
+      font-style: normal;
+      font-weight: 600;
+    }
+  }
+}
+
+/* Submit Button */
+.submit-prayer-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #C9A84C, #E2C17A);
+  color: #060919;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 168, 76, 0.4);
+  }
+}
+
+/* ── Submit Form ─────────────────────── */
+.submit-form-container {
+  background: rgba(17, 21, 48, 0.9);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 32px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 1;
+  animation: slideDown 0.3s ease-out;
+
+  .form-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #060919;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: white;
+      font-size: 15px;
+    }
+
+    .user-label {
+      color: #8892B0;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+  }
+}
+
+/* Success State */
+.success-state {
+  text-align: center;
+  padding: 40px 20px;
+
+  .success-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: #8892B0;
+    font-size: 15px;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+
+  textarea {
+    width: 100%;
+    background: rgba(6, 9, 25, 0.6);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7;
+    resize: none;
+    transition: all 0.3s ease;
+    outline: none;
+
+    &:focus {
+      border-color: #C9A84C;
+      box-shadow: 0 0 20px rgba(201, 168, 76, 0.1);
+    }
+
+    &::placeholder { color: #8892B0; }
+  }
+
+  .char-count {
+    text-align: right;
+    color: #8892B0;
+    font-size: 12px;
+    margin-top: 6px;
+
+    &.near-limit { color: #e74c3c; }
+  }
+
+  .error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+  }
+}
+
+/* Privacy Toggle */
+.privacy-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  .privacy-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    background: rgba(6, 9, 25, 0.6);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    span:first-child { font-size: 20px; }
+
+    .option-title {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .option-desc {
+      color: #8892B0;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    &.active {
+      border-color: #C9A84C;
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    &:hover:not(.active) {
+      border-color: rgba(201, 168, 76, 0.3);
+    }
+  }
+}
+
+/* Submit Btn */
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #C9A84C, #E2C17A);
+  color: #060919;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 168, 76, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+/* ── Tabs ────────────────────────────── */
+.prayer-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: rgba(17, 21, 48, 0.7);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    border-radius: 50px;
+    color: #8892B0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+
+    &.active {
+      background: rgba(201, 168, 76, 0.12);
+      border-color: rgba(201, 168, 76, 0.4);
+      color: #C9A84C;
+      font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+      color: white;
+      border-color: rgba(201, 168, 76, 0.3);
+    }
+
+    .tab-count {
+      background: rgba(201, 168, 76, 0.2);
+      color: #C9A84C;
+      border-radius: 50px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+}
+
+/* ── Prayers Grid ────────────────────── */
+.prayers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Prayer Card */
+.prayer-card {
+  background: rgba(17, 21, 48, 0.8);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    border-color: rgba(201, 168, 76, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+    .card-glow {
+      opacity: 1;
+    }
+  }
+}
+
+/* Card Glow */
+.card-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #C9A84C,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Prayer Card Header */
+.prayer-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .prayer-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(
+      135deg,
+      rgba(201, 168, 76, 0.3),
+      rgba(201, 168, 76, 0.1)
+    );
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #C9A84C;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .prayer-meta {
+    flex: 1;
+
+    .prayer-user {
+      font-weight: 600;
+      color: white;
+      font-size: 14px;
+    }
+
+    .prayer-time {
+      color: #8892B0;
+      font-size: 12px;
+      margin-top: 2px;
+
+      .prayer-church {
+        color: #C9A84C;
+      }
+    }
+  }
+
+  .privacy-badge {
+    font-size: 14px;
+    color: #8892B0;
+
+    &.private { color: #4F8EF7; }
+  }
+}
+
+/* Prayer Content */
+.prayer-content {
+  color: #8892B0;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  font-style: italic;
+
+  /* Show first 4 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Prayer Footer */
+.prayer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(201, 168, 76, 0.08);
+
+  .praying-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8892B0;
+    font-size: 13px;
+
+    span:first-child { font-size: 16px; }
+
+    strong { color: #C9A84C; }
+  }
+}
+
+/* Pray Button */
+.pray-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 50px;
+  color: #C9A84C;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+
+  &:hover {
+    background: rgba(201, 168, 76, 0.15);
+    transform: scale(1.05);
+  }
+
+  &.praying {
+    background: rgba(201, 168, 76, 0.2);
+    border-color: #C9A84C;
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+
+    span:first-child {
+      animation: prayPulse 1s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes prayPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* ── Empty State ─────────────────────── */
+.empty-prayers {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 24px;
+
+  div:first-child {
+    font-size: 56px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: #8892B0;
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+}
+
+/* ── Skeleton ────────────────────────── */
+.skeleton-prayer {
+  background: rgba(17, 21, 48, 0.7);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(17, 21, 48, 0.8) 25%,
+    rgba(201, 168, 76, 0.08) 50%,
+    rgba(17, 21, 48, 0.8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+.skeleton-text-lg {
+  height: 60px;
+}
+
+.skeleton-text-sm {
+  height: 14px;
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
