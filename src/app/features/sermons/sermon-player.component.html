@@ -1,0 +1,198 @@
+<div class="player-wrapper">
+
+  <!-- ═══ LOADING ═══ -->
+  <div class="loading-screen" *ngIf="isLoading()">
+    <div class="loading-spinner"></div>
+    <p>Loading sermon...</p>
+  </div>
+
+  <!-- ═══ PLAYER CONTENT ═══ -->
+  <div class="player-content"
+    *ngIf="!isLoading() && sermon()">
+
+    <!-- ── LEFT: VIDEO + DETAILS ── -->
+    <div class="player-main">
+
+      <!-- Back Button -->
+      <button
+        class="back-btn"
+        (click)="navigateToFeed()">
+        ← Back to Feed
+      </button>
+
+      <!-- Video Player -->
+      <div class="video-container">
+
+        <!-- YouTube Embed (when playing) -->
+        <iframe
+          *ngIf="isPlaying() && embedUrl()"
+          [src]="embedUrl()"
+          class="video-iframe"
+          frameborder="0"
+          allow="accelerometer; autoplay;
+                 clipboard-write; encrypted-media;
+                 gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+
+        <!-- Thumbnail (before playing) -->
+        <div
+          class="video-thumbnail"
+          *ngIf="!isPlaying()"
+          [style.backgroundImage]="
+            getThumbnail(sermon()!) ?
+            'url(' + getThumbnail(sermon()!) + ')' :
+            'none'">
+
+          <!-- Placeholder if no thumbnail -->
+          <div
+            class="thumbnail-placeholder"
+            *ngIf="!getThumbnail(sermon()!)">
+            <span>🎵</span>
+            <p>{{ sermon()?.title }}</p>
+          </div>
+
+          <!-- Play Button -->
+          <button
+            class="big-play-btn"
+            (click)="playVideo()">
+            <div class="play-icon">▶</div>
+          </button>
+
+          <!-- Duration badge -->
+          <div class="live-badge">
+            Watch Sermon
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Sermon Info -->
+      <div class="sermon-info">
+
+        <!-- Title -->
+        <h1 class="sermon-title">
+          {{ sermon()?.title }}
+        </h1>
+
+        <!-- Meta row -->
+        <div class="sermon-meta-row">
+          <div class="sermon-meta">
+            <span>🎤 {{ sermon()?.speaker }}</span>
+            <span class="dot">·</span>
+            <span *ngIf="sermon()?.series">
+              📚 {{ sermon()?.series }}
+            </span>
+            <span class="dot"
+              *ngIf="sermon()?.series">·</span>
+            <span>
+              📅 {{ formatDate(sermon()!.createdAt) }}
+            </span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="sermon-actions">
+            <button
+              class="action-pill"
+              [class.saved]="isSaved()"
+              (click)="toggleSave()">
+              {{ isSaved() ? '🔖 Saved' : '🔖 Save' }}
+            </button>
+            <button
+              class="action-pill"
+              (click)="shareSermon()">
+              🔗 Share
+            </button>
+          </div>
+        </div>
+
+        <!-- Church Info Card -->
+        <div class="church-card">
+          <div class="church-avatar-wrap">
+            <img
+              *ngIf="sermon()?.churchLogo"
+              [src]="sermon()?.churchLogo"
+              [alt]="sermon()?.churchName"
+              class="church-avatar-img"/>
+            <div
+              class="church-avatar-initials"
+              *ngIf="!sermon()?.churchLogo">
+              {{ getInitials(sermon()!.churchName) }}
+            </div>
+          </div>
+          <div class="church-details">
+            <div class="church-name">
+              {{ sermon()?.churchName }}
+            </div>
+            <div class="church-label">
+              Church · OneBody
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div
+          class="sermon-description"
+          *ngIf="sermon()?.description">
+          <h3>About this Sermon</h3>
+          <p>{{ sermon()?.description }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: RELATED SERMONS ── -->
+    <div class="player-sidebar">
+
+      <h3 class="sidebar-heading">
+        🎵 More from {{ sermon()?.churchName }}
+      </h3>
+
+      <!-- Empty -->
+      <div
+        class="no-related"
+        *ngIf="relatedSermons().length === 0">
+        <p>No other sermons yet</p>
+      </div>
+
+      <!-- Related Sermon Cards -->
+      <div
+        class="related-card"
+        *ngFor="let related of relatedSermons()"
+        (click)="watchSermon(related.id)">
+
+        <!-- Thumbnail -->
+        <div class="related-thumbnail"
+          [style.backgroundImage]="
+            getThumbnail(related) ?
+            'url(' + getThumbnail(related) + ')' :
+            'none'">
+          <div class="related-placeholder"
+            *ngIf="!getThumbnail(related)">
+            🎵
+          </div>
+          <div class="related-play">▶</div>
+        </div>
+
+        <!-- Info -->
+        <div class="related-info">
+          <p class="related-title">
+            {{ related.title }}
+          </p>
+          <p class="related-speaker">
+            🎤 {{ related.speaker }}
+          </p>
+          <p class="related-date">
+            {{ formatDate(related.createdAt) }}
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

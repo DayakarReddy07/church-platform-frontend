@@ -10,8 +10,8 @@
       [style.height.px]="star.size"
       [style.opacity]="star.opacity"
       [style.animation-duration.s]="star.duration"
-      [style.animation-delay.s]="star.delay">
-    </div>
+      [style.animation-delay.s]="star.delay"
+    ></div>
   </div>
 
   <!-- ═══ FLOATING PARTICLES ═══ -->
@@ -25,18 +25,19 @@
       [style.height.px]="p.size"
       [style.opacity]="p.opacity"
       [style.animation-duration.s]="p.duration"
-      [style.animation-delay.s]="p.delay">
-    </div>
+      [style.animation-delay.s]="p.delay"
+    ></div>
   </div>
 
   <!-- ═══ NAVBAR ═══ -->
   <nav class="landing-nav">
     <div class="nav-container">
-
       <!-- Logo -->
       <div class="nav-logo" (click)="navigateTo('/')">
         <div class="logo-icon">✝</div>
-        <span class="logo-text">One<span class="text-gold-gradient">Body</span></span>
+        <span class="logo-text"
+          >One<span class="text-gold-gradient">Body</span></span
+        >
       </div>
 
       <!-- Nav Links -->
@@ -48,50 +49,37 @@
       </div>
 
       <!-- Nav Actions -->
-<!-- Nav Actions -->
-<div class="nav-actions">
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <!-- Not logged in -->
+        <ng-container *ngIf="!authService.isLoggedIn()">
+          <button class="btn-outline" (click)="navigateTo('/auth/login')">
+            Sign In
+          </button>
+          <button class="btn-gold" (click)="navigateTo('/auth/register')">
+            Join Free ✨
+          </button>
+        </ng-container>
 
-  <!-- Not logged in -->
-  <ng-container *ngIf="!authService.isLoggedIn()">
-    <button
-      class="btn-outline"
-      (click)="navigateTo('/auth/login')">
-      Sign In
-    </button>
-    <button
-      class="btn-gold"
-      (click)="navigateTo('/auth/register')">
-      Join Free ✨
-    </button>
-  </ng-container>
-
-  <!-- Logged in -->
-  <ng-container *ngIf="authService.isLoggedIn()">
-    <button
-      class="btn-outline"
-      (click)="navigateTo('/app/feed')">
-      My Feed 🏠
-    </button>
-    <div
-      class="nav-avatar"
-      (click)="navigateTo('/app/feed')">
-      {{ getUserInitials() }}
-    </div>
-  </ng-container>
-
-</div>
-
+        <!-- Logged in -->
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <button class="btn-outline" (click)="navigateTo('/app/feed')">
+            My Feed 🏠
+          </button>
+          <div class="nav-avatar" (click)="navigateTo('/app/feed')">
+            {{ getUserInitials() }}
+          </div>
+        </ng-container>
+      </div>
     </div>
   </nav>
 
   <!-- ═══ HERO SECTION ═══ -->
   <section class="hero-section">
-
     <!-- Cross Light Effect -->
     <div class="cross-light"></div>
 
     <div class="hero-content">
-
       <!-- Badge -->
       <div class="hero-badge">
         <span>✝</span>
@@ -100,21 +88,24 @@
 
       <!-- Main Heading -->
       <h1 class="hero-title">
-        One Platform.<br>
-        <span class="text-gold-gradient">Every Church.</span><br>
+        One Platform.<br />
+        <span class="text-gold-gradient">Every Church.</span><br />
         <span class="text-electric-gradient">One Community.</span>
       </h1>
 
       <!-- Subtitle -->
       <p class="hero-subtitle">
-        OneBody brings churches together on one powerful platform.
-        Follow your favourite churches, watch sermons, join events,
-        and pray together — all in one place.
+        OneBody brings churches together on one powerful platform. Follow your
+        favourite churches, watch sermons, join events, and pray together — all
+        in one place.
       </p>
 
       <!-- CTA Buttons -->
       <div class="hero-actions">
-        <button class="btn-gold hero-btn" (click)="navigateTo('/auth/register')">
+        <button
+          class="btn-gold hero-btn"
+          (click)="navigateTo('/auth/register')"
+        >
           Start Your Journey ✨
         </button>
         <button class="btn-outline hero-btn" (click)="navigateTo('/discover')">
@@ -125,21 +116,19 @@
       <!-- Social Proof -->
       <div class="hero-social-proof">
         <div class="avatars">
-          <div class="avatar" style="background: #C9A84C">P</div>
-          <div class="avatar" style="background: #4F8EF7">M</div>
-          <div class="avatar" style="background: #2ECC71">J</div>
-          <div class="avatar" style="background: #E74C3C">S</div>
+          <div class="avatar" style="background: #c9a84c">P</div>
+          <div class="avatar" style="background: #4f8ef7">M</div>
+          <div class="avatar" style="background: #2ecc71">J</div>
+          <div class="avatar" style="background: #e74c3c">S</div>
         </div>
         <span>Join <strong>12,400+</strong> members already on OneBody</span>
       </div>
-
     </div>
 
     <!-- Hero Visual -->
     <div class="hero-visual">
       <div class="phone-mockup">
         <div class="phone-screen">
-
           <!-- App Preview -->
           <div class="app-preview">
             <div class="preview-header">
@@ -154,9 +143,7 @@
                   <div class="preview-time">2 hours ago</div>
                 </div>
               </div>
-              <div class="preview-content">
-                "Walking in Faith" — New Sermon
-              </div>
+              <div class="preview-content">"Walking in Faith" — New Sermon</div>
               <div class="preview-actions">
                 <span>▶ Watch</span>
                 <span>👍 24</span>
@@ -174,7 +161,6 @@
               <button class="preview-btn">Register Now</button>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -191,20 +177,14 @@
         <span>🎵</span>
         <span>1840 Sermons</span>
       </div>
-
     </div>
-
   </section>
 
   <!-- ═══ STATS SECTION ═══ -->
   <section class="stats-section" id="stats-section">
     <div class="stats-container">
-      <div
-        class="stat-card"
-        *ngFor="let stat of stats">
-        <div class="stat-value">
-          {{ stat.value | number }}{{ stat.suffix }}
-        </div>
+      <div class="stat-card" *ngFor="let stat of stats">
+        <div class="stat-value">{{ stat.value | number }}{{ stat.suffix }}</div>
         <div class="stat-label">{{ stat.label }}</div>
       </div>
     </div>
@@ -213,11 +193,10 @@
   <!-- ═══ FEATURES SECTION ═══ -->
   <section class="features-section" id="features">
     <div class="section-container">
-
       <div class="section-header">
         <p class="section-eyebrow">Why OneBody?</p>
         <h2 class="section-title">
-          Everything Your Church <br>
+          Everything Your Church <br />
           <span class="text-gold-gradient">Needs in One Place</span>
         </h2>
         <div class="gold-divider"></div>
@@ -226,20 +205,19 @@
       <div class="features-grid">
         <div
           class="feature-card glass glass-hover"
-          *ngFor="let feature of features">
+          *ngFor="let feature of features"
+        >
           <div class="feature-icon">{{ feature.icon }}</div>
           <h3 class="feature-title">{{ feature.title }}</h3>
           <p class="feature-desc">{{ feature.description }}</p>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- ═══ CHURCHES SECTION ═══ -->
   <section class="churches-section" *ngIf="churches.length > 0">
     <div class="section-container">
-
       <div class="section-header">
         <p class="section-eyebrow">Our Community</p>
         <h2 class="section-title">
@@ -252,11 +230,19 @@
         <div
           class="church-card glass glass-hover"
           *ngFor="let church of churches"
-          (click)="navigateTo('/church/' + church.slug)">
-
+          (click)="navigateTo('/church/' + church.slug)"
+        >
           <!-- Church Banner -->
           <div class="church-banner">
-            <div class="church-initials">
+            <img
+              *ngIf="church.logo"
+              [src]="church.logo"
+              [alt]="church.name"
+              class="church-banner-img"
+            />
+
+            <!-- Show initials if no logo -->
+            <div class="church-initials" *ngIf="!church.logo">
               {{ getChurchInitials(church.name) }}
             </div>
             <div *ngIf="church.verified" class="verified-badge">
@@ -269,28 +255,22 @@
             <h3>{{ church.name }}</h3>
             <p>📍 {{ church.city }}</p>
             <p>👥 {{ church.followerCount | number }} followers</p>
-            <button class="btn-gold church-follow-btn">
-              Follow +
-            </button>
+            <button class="btn-gold church-follow-btn">Follow +</button>
           </div>
-
         </div>
       </div>
 
       <div class="section-footer">
-        <button class="btn-outline"
-          (click)="navigateTo('/discover')">
+        <button class="btn-outline" (click)="navigateTo('/discover')">
           View All Churches →
         </button>
       </div>
-
     </div>
   </section>
 
   <!-- ═══ TESTIMONIALS ═══ -->
   <section class="testimonials-section">
     <div class="section-container">
-
       <div class="section-header">
         <p class="section-eyebrow">Testimonials</p>
         <h2 class="section-title">
@@ -300,9 +280,7 @@
       </div>
 
       <div class="testimonials-grid">
-        <div
-          class="testimonial-card glass"
-          *ngFor="let t of testimonials">
+        <div class="testimonial-card glass" *ngFor="let t of testimonials">
           <div class="quote-icon">"</div>
           <p class="testimonial-text">{{ t.text }}</p>
           <div class="testimonial-author">
@@ -314,7 +292,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -323,20 +300,21 @@
     <div class="cta-container glass">
       <div class="cta-cross">✝</div>
       <h2 class="cta-title">
-        Ready to Join the <br>
+        Ready to Join the <br />
         <span class="text-gold-gradient">OneBody Community?</span>
       </h2>
       <p class="cta-subtitle">
-        Join thousands of believers already connecting,
-        worshipping and growing together.
+        Join thousands of believers already connecting, worshipping and growing
+        together.
       </p>
       <div class="cta-actions">
-        <button class="btn-gold cta-btn"
-          (click)="navigateTo('/auth/register')">
+        <button class="btn-gold cta-btn" (click)="navigateTo('/auth/register')">
           Create Free Account ✨
         </button>
-        <button class="btn-outline cta-btn"
-          (click)="navigateTo('/auth/register')">
+        <button
+          class="btn-outline cta-btn"
+          (click)="navigateTo('/auth/register')"
+        >
           Register Your Church ⛪
         </button>
       </div>
@@ -346,7 +324,6 @@
   <!-- ═══ FOOTER ═══ -->
   <footer class="landing-footer">
     <div class="footer-container">
-
       <div class="footer-brand">
         <div class="nav-logo">
           <div class="logo-icon">✝</div>
@@ -380,11 +357,9 @@
           <a>Terms of Service</a>
         </div>
       </div>
-
     </div>
     <div class="footer-bottom">
       <p>© 2026 OneBody. Built with ❤️ for the Church.</p>
     </div>
   </footer>
-
 </div>

@@ -4,7 +4,7 @@ import {
   signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   FeedService,
   FeedItem
@@ -29,7 +29,8 @@ export class FeedComponent implements OnInit {
 
   constructor(
     private feedService: FeedService,
-    public authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -194,4 +195,9 @@ export class FeedComponent implements OnInit {
       });
   }
 }
+
+watchSermon(sermonId: number) {
+  this.router.navigate(['/app/sermon', sermonId]);
+}
+
 }

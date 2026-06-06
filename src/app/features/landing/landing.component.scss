@@ -20,14 +20,19 @@
     position: absolute;
     border-radius: 50%;
     background: white;
-    animation: twinkle var(--duration, 2s)
-      ease-in-out infinite alternate;
+    animation: twinkle var(--duration, 2s) ease-in-out infinite alternate;
   }
 }
 
 @keyframes twinkle {
-  from { opacity: 0.2; transform: scale(1); }
-  to   { opacity: 1;   transform: scale(1.3); }
+  from {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.3);
+  }
 }
 
 /* ── Particles ───────────────────────── */
@@ -40,16 +45,18 @@
   .particle {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(
-      circle, #C9A84C40, transparent
-    );
+    background: radial-gradient(circle, #c9a84c40, transparent);
     animation: floatParticle linear infinite;
   }
 }
 
 @keyframes floatParticle {
-  0%   { transform: translateY(0) rotate(0deg);   }
-  100% { transform: translateY(-100vh) rotate(360deg); }
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+  }
 }
 
 /* ── Navbar ──────────────────────────── */
@@ -82,7 +89,7 @@
     .logo-icon {
       width: 36px;
       height: 36px;
-      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      background: linear-gradient(135deg, #c9a84c, #e2c17a);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -93,7 +100,7 @@
     }
 
     .logo-text {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       font-size: 22px;
       font-weight: 700;
       color: white;
@@ -105,13 +112,15 @@
     gap: 32px;
 
     a {
-      color: #8892B0;
+      color: #8892b0;
       text-decoration: none;
       font-size: 15px;
       cursor: pointer;
       transition: color 0.3s;
 
-      &:hover { color: #C9A84C; }
+      &:hover {
+        color: #c9a84c;
+      }
     }
   }
 
@@ -171,13 +180,13 @@
     border-radius: 50px;
     padding: 8px 20px;
     font-size: 14px;
-    color: #C9A84C;
+    color: #c9a84c;
     margin-bottom: 32px;
     animation: fadeIn 0.8s ease-out;
   }
 
   .hero-title {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: clamp(40px, 5vw, 68px);
     font-weight: 800;
     line-height: 1.1;
@@ -187,7 +196,7 @@
 
   .hero-subtitle {
     font-size: 18px;
-    color: #8892B0;
+    color: #8892b0;
     line-height: 1.8;
     max-width: 540px;
     margin-bottom: 40px;
@@ -229,15 +238,19 @@
         color: white;
         margin-left: -8px;
 
-        &:first-child { margin-left: 0; }
+        &:first-child {
+          margin-left: 0;
+        }
       }
     }
 
     span {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 14px;
 
-      strong { color: white; }
+      strong {
+        color: white;
+      }
     }
   }
 }
@@ -311,11 +324,11 @@
   .preview-header {
     display: flex;
     justify-content: space-between;
-    color: #C9A84C;
+    color: #c9a84c;
     font-size: 12px;
     font-weight: 700;
     margin-bottom: 16px;
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
   }
 
   .preview-card {
@@ -325,7 +338,9 @@
     padding: 12px;
     margin-bottom: 10px;
 
-    &.mt-2 { margin-top: 8px; }
+    &.mt-2 {
+      margin-top: 8px;
+    }
   }
 
   .preview-church {
@@ -338,7 +353,7 @@
   .church-avatar {
     width: 28px;
     height: 28px;
-    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    background: linear-gradient(135deg, #c9a84c, #e2c17a);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -356,12 +371,12 @@
 
   .preview-time {
     font-size: 9px;
-    color: #8892B0;
+    color: #8892b0;
   }
 
   .preview-content {
     font-size: 10px;
-    color: #8892B0;
+    color: #8892b0;
     margin-bottom: 8px;
     line-height: 1.4;
   }
@@ -370,7 +385,7 @@
     display: flex;
     gap: 10px;
     font-size: 9px;
-    color: #C9A84C;
+    color: #c9a84c;
   }
 
   .preview-event {
@@ -379,12 +394,14 @@
     gap: 8px;
     margin-bottom: 10px;
 
-    span:first-child { font-size: 18px; }
+    span:first-child {
+      font-size: 18px;
+    }
   }
 
   .preview-btn {
     width: 100%;
-    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    background: linear-gradient(135deg, #c9a84c, #e2c17a);
     color: #060919;
     border: none;
     border-radius: 8px;
@@ -421,17 +438,17 @@
 
   .stat-card {
     .stat-value {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       font-size: 48px;
       font-weight: 800;
-      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      background: linear-gradient(135deg, #c9a84c, #e2c17a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .stat-label {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 16px;
       margin-top: 8px;
     }
@@ -450,7 +467,7 @@
   margin-bottom: 60px;
 
   .section-eyebrow {
-    color: #C9A84C;
+    color: #c9a84c;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 3px;
@@ -459,7 +476,7 @@
   }
 
   .section-title {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: clamp(32px, 4vw, 48px);
     font-weight: 700;
     line-height: 1.2;
@@ -469,7 +486,7 @@
   .gold-divider {
     width: 60px;
     height: 3px;
-    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    background: linear-gradient(135deg, #c9a84c, #e2c17a);
     border-radius: 2px;
     margin: 0 auto;
   }
@@ -503,7 +520,7 @@
     }
 
     .feature-title {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       font-size: 20px;
       font-weight: 600;
       margin-bottom: 12px;
@@ -511,7 +528,7 @@
     }
 
     .feature-desc {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 15px;
       line-height: 1.7;
     }
@@ -544,20 +561,26 @@
 
     .church-banner {
       height: 140px;
-      background: linear-gradient(
-        135deg, #0A0E27, #1a1f4a
-      );
+      background: linear-gradient(135deg, #0a0e27, #1a1f4a);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       border-radius: 16px 16px 0 0;
+      overflow: hidden;
+
+      .church-banner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
 
       .church-initials {
-        font-family: 'Playfair Display', serif;
+        font-family: "Playfair Display", serif;
         font-size: 48px;
         font-weight: 700;
-        background: linear-gradient(135deg, #C9A84C, #E2C17A);
+        background: linear-gradient(135deg, #c9a84c, #e2c17a);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -572,7 +595,7 @@
         border-radius: 50px;
         padding: 4px 10px;
         font-size: 11px;
-        color: #2ECC71;
+        color: #2ecc71;
       }
     }
 
@@ -580,14 +603,14 @@
       padding: 20px;
 
       h3 {
-        font-family: 'Playfair Display', serif;
+        font-family: "Playfair Display", serif;
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 8px;
       }
 
       p {
-        color: #8892B0;
+        color: #8892b0;
         font-size: 14px;
         margin-bottom: 4px;
       }
@@ -628,16 +651,16 @@
     padding: 36px;
 
     .quote-icon {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       font-size: 60px;
-      color: #C9A84C;
+      color: #c9a84c;
       line-height: 0.5;
       margin-bottom: 24px;
       opacity: 0.5;
     }
 
     .testimonial-text {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 15px;
       line-height: 1.8;
       margin-bottom: 28px;
@@ -653,7 +676,7 @@
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #C9A84C, #E2C17A);
+        background: linear-gradient(135deg, #c9a84c, #e2c17a);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -670,7 +693,7 @@
       }
 
       .author-church {
-        color: #C9A84C;
+        color: #c9a84c;
         font-size: 13px;
         margin-top: 2px;
       }
@@ -690,13 +713,13 @@
 
     .cta-cross {
       font-size: 40px;
-      color: #C9A84C;
+      color: #c9a84c;
       margin-bottom: 24px;
       display: block;
     }
 
     .cta-title {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       font-size: clamp(28px, 4vw, 42px);
       font-weight: 700;
       margin-bottom: 20px;
@@ -704,7 +727,7 @@
     }
 
     .cta-subtitle {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 17px;
       line-height: 1.7;
       margin-bottom: 40px;
@@ -744,10 +767,12 @@
   }
 
   .footer-brand {
-    .nav-logo { margin-bottom: 16px; }
+    .nav-logo {
+      margin-bottom: 16px;
+    }
 
     p {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 14px;
       line-height: 1.7;
       max-width: 260px;
@@ -774,14 +799,16 @@
 
     a {
       display: block;
-      color: #8892B0;
+      color: #8892b0;
       font-size: 14px;
       margin-bottom: 12px;
       cursor: pointer;
       transition: color 0.3s;
       text-decoration: none;
 
-      &:hover { color: #C9A84C; }
+      &:hover {
+        color: #c9a84c;
+      }
     }
   }
 
@@ -791,7 +818,7 @@
     text-align: center;
 
     p {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 14px;
     }
   }
@@ -799,8 +826,13 @@
 
 /* ── Animations ──────────────────────── */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 @keyframes slideUp {
@@ -815,14 +847,18 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .nav-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #C9A84C, #E2C17A);
+  background: linear-gradient(135deg, #c9a84c, #e2c17a);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -833,5 +869,7 @@
   cursor: pointer;
   transition: transform 0.3s;
 
-  &:hover { transform: scale(1.1); }
+  &:hover {
+    transform: scale(1.1);
+  }
 }

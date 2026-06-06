@@ -1,11 +1,10 @@
 <div class="app-wrapper">
-
   <!-- ═══ SIDEBAR ═══ -->
   <aside
     class="sidebar"
     [class.open]="isSidebarOpen()"
-    [class.closed]="!isSidebarOpen()">
-
+    [class.closed]="!isSidebarOpen()"
+  >
     <!-- Sidebar Header -->
     <div class="sidebar-header">
       <div class="sidebar-logo" (click)="navigateTo('/')">
@@ -17,15 +16,27 @@
       <button
         class="sidebar-toggle"
         (click)="toggleSidebar()"
-        *ngIf="!isMobile()">
-        {{ isSidebarOpen() ? '◀' : '▶' }}
+        *ngIf="!isMobile()"
+      >
+        {{ isSidebarOpen() ? "◀" : "▶" }}
       </button>
     </div>
 
     <!-- User Profile Card -->
     <div class="sidebar-profile" *ngIf="isSidebarOpen()">
-      <div class="profile-avatar">
-        {{ getUserInitials() }}
+      <div
+        class="profile-avatar"
+        [class.has-image]="authService.currentUser()?.profilePic"
+      >
+        <img
+          *ngIf="authService.currentUser()?.profilePic"
+          [src]="authService.currentUser()?.profilePic"
+          alt="Profile"
+          class="avatar-img"
+        />
+        <span *ngIf="!authService.currentUser()?.profilePic">
+          {{ getUserInitials() }}
+        </span>
       </div>
       <div class="profile-info">
         <div class="profile-name">
@@ -39,34 +50,26 @@
 
     <!-- Navigation -->
     <nav class="sidebar-nav">
-
-      <div class="nav-section-label"
-        *ngIf="isSidebarOpen()">
-        NAVIGATION
-      </div>
+      <div class="nav-section-label" *ngIf="isSidebarOpen()">NAVIGATION</div>
 
       <div
         class="nav-item"
         *ngFor="let item of navItems"
         [class.active]="isActive(item.route)"
-        (click)="navigateTo(item.route)">
-
+        (click)="navigateTo(item.route)"
+      >
         <span class="nav-icon">{{ item.icon }}</span>
-        <span class="nav-label"
-          *ngIf="isSidebarOpen()">
+        <span class="nav-label" *ngIf="isSidebarOpen()">
           {{ item.label }}
         </span>
 
         <!-- Active indicator -->
-        <div class="active-indicator"
-          *ngIf="isActive(item.route)">
-        </div>
+        <div class="active-indicator" *ngIf="isActive(item.route)"></div>
       </div>
 
       <!-- Admin Section -->
       <div *ngIf="isAdmin()">
-        <div class="nav-section-label"
-          *ngIf="isSidebarOpen()">
+        <div class="nav-section-label" *ngIf="isSidebarOpen()">
           CHURCH ADMIN
         </div>
 
@@ -74,94 +77,87 @@
           class="nav-item admin-item"
           *ngFor="let item of adminItems"
           [class.active]="isActive(item.route)"
-          (click)="navigateTo(item.route)">
-
+          (click)="navigateTo(item.route)"
+        >
           <span class="nav-icon">{{ item.icon }}</span>
-          <span class="nav-label"
-            *ngIf="isSidebarOpen()">
+          <span class="nav-label" *ngIf="isSidebarOpen()">
             {{ item.label }}
           </span>
-          <div class="active-indicator"
-            *ngIf="isActive(item.route)">
-          </div>
+          <div class="active-indicator" *ngIf="isActive(item.route)"></div>
         </div>
       </div>
-
     </nav>
 
     <!-- Sidebar Footer -->
     <div class="sidebar-footer">
       <div class="nav-item logout-item" (click)="logout()">
         <span class="nav-icon">🚪</span>
-        <span class="nav-label" *ngIf="isSidebarOpen()">
-          Logout
-        </span>
+        <span class="nav-label" *ngIf="isSidebarOpen()"> Logout </span>
       </div>
     </div>
-
   </aside>
 
   <!-- Mobile Overlay -->
   <div
     class="sidebar-overlay"
     *ngIf="isMobile() && isSidebarOpen()"
-    (click)="toggleSidebar()">
-  </div>
+    (click)="toggleSidebar()"
+  ></div>
 
   <!-- ═══ MAIN CONTENT ═══ -->
   <main
     class="main-content"
     [class.sidebar-open]="isSidebarOpen() && !isMobile()"
-    [class.sidebar-closed]="!isSidebarOpen()">
-
+    [class.sidebar-closed]="!isSidebarOpen()"
+  >
     <!-- Top Navbar -->
     <header class="top-navbar">
-
       <!-- Left -->
       <div class="navbar-left">
-        <button
-          class="menu-btn"
-          (click)="toggleSidebar()">
-          ☰
-        </button>
+        <button class="menu-btn" (click)="toggleSidebar()">☰</button>
         <div class="navbar-search">
           <span>🔍</span>
           <input
             type="text"
-            placeholder="Search churches, sermons, events..."/>
+            placeholder="Search churches, sermons, events..."
+          />
         </div>
       </div>
 
       <!-- Right -->
       <div class="navbar-right">
-
         <!-- Notifications -->
         <div class="notif-btn">
           <span>🔔</span>
-          <span
-            class="notif-badge"
-            *ngIf="notificationCount() > 0">
+          <span class="notif-badge" *ngIf="notificationCount() > 0">
             {{ notificationCount() }}
           </span>
         </div>
 
         <!-- Profile -->
-        <div
-          class="profile-btn"
-          (click)="toggleProfileMenu()">
-          <div class="profile-avatar-sm">
-            {{ getUserInitials() }}
+        <div class="profile-btn" (click)="toggleProfileMenu()">
+          <div
+            class="profile-avatar-sm"
+            [class.has-image]="authService.currentUser()?.profilePic"
+          >
+            <img
+              *ngIf="authService.currentUser()?.profilePic"
+              [src]="authService.currentUser()?.profilePic"
+              alt="Profile"
+              class="avatar-img"
+            />
+            <span *ngIf="!authService.currentUser()?.profilePic">
+              {{ getUserInitials() }}
+            </span>
           </div>
           <span class="profile-name-sm">
-            {{ authService.currentUser()?.name?.split(' ')?.[0] }}
+            {{ authService.currentUser()?.name?.split(" ")?.[0] }}
           </span>
           <span>▾</span>
         </div>
 
         <!-- Profile Dropdown -->
-        <div
-          class="profile-dropdown"
-          *ngIf="showProfileMenu()">
+        <div class="profile-dropdown" *ngIf="showProfileMenu()">
           <div class="dropdown-header">
             <div class="dropdown-avatar">
               {{ getUserInitials() }}
@@ -176,22 +172,19 @@
             </div>
           </div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-item"
-            (click)="navigateTo('/app/profile')">
+          <div class="dropdown-item" (click)="navigateTo('/app/profile')">
             👤 My Profile
           </div>
-          <div class="dropdown-item"
+          <div
+            class="dropdown-item"
             *ngIf="isAdmin()"
-            (click)="navigateTo('/app/admin')">
+            (click)="navigateTo('/app/admin')"
+          >
             📊 Dashboard
           </div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-item logout"
-            (click)="logout()">
-            🚪 Logout
-          </div>
+          <div class="dropdown-item logout" (click)="logout()">🚪 Logout</div>
         </div>
-
       </div>
     </header>
 
@@ -199,7 +192,6 @@
     <div class="page-content">
       <router-outlet></router-outlet>
     </div>
-
   </main>
 
   <!-- Mobile Bottom Nav -->
@@ -208,10 +200,10 @@
       class="mobile-nav-item"
       *ngFor="let item of navItems.slice(0, 5)"
       [class.active]="isActive(item.route)"
-      (click)="navigateTo(item.route)">
+      (click)="navigateTo(item.route)"
+    >
       <span>{{ item.icon }}</span>
       <span>{{ item.label }}</span>
     </div>
   </nav>
-
 </div>

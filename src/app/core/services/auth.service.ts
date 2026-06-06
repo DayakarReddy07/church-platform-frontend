@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 export interface AuthUser {
   name: string;
@@ -9,6 +10,7 @@ export interface AuthUser {
   role: string;
   token: string;
   message: string;
+  profilePic?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -66,7 +68,7 @@ export class AuthService {
   }
 
   //  Save user to localStorage
-  private saveUser(user: AuthUser) {
+  public saveUser(user: AuthUser) {
     localStorage.setItem('onebody_token', user.token);
     localStorage.setItem(
       'onebody_user',
@@ -80,4 +82,25 @@ export class AuthService {
     const user = localStorage.getItem('onebody_user');
     return user ? JSON.parse(user) : null;
   }
+
+  // Update profile picture
+updateProfilePic(profilePicUrl: string): Observable<any> {
+  return this.http.put(
+    'http://localhost:8080/api/users/update-profile-pic',
+    { profilePic: profilePicUrl }
+  ).pipe(
+    tap((user: any) => {
+      // Update stored user with new profilePic
+      const currentUser = this.currentUser();
+      if (currentUser) {
+        const updatedUser = {
+          ...currentUser,
+          profilePic: profilePicUrl,
+          token: user.token
+        };
+        this.saveUser(updatedUser);
+      }
+    })
+  );
+}
 }

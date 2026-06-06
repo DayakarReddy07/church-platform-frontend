@@ -1,1 +1,62 @@
-<p>profile works!</p>
+<div class="profile-wrapper">
+
+  <!-- Success Toast -->
+  <div class="success-toast" *ngIf="updateSuccess()">
+    {{ updateSuccess() }}
+  </div>
+
+  <!-- Profile Header -->
+  <div class="profile-header glass">
+
+    <!-- Avatar Section -->
+    <div class="avatar-section">
+
+      <!-- Profile Picture -->
+      <div class="profile-avatar-large">
+        <img
+          *ngIf="authService.currentUser()?.profilePic"
+          [src]="authService.currentUser()?.profilePic"
+          alt="Profile"
+          class="profile-img"/>
+        <span
+          *ngIf="!authService.currentUser()?.profilePic">
+          {{ getUserInitials() }}
+        </span>
+
+        <!-- Edit Button -->
+        <button
+          class="edit-avatar-btn"
+          (click)="showUpload.set(!showUpload())">
+          📷
+        </button>
+      </div>
+
+      <!-- Upload Section -->
+      <div
+        class="upload-section"
+        *ngIf="showUpload()">
+        <app-image-upload
+          placeholder="Upload Profile Picture"
+          uploadType="profile"
+          (imageUploaded)="onProfilePicUploaded($event)">
+        </app-image-upload>
+      </div>
+
+    </div>
+
+    <!-- Profile Info -->
+    <div class="profile-info">
+      <h1 class="profile-name">
+        {{ authService.currentUser()?.name }}
+      </h1>
+      <p class="profile-email">
+        📧 {{ authService.currentUser()?.email }}
+      </p>
+      <div class="profile-role-badge">
+        {{ authService.currentUser()?.role | titlecase }}
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -24,7 +24,7 @@
   gap: 16px;
 
   .feed-title {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: 28px;
     font-weight: 700;
     color: white;
@@ -44,17 +44,15 @@
     border-radius: 50px;
     border: none;
     background: transparent;
-    color: #8892B0;
+    color: #8892b0;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 
     &.active {
-      background: linear-gradient(
-        135deg, #C9A84C, #E2C17A
-      );
+      background: linear-gradient(135deg, #c9a84c, #e2c17a);
       color: #060919;
       font-weight: 700;
     }
@@ -104,7 +102,7 @@
   .church-avatar {
     width: 44px;
     height: 44px;
-    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    background: linear-gradient(135deg, #c9a84c, #e2c17a);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -113,6 +111,16 @@
     color: #060919;
     font-size: 14px;
     flex-shrink: 0;
+    &.has-image {
+      background: none;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .church-name {
@@ -136,26 +144,28 @@
 
     &.type-announcement {
       background: rgba(79, 142, 247, 0.15);
-      color: #4F8EF7;
+      color: #4f8ef7;
     }
     &.type-devotional {
       background: rgba(201, 168, 76, 0.15);
-      color: #C9A84C;
+      color: #c9a84c;
     }
     &.type-testimony {
       background: rgba(46, 204, 113, 0.15);
-      color: #2ECC71;
+      color: #2ecc71;
     }
     &.type-general {
       background: rgba(136, 146, 176, 0.15);
-      color: #8892B0;
+      color: #8892b0;
     }
   }
 
-  .dot { color: #8892B0; }
+  .dot {
+    color: #8892b0;
+  }
 
   .time-ago {
-    color: #8892B0;
+    color: #8892b0;
     font-size: 12px;
   }
 }
@@ -170,19 +180,19 @@
   &.post-badge {
     background: rgba(79, 142, 247, 0.1);
     border: 1px solid rgba(79, 142, 247, 0.2);
-    color: #4F8EF7;
+    color: #4f8ef7;
   }
 
   &.sermon-badge {
     background: rgba(201, 168, 76, 0.1);
     border: 1px solid rgba(201, 168, 76, 0.2);
-    color: #C9A84C;
+    color: #c9a84c;
   }
 
   &.event-badge {
     background: rgba(46, 204, 113, 0.1);
     border: 1px solid rgba(46, 204, 113, 0.2);
-    color: #2ECC71;
+    color: #2ecc71;
   }
 }
 
@@ -191,7 +201,7 @@
   padding: 20px;
 
   .card-title {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: 20px;
     font-weight: 600;
     color: white;
@@ -200,7 +210,7 @@
   }
 
   .card-content {
-    color: #8892B0;
+    color: #8892b0;
     font-size: 15px;
     line-height: 1.7;
     margin-bottom: 16px;
@@ -220,7 +230,7 @@
 .sermon-thumbnail {
   width: 100%;
   height: 180px;
-  background: linear-gradient(135deg, #0A0E27, #1a1f4a);
+  background: linear-gradient(135deg, #0a0e27, #1a1f4a);
   border-radius: 12px;
   margin-bottom: 16px;
   position: relative;
@@ -249,9 +259,7 @@
     .play-btn {
       width: 56px;
       height: 56px;
-      background: linear-gradient(
-        135deg, #C9A84C, #E2C17A
-      );
+      background: linear-gradient(135deg, #c9a84c, #e2c17a);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -261,7 +269,9 @@
       font-weight: bold;
       transition: transform 0.3s;
 
-      &:hover { transform: scale(1.1); }
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 
@@ -272,7 +282,7 @@
 }
 
 .sermon-speaker {
-  color: #C9A84C;
+  color: #c9a84c;
   font-size: 14px;
   margin-bottom: 8px;
 }
@@ -289,9 +299,7 @@
   margin-bottom: 12px;
 
   .event-date-box {
-    background: linear-gradient(
-      135deg, #2ECC71, #27AE60
-    );
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
     border-radius: 12px;
     padding: 12px 16px;
     text-align: center;
@@ -310,19 +318,19 @@
       font-size: 28px;
       font-weight: 800;
       color: white;
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       line-height: 1;
     }
   }
 
   .event-location {
-    color: #8892B0;
+    color: #8892b0;
     font-size: 13px;
     margin-top: 4px;
   }
 
   .event-registrations {
-    color: #2ECC71;
+    color: #2ecc71;
     font-size: 13px;
     margin-top: 4px;
   }
@@ -343,17 +351,17 @@
     background: transparent;
     border: none;
     border-radius: 8px;
-    color: #8892B0;
+    color: #8892b0;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family: 'Inter', sans-serif;
-    
-&.registered {
-    background: rgba(46, 204, 113, 0.15) !important;
-    color: #2ECC71 !important;
-    border: 1px solid rgba(46, 204, 113, 0.3) !important;
-  }
+    font-family: "Inter", sans-serif;
+
+    &.registered {
+      background: rgba(46, 204, 113, 0.15) !important;
+      color: #2ecc71 !important;
+      border: 1px solid rgba(46, 204, 113, 0.3) !important;
+    }
     &:hover {
       background: rgba(201, 168, 76, 0.08);
       color: white;
@@ -365,7 +373,7 @@
 
     &.sermon-watch-btn {
       background: rgba(201, 168, 76, 0.1);
-      color: #C9A84C;
+      color: #c9a84c;
       font-weight: 600;
       border: 1px solid rgba(201, 168, 76, 0.2);
 
@@ -376,7 +384,7 @@
 
     &.event-register-btn {
       background: rgba(46, 204, 113, 0.1);
-      color: #2ECC71;
+      color: #2ecc71;
       font-weight: 600;
       border: 1px solid rgba(46, 204, 113, 0.2);
 
@@ -449,8 +457,12 @@
 }
 
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* ── Empty State ─────────────────────── */
@@ -465,14 +477,14 @@
   }
 
   h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: 24px;
     color: white;
     margin-bottom: 12px;
   }
 
   p {
-    color: #8892B0;
+    color: #8892b0;
     font-size: 16px;
     margin-bottom: 28px;
   }
@@ -502,7 +514,7 @@
   backdrop-filter: blur(10px);
 
   .sidebar-title {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-size: 16px;
     font-weight: 600;
     color: white;
@@ -525,17 +537,17 @@
     text-align: center;
 
     .stat-value {
-      font-family: 'Playfair Display', serif;
+      font-family: "Playfair Display", serif;
       font-size: 24px;
       font-weight: 700;
-      background: linear-gradient(135deg, #C9A84C, #E2C17A);
+      background: linear-gradient(135deg, #c9a84c, #e2c17a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .stat-label {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 12px;
       margin-top: 4px;
     }
@@ -547,10 +559,12 @@
   padding: 12px 0;
   border-bottom: 1px solid rgba(201, 168, 76, 0.06);
 
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 
   .upcoming-date {
-    color: #C9A84C;
+    color: #c9a84c;
     font-size: 12px;
     font-weight: 600;
     margin-bottom: 4px;
@@ -563,7 +577,7 @@
   }
 
   .upcoming-church {
-    color: #8892B0;
+    color: #8892b0;
     font-size: 12px;
     margin-top: 2px;
   }
@@ -577,12 +591,14 @@
   padding: 10px 0;
   border-bottom: 1px solid rgba(201, 168, 76, 0.06);
 
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 
   .suggested-avatar {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    background: linear-gradient(135deg, #c9a84c, #e2c17a);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -591,6 +607,18 @@
     color: #060919;
     font-size: 12px;
     flex-shrink: 0;
+    overflow: hidden;
+
+    &.has-image {
+      background: none;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .suggested-info {
@@ -603,7 +631,7 @@
     }
 
     .suggested-city {
-      color: #8892B0;
+      color: #8892b0;
       font-size: 12px;
       margin-top: 2px;
     }
@@ -612,14 +640,14 @@
   .follow-btn {
     background: rgba(201, 168, 76, 0.1);
     border: 1px solid rgba(201, 168, 76, 0.3);
-    color: #C9A84C;
+    color: #c9a84c;
     border-radius: 50px;
     padding: 6px 14px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 
     &:hover {
       background: rgba(201, 168, 76, 0.2);
@@ -638,22 +666,22 @@
 
   .quote-icon {
     font-size: 32px;
-    color: #C9A84C;
+    color: #c9a84c;
     margin-bottom: 16px;
     display: block;
   }
 
   .quote-text {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-size: 16px;
-    color: #8892B0;
+    color: #8892b0;
     line-height: 1.8;
     font-style: italic;
     margin-bottom: 12px;
   }
 
   .quote-ref {
-    color: #C9A84C;
+    color: #c9a84c;
     font-size: 13px;
     font-weight: 600;
   }

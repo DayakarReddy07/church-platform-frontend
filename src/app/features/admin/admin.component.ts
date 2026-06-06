@@ -17,6 +17,7 @@ import { AdminService }
   from '../../core/services/admin.service';
 import { AuthService }
   from '../../core/services/auth.service';
+import { ImageUploadComponent } from '../../shared/components/image-upload.component';
 
 type AdminTab =
   'dashboard' |
@@ -28,7 +29,7 @@ type AdminTab =
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ImageUploadComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
@@ -79,7 +80,8 @@ churchError = signal('');
       state: ['', Validators.required],
       country: ['India', Validators.required],
       website: [''],
-      phone: ['']
+      phone: [''],
+      logo: ['']
     });
 
     this.sermonForm = this.fb.group({
@@ -369,4 +371,43 @@ registerChurch() {
       .substring(0, 2)
       .toUpperCase() || '';
   }
+
+onSermonThumbnailUploaded(url: string) {
+  this.sermonForm.patchValue({
+    thumbnailUrl: url
+  });
+}
+
+onPostImageUploaded(url: string) {
+  this.postForm.patchValue({
+    imageUrl: url
+  });
+}
+
+onChurchLogoUploaded(url: string) {
+  this.churchForm.patchValue({
+    logo: url
+  });
+}
+
+updateChurchLogo(url: string) {
+  if (!url || !this.church()) return;
+
+  // Update church with new logo
+  this.churchService.updateChurch(
+    this.church()!.id,
+    { logo: url }
+  ).subscribe({
+    next: (updated) => {
+      this.church.set(updated);
+      this.submitSuccess.set('Logo updated! ✅');
+      setTimeout(() =>
+        this.submitSuccess.set(''), 3000
+      );
+    },
+    error: () => {
+      alert('Failed to update logo!');
+    }
+  });
+}
 }

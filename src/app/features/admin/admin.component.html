@@ -1,5 +1,4 @@
 <div class="admin-wrapper">
-
   <!-- ═══ LOADING ═══ -->
   <div class="loading-screen" *ngIf="isLoading()">
     <div class="loading-spinner"></div>
@@ -7,39 +6,38 @@
   </div>
 
   <!-- ═══ CHURCH SETUP ═══ -->
-  <div
-    class="setup-wrapper"
-    *ngIf="!isLoading() && !hasChurch()">
-
+  <div class="setup-wrapper" *ngIf="!isLoading() && !hasChurch()">
     <!-- Setup Header -->
     <div class="setup-header">
       <div class="setup-icon">⛪</div>
       <h1>Register Your Church</h1>
       <p>
-        Set up your church profile on OneBody.
-        Members will be able to find and follow
-        your church!
+        Set up your church profile on OneBody. Members will be able to find and
+        follow your church!
       </p>
     </div>
 
     <!-- Progress Steps -->
     <div class="setup-steps">
-      <div class="step"
+      <div
+        class="step"
         [class.active]="setupStep() >= 1"
-        [class.done]="setupStep() > 1">
+        [class.done]="setupStep() > 1"
+      >
         <div class="step-number">1</div>
         <div class="step-label">Basic Info</div>
       </div>
       <div class="step-line"></div>
-      <div class="step"
+      <div
+        class="step"
         [class.active]="setupStep() >= 2"
-        [class.done]="setupStep() > 2">
+        [class.done]="setupStep() > 2"
+      >
         <div class="step-number">2</div>
         <div class="step-label">Location</div>
       </div>
       <div class="step-line"></div>
-      <div class="step"
-        [class.active]="setupStep() >= 3">
+      <div class="step" [class.active]="setupStep() >= 3">
         <div class="step-number">3</div>
         <div class="step-label">Contact</div>
       </div>
@@ -47,32 +45,34 @@
 
     <!-- Setup Form -->
     <div class="setup-form glass">
-      <form
-        [formGroup]="churchForm"
-        (ngSubmit)="registerChurch()">
-
+      <form [formGroup]="churchForm" (ngSubmit)="registerChurch()">
         <!-- Step 1 -->
         <div *ngIf="setupStep() === 1">
-          <h3 class="step-title">
-            ✝ Basic Information
-          </h3>
+          <h3 class="step-title">✝ Basic Information</h3>
 
           <div class="form-group">
             <label>Church Name *</label>
-            <div class="input-wrap"
+            <div
+              class="input-wrap"
               [class.error-border]="
                 churchForm.get('name')?.invalid &&
-                churchForm.get('name')?.touched">
+                churchForm.get('name')?.touched
+              "
+            >
               <span>⛪</span>
               <input
                 type="text"
                 formControlName="name"
-                placeholder="Grace Fellowship Church"/>
+                placeholder="Grace Fellowship Church"
+              />
             </div>
-            <span class="error-text"
+            <span
+              class="error-text"
               *ngIf="
                 churchForm.get('name')?.invalid &&
-                churchForm.get('name')?.touched">
+                churchForm.get('name')?.touched
+              "
+            >
               ⚠️ Church name is required
             </span>
           </div>
@@ -83,48 +83,65 @@
               formControlName="description"
               [class.error-border]="
                 churchForm.get('description')?.invalid &&
-                churchForm.get('description')?.touched"
+                churchForm.get('description')?.touched
+              "
               placeholder="Tell people about your church..."
-              rows="4">
+              rows="4"
+            >
             </textarea>
-            <span class="error-text"
+            <span
+              class="error-text"
               *ngIf="
                 churchForm.get('description')?.invalid &&
-                churchForm.get('description')?.touched">
+                churchForm.get('description')?.touched
+              "
+            >
               ⚠️ Description is required
             </span>
           </div>
 
-          <button
-            type="button"
-            class="next-btn"
-            (click)="goToStep2()">
+          <div class="form-group">
+            <label>Church Logo (Optional)</label>
+            <app-image-upload
+              placeholder="Upload Church Logo"
+              uploadType="church-logo"
+              (imageUploaded)="onChurchLogoUploaded($event)"
+            >
+            </app-image-upload>
+          </div>
+
+          <button type="button" class="next-btn" (click)="goToStep2()">
             Next → Location
           </button>
         </div>
 
         <!-- Step 2 -->
         <div *ngIf="setupStep() === 2">
-          <h3 class="step-title">
-            📍 Church Location
-          </h3>
+          <h3 class="step-title">📍 Church Location</h3>
 
           <div class="form-group">
             <label>Full Address *</label>
-            <div class="input-wrap"
+            <div
+              class="input-wrap"
               [class.error-border]="
                 churchForm.get('location')?.invalid &&
-                churchForm.get('location')?.touched">
+                churchForm.get('location')?.touched
+              "
+            >
               <span>📍</span>
               <input
                 type="text"
                 formControlName="location"
-                placeholder="123 Church Street"/>
+                placeholder="123 Church Street"
+              />
             </div>
-            <span class="error-text"
+            <span
+              class="error-text"
               *ngIf="
                 churchForm.get('location')?.invalid &&
-                churchForm.get('location')?.touched">
+                churchForm.get('location')?.touched
+              "
+            >
               ⚠️ Address is required
             </span>
           </div>
@@ -132,40 +149,54 @@
           <div class="form-row">
             <div class="form-group">
               <label>City *</label>
-              <div class="input-wrap"
+              <div
+                class="input-wrap"
                 [class.error-border]="
                   churchForm.get('city')?.invalid &&
-                  churchForm.get('city')?.touched">
+                  churchForm.get('city')?.touched
+                "
+              >
                 <span>🏙️</span>
                 <input
                   type="text"
                   formControlName="city"
-                  placeholder="Hyderabad"/>
+                  placeholder="Hyderabad"
+                />
               </div>
-              <span class="error-text"
+              <span
+                class="error-text"
                 *ngIf="
                   churchForm.get('city')?.invalid &&
-                  churchForm.get('city')?.touched">
+                  churchForm.get('city')?.touched
+                "
+              >
                 ⚠️ City is required
               </span>
             </div>
 
             <div class="form-group">
               <label>State *</label>
-              <div class="input-wrap"
+              <div
+                class="input-wrap"
                 [class.error-border]="
                   churchForm.get('state')?.invalid &&
-                  churchForm.get('state')?.touched">
+                  churchForm.get('state')?.touched
+                "
+              >
                 <span>🗺️</span>
                 <input
                   type="text"
                   formControlName="state"
-                  placeholder="Telangana"/>
+                  placeholder="Telangana"
+                />
               </div>
-              <span class="error-text"
+              <span
+                class="error-text"
                 *ngIf="
                   churchForm.get('state')?.invalid &&
-                  churchForm.get('state')?.touched">
+                  churchForm.get('state')?.touched
+                "
+              >
                 ⚠️ State is required
               </span>
             </div>
@@ -178,21 +209,16 @@
               <input
                 type="text"
                 formControlName="country"
-                placeholder="India"/>
+                placeholder="India"
+              />
             </div>
           </div>
 
           <div class="step-actions">
-            <button
-              type="button"
-              class="back-btn"
-              (click)="setupStep.set(1)">
+            <button type="button" class="back-btn" (click)="setupStep.set(1)">
               ← Back
             </button>
-            <button
-              type="button"
-              class="next-btn"
-              (click)="goToStep3()">
+            <button type="button" class="next-btn" (click)="goToStep3()">
               Next → Contact
             </button>
           </div>
@@ -200,14 +226,10 @@
 
         <!-- Step 3 -->
         <div *ngIf="setupStep() === 3">
-          <h3 class="step-title">
-            📞 Contact Details
-          </h3>
+          <h3 class="step-title">📞 Contact Details</h3>
 
           <!-- Server Error -->
-          <div
-            class="server-error"
-            *ngIf="churchError()">
+          <div class="server-error" *ngIf="churchError()">
             <span>⚠️</span>
             <span>{{ churchError() }}</span>
           </div>
@@ -219,7 +241,8 @@
               <input
                 type="text"
                 formControlName="website"
-                placeholder="www.mychurch.com"/>
+                placeholder="www.mychurch.com"
+              />
             </div>
           </div>
 
@@ -230,60 +253,60 @@
               <input
                 type="text"
                 formControlName="phone"
-                placeholder="+91 9876543210"/>
+                placeholder="+91 9876543210"
+              />
             </div>
           </div>
 
           <div class="step-actions">
-            <button
-              type="button"
-              class="back-btn"
-              (click)="setupStep.set(2)">
+            <button type="button" class="back-btn" (click)="setupStep.set(2)">
               ← Back
             </button>
             <button
               type="submit"
               class="submit-btn"
-              [disabled]="isSubmitting()">
-              <span *ngIf="!isSubmitting()">
-                🎉 Register My Church
-              </span>
-              <span
-                *ngIf="isSubmitting()"
-                class="loading-text">
+              [disabled]="isSubmitting()"
+            >
+              <span *ngIf="!isSubmitting()"> 🎉 Register My Church </span>
+              <span *ngIf="isSubmitting()" class="loading-text">
                 <span class="spinner"></span>
                 Registering...
               </span>
             </button>
           </div>
         </div>
-
       </form>
       <!-- ✅ Form closes here correctly -->
     </div>
     <!-- ✅ setup-form closes here -->
-
   </div>
   <!-- ✅ setup-wrapper closes here -->
 
   <!-- ═══ ADMIN DASHBOARD ═══ -->
   <!-- ✅ This is NOW outside setup-wrapper! -->
-  <div
-    class="dashboard-wrapper"
-    *ngIf="!isLoading() && hasChurch()">
-
+  <div class="dashboard-wrapper" *ngIf="!isLoading() && hasChurch()">
     <!-- Success Toast -->
-    <div
-      class="success-toast"
-      *ngIf="submitSuccess()">
+    <div class="success-toast" *ngIf="submitSuccess()">
       {{ submitSuccess() }}
     </div>
 
     <!-- Dashboard Header -->
     <div class="dashboard-header">
       <div class="church-profile">
-        <div class="church-logo">
-          {{ getChurchInitials() }}
+        <!-- Show image if logo exists, else initials -->
+        <div class="church-logo" [class.has-image]="church()?.logo">
+          <!-- Logo Image -->
+          <img
+            *ngIf="church()?.logo"
+            [src]="church()?.logo"
+            [alt]="church()?.name"
+            class="logo-img"
+          />
+
+          <!-- Fallback initials -->
+          <span *ngIf="!church()?.logo">
+            {{ getChurchInitials() }}
+          </span>
         </div>
         <div>
           <h1 class="church-name">
@@ -292,14 +315,10 @@
           <p class="church-location">
             📍 {{ church()?.city }},
             {{ church()?.state }}
-            <span
-              class="verified-badge"
-              *ngIf="church()?.verified">
+            <span class="verified-badge" *ngIf="church()?.verified">
               ✅ Verified
             </span>
-            <span
-              class="pending-badge"
-              *ngIf="!church()?.verified">
+            <span class="pending-badge" *ngIf="!church()?.verified">
               ⏳ Pending Verification
             </span>
           </p>
@@ -340,117 +359,95 @@
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'dashboard'"
-        (click)="setTab('dashboard')">
+        (click)="setTab('dashboard')"
+      >
         📊 Overview
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'sermons'"
-        (click)="setTab('sermons')">
+        (click)="setTab('sermons')"
+      >
         🎵 Sermons
-        <span
-          class="tab-count"
-          *ngIf="sermons().length > 0">
+        <span class="tab-count" *ngIf="sermons().length > 0">
           {{ sermons().length }}
         </span>
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'events'"
-        (click)="setTab('events')">
+        (click)="setTab('events')"
+      >
         📅 Events
-        <span
-          class="tab-count"
-          *ngIf="events().length > 0">
+        <span class="tab-count" *ngIf="events().length > 0">
           {{ events().length }}
         </span>
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'posts'"
-        (click)="setTab('posts')">
+        (click)="setTab('posts')"
+      >
         📝 Posts
-        <span
-          class="tab-count"
-          *ngIf="posts().length > 0">
+        <span class="tab-count" *ngIf="posts().length > 0">
           {{ posts().length }}
         </span>
       </button>
       <button
         class="tab-btn"
         [class.active]="activeTab() === 'settings'"
-        (click)="setTab('settings')">
+        (click)="setTab('settings')"
+      >
         ⚙️ Settings
       </button>
     </div>
 
     <!-- ── OVERVIEW TAB ── -->
     <div *ngIf="activeTab() === 'dashboard'">
-
       <div class="quick-actions">
         <h2 class="section-title">⚡ Quick Actions</h2>
         <div class="actions-grid">
-          <div
-            class="action-card"
-            (click)="showSermonModal.set(true)">
+          <div class="action-card" (click)="showSermonModal.set(true)">
             <div class="action-icon">🎵</div>
             <div class="action-title">Upload Sermon</div>
-            <div class="action-desc">
-              Share a new sermon video
-            </div>
+            <div class="action-desc">Share a new sermon video</div>
           </div>
-          <div
-            class="action-card"
-            (click)="showEventModal.set(true)">
+          <div class="action-card" (click)="showEventModal.set(true)">
             <div class="action-icon">📅</div>
             <div class="action-title">Create Event</div>
-            <div class="action-desc">
-              Schedule a new event
-            </div>
+            <div class="action-desc">Schedule a new event</div>
           </div>
-          <div
-            class="action-card"
-            (click)="showPostModal.set(true)">
+          <div class="action-card" (click)="showPostModal.set(true)">
             <div class="action-icon">📝</div>
             <div class="action-title">Write Post</div>
-            <div class="action-desc">
-              Share an announcement
-            </div>
+            <div class="action-desc">Share an announcement</div>
           </div>
-          <div
-            class="action-card"
-            (click)="setTab('settings')">
+          <div class="action-card" (click)="setTab('settings')">
             <div class="action-icon">⚙️</div>
             <div class="action-title">Edit Profile</div>
-            <div class="action-desc">
-              Update church details
-            </div>
+            <div class="action-desc">Update church details</div>
           </div>
         </div>
       </div>
 
       <!-- Recent Sermons -->
-      <div
-        class="recent-section"
-        *ngIf="sermons().length > 0">
+      <div class="recent-section" *ngIf="sermons().length > 0">
         <h2 class="section-title">🎵 Recent Sermons</h2>
         <div class="content-list">
           <div
             class="content-item"
-            *ngFor="let sermon of sermons().slice(0,3)">
+            *ngFor="let sermon of sermons().slice(0, 3)"
+          >
             <div class="item-icon">🎵</div>
             <div class="item-info">
               <div class="item-title">
                 {{ sermon.title }}
               </div>
               <div class="item-meta">
-                🎤 {{ sermon.speaker }}
-                · {{ formatDate(sermon.createdAt) }}
+                🎤 {{ sermon.speaker }} · {{ formatDate(sermon.createdAt) }}
               </div>
             </div>
-            <button
-              class="delete-btn"
-              (click)="deleteSermon(sermon.id)">
+            <button class="delete-btn" (click)="deleteSermon(sermon.id)">
               🗑️
             </button>
           </div>
@@ -458,27 +455,20 @@
       </div>
 
       <!-- Recent Events -->
-      <div
-        class="recent-section"
-        *ngIf="events().length > 0">
+      <div class="recent-section" *ngIf="events().length > 0">
         <h2 class="section-title">📅 Upcoming Events</h2>
         <div class="content-list">
-          <div
-            class="content-item"
-            *ngFor="let event of events().slice(0,3)">
+          <div class="content-item" *ngFor="let event of events().slice(0, 3)">
             <div class="item-icon">📅</div>
             <div class="item-info">
               <div class="item-title">
                 {{ event.title }}
               </div>
               <div class="item-meta">
-                📍 {{ event.location }}
-                · {{ formatDate(event.eventDate) }}
+                📍 {{ event.location }} · {{ formatDate(event.eventDate) }}
               </div>
             </div>
-            <button
-              class="delete-btn"
-              (click)="deleteEvent(event.id)">
+            <button class="delete-btn" (click)="deleteEvent(event.id)">
               🗑️
             </button>
           </div>
@@ -486,81 +476,56 @@
       </div>
 
       <!-- Recent Posts -->
-      <div
-        class="recent-section"
-        *ngIf="posts().length > 0">
+      <div class="recent-section" *ngIf="posts().length > 0">
         <h2 class="section-title">📝 Recent Posts</h2>
         <div class="content-list">
-          <div
-            class="content-item"
-            *ngFor="let post of posts().slice(0,3)">
+          <div class="content-item" *ngFor="let post of posts().slice(0, 3)">
             <div class="item-icon">📝</div>
             <div class="item-info">
               <div class="item-title">
-                {{ post.title || post.content | slice:0:50 }}
+                {{ post.title || post.content | slice: 0 : 50 }}
               </div>
               <div class="item-meta">
                 {{ formatDate(post.createdAt) }}
               </div>
             </div>
-            <button
-              class="delete-btn"
-              (click)="deletePost(post.id)">
-              🗑️
-            </button>
+            <button class="delete-btn" (click)="deletePost(post.id)">🗑️</button>
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- ── SERMONS TAB ── -->
     <div *ngIf="activeTab() === 'sermons'">
       <div class="tab-header">
         <h2 class="section-title">🎵 My Sermons</h2>
-        <button
-          class="add-btn"
-          (click)="showSermonModal.set(true)">
+        <button class="add-btn" (click)="showSermonModal.set(true)">
           + Upload Sermon
         </button>
       </div>
 
-      <div
-        class="empty-tab"
-        *ngIf="sermons().length === 0">
+      <div class="empty-tab" *ngIf="sermons().length === 0">
         <div>🎵</div>
         <h3>No sermons yet</h3>
         <p>Upload your first sermon!</p>
-        <button
-          class="add-btn"
-          (click)="showSermonModal.set(true)">
+        <button class="add-btn" (click)="showSermonModal.set(true)">
           + Upload Sermon
         </button>
       </div>
 
-      <div
-        class="content-grid"
-        *ngIf="sermons().length > 0">
-        <div
-          class="content-card"
-          *ngFor="let sermon of sermons()">
+      <div class="content-grid" *ngIf="sermons().length > 0">
+        <div class="content-card" *ngFor="let sermon of sermons()">
           <div class="content-card-header">
             <div class="content-type-icon">🎵</div>
-            <button
-              class="delete-btn"
-              (click)="deleteSermon(sermon.id)">
+            <button class="delete-btn" (click)="deleteSermon(sermon.id)">
               🗑️
             </button>
           </div>
           <h3 class="content-title">
             {{ sermon.title }}
           </h3>
-          <p class="content-meta">
-            🎤 {{ sermon.speaker }}
-          </p>
-          <p
-            class="content-meta"
-            *ngIf="sermon.series">
+          <p class="content-meta">🎤 {{ sermon.speaker }}</p>
+          <p class="content-meta" *ngIf="sermon.series">
             📚 {{ sermon.series }}
           </p>
           <p class="content-date">
@@ -574,46 +539,32 @@
     <div *ngIf="activeTab() === 'events'">
       <div class="tab-header">
         <h2 class="section-title">📅 My Events</h2>
-        <button
-          class="add-btn"
-          (click)="showEventModal.set(true)">
+        <button class="add-btn" (click)="showEventModal.set(true)">
           + Create Event
         </button>
       </div>
 
-      <div
-        class="empty-tab"
-        *ngIf="events().length === 0">
+      <div class="empty-tab" *ngIf="events().length === 0">
         <div>📅</div>
         <h3>No events yet</h3>
         <p>Create your first event!</p>
-        <button
-          class="add-btn"
-          (click)="showEventModal.set(true)">
+        <button class="add-btn" (click)="showEventModal.set(true)">
           + Create Event
         </button>
       </div>
 
-      <div
-        class="content-grid"
-        *ngIf="events().length > 0">
-        <div
-          class="content-card"
-          *ngFor="let event of events()">
+      <div class="content-grid" *ngIf="events().length > 0">
+        <div class="content-card" *ngFor="let event of events()">
           <div class="content-card-header">
             <div class="content-type-icon">📅</div>
-            <button
-              class="delete-btn"
-              (click)="deleteEvent(event.id)">
+            <button class="delete-btn" (click)="deleteEvent(event.id)">
               🗑️
             </button>
           </div>
           <h3 class="content-title">
             {{ event.title }}
           </h3>
-          <p class="content-meta">
-            📍 {{ event.location }}
-          </p>
+          <p class="content-meta">📍 {{ event.location }}</p>
           <p class="content-meta event-date">
             🗓️ {{ formatDate(event.eventDate) }}
           </p>
@@ -628,51 +579,40 @@
     <div *ngIf="activeTab() === 'posts'">
       <div class="tab-header">
         <h2 class="section-title">📝 My Posts</h2>
-        <button
-          class="add-btn"
-          (click)="showPostModal.set(true)">
+        <button class="add-btn" (click)="showPostModal.set(true)">
           + Write Post
         </button>
       </div>
 
-      <div
-        class="empty-tab"
-        *ngIf="posts().length === 0">
+      <div class="empty-tab" *ngIf="posts().length === 0">
         <div>📝</div>
         <h3>No posts yet</h3>
         <p>Write your first post!</p>
-        <button
-          class="add-btn"
-          (click)="showPostModal.set(true)">
+        <button class="add-btn" (click)="showPostModal.set(true)">
           + Write Post
         </button>
       </div>
 
-      <div
-        class="content-grid"
-        *ngIf="posts().length > 0">
-        <div
-          class="content-card"
-          *ngFor="let post of posts()">
+      <div class="content-grid" *ngIf="posts().length > 0">
+        <div class="content-card" *ngFor="let post of posts()">
           <div class="content-card-header">
             <div class="content-type-icon">
-              {{ post.type === 'ANNOUNCEMENT' ? '📢' :
-                 post.type === 'DEVOTIONAL' ? '📖' :
-                 post.type === 'TESTIMONY' ? '🙏' : '💬'
+              {{
+                post.type === "ANNOUNCEMENT"
+                  ? "📢"
+                  : post.type === "DEVOTIONAL"
+                    ? "📖"
+                    : post.type === "TESTIMONY"
+                      ? "🙏"
+                      : "💬"
               }}
             </div>
-            <button
-              class="delete-btn"
-              (click)="deletePost(post.id)">
-              🗑️
-            </button>
+            <button class="delete-btn" (click)="deletePost(post.id)">🗑️</button>
           </div>
           <h3 class="content-title">
-            {{ post.title || 'No Title' }}
+            {{ post.title || "No Title" }}
           </h3>
-          <p class="content-meta">
-            {{ post.content | slice:0:80 }}...
-          </p>
+          <p class="content-meta">{{ post.content | slice: 0 : 80 }}...</p>
           <div class="post-stats">
             <span>❤️ {{ post.likeCount }}</span>
             <span>💬 {{ post.commentCount }}</span>
@@ -688,8 +628,42 @@
     <div *ngIf="activeTab() === 'settings'">
       <h2 class="section-title">⚙️ Church Settings</h2>
       <div class="settings-card glass">
-        <div class="church-logo-large">
-          {{ getChurchInitials() }}
+        <div class="church-logo-large" [class.has-image]="church()?.logo">
+          <img
+            *ngIf="church()?.logo"
+            [src]="church()?.logo"
+            [alt]="church()?.name"
+            class="logo-img-large"
+          />
+          <span *ngIf="!church()?.logo">
+            {{ getChurchInitials() }}
+          </span>
+        </div>
+
+        <div class="settings-logo-section">
+          <!-- Current Logo -->
+          <div class="church-logo-large" [class.has-image]="church()?.logo">
+            <img
+              *ngIf="church()?.logo"
+              [src]="church()?.logo"
+              [alt]="church()?.name"
+              class="logo-img-large"
+            />
+            <span *ngIf="!church()?.logo">
+              {{ getChurchInitials() }}
+            </span>
+          </div>
+
+          <!-- Upload New Logo -->
+          <div class="logo-upload-section">
+            <p class="upload-label">Update Church Logo</p>
+            <app-image-upload
+              placeholder="Upload New Logo"
+              uploadType="church-logo"
+              (imageUploaded)="updateChurchLogo($event)"
+            >
+            </app-image-upload>
+          </div>
         </div>
         <div class="settings-info">
           <div class="info-row">
@@ -713,29 +687,21 @@
           <div class="info-row">
             <span class="info-label">Status</span>
             <span class="info-value">
-              <span
-                *ngIf="church()?.verified"
-                class="verified">
+              <span *ngIf="church()?.verified" class="verified">
                 ✅ Verified
               </span>
-              <span
-                *ngIf="!church()?.verified"
-                class="pending">
+              <span *ngIf="!church()?.verified" class="pending">
                 ⏳ Pending Verification
               </span>
             </span>
           </div>
-          <div
-            class="info-row"
-            *ngIf="church()?.website">
+          <div class="info-row" *ngIf="church()?.website">
             <span class="info-label">Website</span>
             <span class="info-value">
               {{ church()?.website }}
             </span>
           </div>
-          <div
-            class="info-row"
-            *ngIf="church()?.phone">
+          <div class="info-row" *ngIf="church()?.phone">
             <span class="info-label">Phone</span>
             <span class="info-value">
               {{ church()?.phone }}
@@ -744,7 +710,6 @@
         </div>
       </div>
     </div>
-
   </div>
   <!-- ✅ dashboard-wrapper closes here -->
 
@@ -752,31 +717,29 @@
   <div
     class="modal-overlay"
     *ngIf="showSermonModal()"
-    (click)="showSermonModal.set(false)">
-    <div
-      class="modal-content"
-      (click)="$event.stopPropagation()">
-
+    (click)="showSermonModal.set(false)"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>🎵 Upload Sermon</h3>
         <button (click)="showSermonModal.set(false)">✕</button>
       </div>
 
-      <form
-        [formGroup]="sermonForm"
-        (ngSubmit)="submitSermon()">
-
+      <form [formGroup]="sermonForm" (ngSubmit)="submitSermon()">
         <div class="form-group">
           <label>Sermon Title *</label>
           <input
             type="text"
             formControlName="title"
-            placeholder="Walking in Faith"/>
+            placeholder="Walking in Faith"
+          />
           <span
             class="error-text"
             *ngIf="
               sermonForm.get('title')?.invalid &&
-              sermonForm.get('title')?.touched">
+              sermonForm.get('title')?.touched
+            "
+          >
             ⚠️ Title is required
           </span>
         </div>
@@ -786,12 +749,15 @@
           <input
             type="text"
             formControlName="speaker"
-            placeholder="Pastor John"/>
+            placeholder="Pastor John"
+          />
           <span
             class="error-text"
             *ngIf="
               sermonForm.get('speaker')?.invalid &&
-              sermonForm.get('speaker')?.touched">
+              sermonForm.get('speaker')?.touched
+            "
+          >
             ⚠️ Speaker name is required
           </span>
         </div>
@@ -801,30 +767,38 @@
           <input
             type="text"
             formControlName="videoUrl"
-            placeholder="https://youtube.com/watch?v=..."/>
+            placeholder="https://youtube.com/watch?v=..."
+          />
           <span
             class="error-text"
             *ngIf="
               sermonForm.get('videoUrl')?.invalid &&
-              sermonForm.get('videoUrl')?.touched">
+              sermonForm.get('videoUrl')?.touched
+            "
+          >
             ⚠️ Video URL is required
           </span>
         </div>
 
         <div class="form-group">
-          <label>Thumbnail URL (Optional)</label>
-          <div class="input-wrap">
-            <span>🖼️</span>
+          <label>Sermon Thumbnail</label>
+          <app-image-upload
+            placeholder="Upload Sermon Thumbnail"
+            uploadType="sermon-thumbnail"
+            (imageUploaded)="onSermonThumbnailUploaded($event)"
+          >
+          </app-image-upload>
+          <small class="hint-text">
+            Or paste YouTube thumbnail URL below:
+          </small>
+          <div class="input-wrap" style="margin-top: 8px">
+            <span>🔗</span>
             <input
               type="text"
               formControlName="thumbnailUrl"
-              placeholder=
-                "https://img.youtube.com/vi/VIDEO_ID/0.jpg"/>
+              placeholder="https://img.youtube.com/vi/VIDEO_ID/0.jpg"
+            />
           </div>
-          <small class="hint-text">
-            💡 For YouTube: use
-            https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg
-          </small>
         </div>
 
         <div class="form-group">
@@ -832,7 +806,8 @@
           <input
             type="text"
             formControlName="series"
-            placeholder="Faith Series"/>
+            placeholder="Faith Series"
+          />
         </div>
 
         <div class="form-group">
@@ -840,7 +815,8 @@
           <textarea
             formControlName="description"
             placeholder="Brief description..."
-            rows="3">
+            rows="3"
+          >
           </textarea>
         </div>
 
@@ -848,18 +824,14 @@
           <button
             type="button"
             class="cancel-btn"
-            (click)="showSermonModal.set(false)">
+            (click)="showSermonModal.set(false)"
+          >
             Cancel
           </button>
-          <button
-            type="submit"
-            class="submit-btn"
-            [disabled]="isSubmitting()">
-            {{ isSubmitting() ?
-              'Uploading...' : '🎵 Upload Sermon' }}
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting()">
+            {{ isSubmitting() ? "Uploading..." : "🎵 Upload Sermon" }}
           </button>
         </div>
-
       </form>
     </div>
   </div>
@@ -868,31 +840,28 @@
   <div
     class="modal-overlay"
     *ngIf="showEventModal()"
-    (click)="showEventModal.set(false)">
-    <div
-      class="modal-content"
-      (click)="$event.stopPropagation()">
-
+    (click)="showEventModal.set(false)"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>📅 Create Event</h3>
         <button (click)="showEventModal.set(false)">✕</button>
       </div>
 
-      <form
-        [formGroup]="eventForm"
-        (ngSubmit)="submitEvent()">
-
+      <form [formGroup]="eventForm" (ngSubmit)="submitEvent()">
         <div class="form-group">
           <label>Event Title *</label>
           <input
             type="text"
             formControlName="title"
-            placeholder="Youth Conference 2026"/>
+            placeholder="Youth Conference 2026"
+          />
           <span
             class="error-text"
             *ngIf="
-              eventForm.get('title')?.invalid &&
-              eventForm.get('title')?.touched">
+              eventForm.get('title')?.invalid && eventForm.get('title')?.touched
+            "
+          >
             ⚠️ Title is required
           </span>
         </div>
@@ -903,12 +872,15 @@
             type="datetime-local"
             formControlName="eventDate"
             [min]="minDate"
-            style="color-scheme: dark;"/>
+            style="color-scheme: dark"
+          />
           <span
             class="error-text"
             *ngIf="
               eventForm.get('eventDate')?.invalid &&
-              eventForm.get('eventDate')?.touched">
+              eventForm.get('eventDate')?.touched
+            "
+          >
             ⚠️ Date is required
           </span>
           <small class="hint-text">
@@ -921,7 +893,8 @@
           <input
             type="text"
             formControlName="location"
-            placeholder="Church Hall, Hyderabad"/>
+            placeholder="Church Hall, Hyderabad"
+          />
         </div>
 
         <div class="form-group">
@@ -929,7 +902,8 @@
           <textarea
             formControlName="description"
             placeholder="Event details..."
-            rows="3">
+            rows="3"
+          >
           </textarea>
         </div>
 
@@ -940,7 +914,8 @@
             <input
               type="text"
               formControlName="imageUrl"
-              placeholder="Leave empty for default banner"/>
+              placeholder="Leave empty for default banner"
+            />
           </div>
         </div>
 
@@ -948,18 +923,14 @@
           <button
             type="button"
             class="cancel-btn"
-            (click)="showEventModal.set(false)">
+            (click)="showEventModal.set(false)"
+          >
             Cancel
           </button>
-          <button
-            type="submit"
-            class="submit-btn"
-            [disabled]="isSubmitting()">
-            {{ isSubmitting() ?
-              'Creating...' : '📅 Create Event' }}
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting()">
+            {{ isSubmitting() ? "Creating..." : "📅 Create Event" }}
           </button>
         </div>
-
       </form>
     </div>
   </div>
@@ -968,35 +939,22 @@
   <div
     class="modal-overlay"
     *ngIf="showPostModal()"
-    (click)="showPostModal.set(false)">
-    <div
-      class="modal-content"
-      (click)="$event.stopPropagation()">
-
+    (click)="showPostModal.set(false)"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>📝 Write Post</h3>
         <button (click)="showPostModal.set(false)">✕</button>
       </div>
 
-      <form
-        [formGroup]="postForm"
-        (ngSubmit)="submitPost()">
-
+      <form [formGroup]="postForm" (ngSubmit)="submitPost()">
         <div class="form-group">
           <label>Post Type</label>
           <select formControlName="type">
-            <option value="ANNOUNCEMENT">
-              📢 Announcement
-            </option>
-            <option value="DEVOTIONAL">
-              📖 Devotional
-            </option>
-            <option value="TESTIMONY">
-              🙏 Testimony
-            </option>
-            <option value="GENERAL">
-              💬 General
-            </option>
+            <option value="ANNOUNCEMENT">📢 Announcement</option>
+            <option value="DEVOTIONAL">📖 Devotional</option>
+            <option value="TESTIMONY">🙏 Testimony</option>
+            <option value="GENERAL">💬 General</option>
           </select>
         </div>
 
@@ -1005,7 +963,8 @@
           <input
             type="text"
             formControlName="title"
-            placeholder="Post title..."/>
+            placeholder="Post title..."
+          />
         </div>
 
         <div class="form-group">
@@ -1013,46 +972,43 @@
           <textarea
             formControlName="content"
             placeholder="Write your post..."
-            rows="5">
+            rows="5"
+          >
           </textarea>
           <span
             class="error-text"
             *ngIf="
               postForm.get('content')?.invalid &&
-              postForm.get('content')?.touched">
+              postForm.get('content')?.touched
+            "
+          >
             ⚠️ Content is required
           </span>
         </div>
 
         <div class="form-group">
-          <label>Image URL (Optional)</label>
-          <div class="input-wrap">
-            <span>🖼️</span>
-            <input
-              type="text"
-              formControlName="imageUrl"
-              placeholder="Leave empty for text-only post"/>
-          </div>
+          <label>Post Image (Optional)</label>
+          <app-image-upload
+            placeholder="Upload Post Image"
+            uploadType="post-image"
+            (imageUploaded)="onPostImageUploaded($event)"
+          >
+          </app-image-upload>
         </div>
 
         <div class="modal-actions">
           <button
             type="button"
             class="cancel-btn"
-            (click)="showPostModal.set(false)">
+            (click)="showPostModal.set(false)"
+          >
             Cancel
           </button>
-          <button
-            type="submit"
-            class="submit-btn"
-            [disabled]="isSubmitting()">
-            {{ isSubmitting() ?
-              'Publishing...' : '📝 Publish Post' }}
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting()">
+            {{ isSubmitting() ? "Publishing..." : "📝 Publish Post" }}
           </button>
         </div>
-
       </form>
     </div>
   </div>
-
 </div>
