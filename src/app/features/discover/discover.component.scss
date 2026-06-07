@@ -1,0 +1,404 @@
+/* ═══════════════════════════════════════
+   OneBody Discover Page
+   ═══════════════════════════════════════ */
+
+.discover-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.discover-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    color: #8892B0;
+    font-size: 15px;
+  }
+}
+
+.discover-stats {
+  display: flex;
+  gap: 12px;
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(17, 21, 48, 0.7);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    border-radius: 50px;
+    padding: 8px 16px;
+    color: #8892B0;
+    font-size: 13px;
+  }
+}
+
+/* Search & Filter */
+.search-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(17, 21, 48, 0.8);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 50px;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: #C9A84C;
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.1);
+  }
+
+  .search-icon { font-size: 18px; }
+
+  input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+
+    &::placeholder { color: #8892B0; }
+  }
+
+  .clear-search {
+    background: rgba(201, 168, 76, 0.1);
+    border: none;
+    color: #8892B0;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(201, 168, 76, 0.2);
+      color: white;
+    }
+  }
+}
+
+/* City Filter Pills */
+.city-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  .city-pill {
+    padding: 6px 16px;
+    background: rgba(17, 21, 48, 0.6);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: 50px;
+    color: #8892B0;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+
+    &:hover {
+      border-color: rgba(201, 168, 76, 0.3);
+      color: white;
+    }
+
+    &.active {
+      background: rgba(201, 168, 76, 0.12);
+      border-color: #C9A84C;
+      color: #C9A84C;
+      font-weight: 600;
+    }
+  }
+}
+
+/* Results Info */
+.results-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #8892B0;
+  font-size: 14px;
+
+  strong { color: #C9A84C; }
+
+  .clear-btn {
+    background: transparent;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+    border-radius: 50px;
+    padding: 4px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+
+    &:hover {
+      background: rgba(231, 76, 60, 0.1);
+    }
+  }
+}
+
+/* Churches Grid */
+.churches-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Church Card */
+.church-card {
+  background: rgba(17, 21, 48, 0.7);
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    border-color: rgba(201, 168, 76, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Church Banner */
+.church-banner {
+  height: 140px;
+  background: linear-gradient(
+    135deg, #0A0E27, #1a1f4a
+  );
+  position: relative;
+  overflow: hidden;
+
+  .banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .banner-initials {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #C9A84C, #E2C17A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .verified-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    color: #2ECC71;
+    border-radius: 50px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Church Info */
+.church-info {
+  padding: 16px 18px 18px;
+
+  .church-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 6px;
+  }
+
+  .church-location {
+    color: #8892B0;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .church-desc {
+    color: #8892B0;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .church-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 168, 76, 0.06);
+
+    .followers {
+      color: #8892B0;
+      font-size: 13px;
+    }
+  }
+}
+
+/* Follow Button */
+.follow-btn {
+  padding: 7px 18px;
+  background: linear-gradient(135deg, #C9A84C, #E2C17A);
+  border: none;
+  border-radius: 50px;
+  color: #060919;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.3);
+  }
+
+  &.following {
+    background: transparent;
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    color: #C9A84C;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 24px;
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.4;
+    display: block;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #8892B0;
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+}
+
+.clear-btn-lg {
+  background: linear-gradient(135deg, #C9A84C, #E2C17A);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 28px;
+  color: #060919;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 168, 76, 0.3);
+  }
+}
+
+/* Skeleton Loading */
+.skeleton-church {
+  background: rgba(17, 21, 48, 0.7);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(17, 21, 48, 0.8) 25%,
+    rgba(201, 168, 76, 0.08) 50%,
+    rgba(17, 21, 48, 0.8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+.skeleton-banner {
+  height: 140px;
+  border-radius: 0;
+}
+
+.skeleton-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 70%;
+}
+
+.skeleton-text {
+  height: 14px;
+  width: 50%;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

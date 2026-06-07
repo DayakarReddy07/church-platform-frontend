@@ -24,6 +24,13 @@ export const routes: Routes = [
         (m) => m.RegisterComponent,
       ),
   },
+  {
+    path: 'church/:slug',
+    loadComponent: () =>
+      import('./features/church/church-profile.component').then(
+        (m) => m.ChurchProfileComponent,
+      ),
+  },
 
   // ─── Protected Routes ─────────────────
   {
@@ -72,6 +79,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/sermons/sermon-player.component').then(
             (m) => m.SermonPlayerComponent,
+          ),
+      },
+      {
+        path: 'discover',
+        loadComponent: () =>
+          import('./features/discover/discover.component').then(
+            (m) => m.DiscoverComponent,
           ),
       },
       { path: '', redirectTo: 'feed', pathMatch: 'full' },

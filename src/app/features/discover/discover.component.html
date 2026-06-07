@@ -1,0 +1,187 @@
+<div class="discover-wrapper">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="discover-header">
+    <div class="header-text">
+      <h1 class="page-title">
+        🔍 Discover Churches
+      </h1>
+      <p class="page-subtitle">
+        Find and follow churches in your community
+      </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="discover-stats">
+      <div class="stat-pill">
+        <span>⛪</span>
+        <span>{{ churches().length }} Churches</span>
+      </div>
+      <div class="stat-pill">
+        <span>📍</span>
+        <span>{{ cities().length }} Cities</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SEARCH & FILTER ═══ -->
+  <div class="search-filter-bar">
+
+    <!-- Search Input -->
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        placeholder="Search by church name or city..."
+        [value]="searchKeyword()"
+        (input)="onSearch($any($event.target).value)"/>
+      <button
+        class="clear-search"
+        *ngIf="searchKeyword()"
+        (click)="onSearch('')">
+        ✕
+      </button>
+    </div>
+
+    <!-- City Filter -->
+    <div class="city-filters">
+      <button
+        class="city-pill"
+        [class.active]="selectedCity() === ''"
+        (click)="onCityFilter('')">
+        All Cities
+      </button>
+      <button
+        class="city-pill"
+        *ngFor="let city of cities()"
+        [class.active]="selectedCity() === city"
+        (click)="onCityFilter(city)">
+        📍 {{ city }}
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ═══ RESULTS COUNT ═══ -->
+  <div class="results-info"
+    *ngIf="!isLoading()">
+    <span>
+      Showing
+      <strong>{{ filteredChurches().length }}</strong>
+      churches
+    </span>
+    <button
+      class="clear-btn"
+      *ngIf="searchKeyword() || selectedCity()"
+      (click)="clearFilters()">
+      Clear Filters ✕
+    </button>
+  </div>
+
+  <!-- ═══ LOADING ═══ -->
+  <div class="churches-grid" *ngIf="isLoading()">
+    <div
+      class="skeleton-church"
+      *ngFor="let s of [1,2,3,4,5,6]">
+      <div class="skeleton skeleton-banner"></div>
+      <div class="skeleton-body">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMPTY STATE ═══ -->
+  <div
+    class="empty-state"
+    *ngIf="!isLoading() &&
+           filteredChurches().length === 0">
+    <div class="empty-icon">⛪</div>
+    <h3>No churches found</h3>
+    <p *ngIf="searchKeyword()">
+      No results for "{{ searchKeyword() }}"
+    </p>
+    <button class="clear-btn-lg"
+      (click)="clearFilters()">
+      Clear Search
+    </button>
+  </div>
+
+  <!-- ═══ CHURCHES GRID ═══ -->
+  <div
+    class="churches-grid"
+    *ngIf="!isLoading() &&
+           filteredChurches().length > 0">
+
+    <div
+      class="church-card"
+      *ngFor="let church of filteredChurches()"
+      (click)="viewChurch(church.slug)">
+
+      <!-- Church Banner/Logo -->
+      <div class="church-banner">
+        <img
+          *ngIf="church.logo"
+          [src]="church.logo"
+          [alt]="church.name"
+          class="banner-img"/>
+        <div
+          class="banner-initials"
+          *ngIf="!church.logo">
+          {{ getInitials(church.name) }}
+        </div>
+
+        <!-- Verified Badge -->
+        <div
+          class="verified-badge"
+          *ngIf="church.verified">
+          ✅ Verified
+        </div>
+      </div>
+
+      <!-- Church Info -->
+      <div class="church-info">
+        <h3 class="church-name">
+          {{ church.name }}
+        </h3>
+        <p class="church-location">
+          📍 {{ church.city }}, {{ church.state }}
+        </p>
+        <p class="church-desc"
+          *ngIf="church.description">
+          {{ church.description | slice:0:80 }}...
+        </p>
+        <div class="church-footer">
+          <span class="followers">
+            👥 {{ church.followerCount | number }}
+            followers
+          </span>
+
+          <!-- Follow Button -->
+          <button
+            class="follow-btn"
+            [class.following]="isFollowing(church.id)"
+            [disabled]="isInProgress(church.id)"
+            (click)="toggleFollow(church, $event)">
+            <span *ngIf="isInProgress(church.id)">
+              ...
+            </span>
+            <span
+              *ngIf="!isInProgress(church.id) &&
+                     !isFollowing(church.id)">
+              + Follow
+            </span>
+            <span
+              *ngIf="!isInProgress(church.id) &&
+                     isFollowing(church.id)">
+              ✓ Following
+            </span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,314 @@
+<div class="profile-wrapper">
+
+  <!-- ═══ LOADING ═══ -->
+  <div class="loading-screen" *ngIf="isLoading()">
+    <div class="loading-spinner"></div>
+    <p>Loading church profile...</p>
+  </div>
+
+  <!-- ═══ CHURCH PROFILE ═══ -->
+  <div *ngIf="!isLoading() && church()">
+
+    <!-- ── HERO BANNER ── -->
+    <div class="church-hero">
+
+      <!-- Banner Background -->
+      <div class="hero-bg"
+        [style.backgroundImage]="
+          church()?.logo ?
+          'url(' + church()?.logo + ')' :
+          'none'">
+        <div class="hero-overlay"></div>
+      </div>
+
+      <!-- Hero Content -->
+      <div class="hero-content">
+
+        <!-- Church Logo -->
+        <div class="hero-logo">
+          <img
+            *ngIf="church()?.logo"
+            [src]="church()?.logo"
+            [alt]="church()?.name"
+            class="logo-img"/>
+          <div
+            class="logo-initials"
+            *ngIf="!church()?.logo">
+            {{ getInitials(church()!.name) }}
+          </div>
+        </div>
+
+        <!-- Church Details -->
+        <div class="hero-details">
+          <div class="church-name-row">
+            <h1 class="church-name">
+              {{ church()?.name }}
+            </h1>
+            <span
+              class="verified-badge"
+              *ngIf="church()?.verified">
+              ✅ Verified
+            </span>
+          </div>
+
+          <p class="church-location">
+            📍 {{ church()?.city }},
+            {{ church()?.state }},
+            {{ church()?.country }}
+          </p>
+
+          <p class="church-desc"
+            *ngIf="church()?.description">
+            {{ church()?.description }}
+          </p>
+
+          <!-- Stats Row -->
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <strong>
+                {{ church()?.followerCount | number }}
+              </strong>
+              <span>Followers</span>
+            </div>
+            <div class="hero-stat">
+              <strong>{{ sermons().length }}</strong>
+              <span>Sermons</span>
+            </div>
+            <div class="hero-stat">
+              <strong>{{ events().length }}</strong>
+              <span>Events</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="hero-actions">
+          <button
+            class="follow-btn"
+            [class.following]="isFollowing()"
+            [disabled]="isFollowInProgress()"
+            (click)="toggleFollow()">
+            <span *ngIf="isFollowInProgress()">...</span>
+            <span
+              *ngIf="!isFollowInProgress() &&
+                     !isFollowing()">
+              + Follow Church
+            </span>
+            <span
+              *ngIf="!isFollowInProgress() &&
+                     isFollowing()">
+              ✓ Following
+            </span>
+          </button>
+
+          <a
+            class="website-btn"
+            *ngIf="church()?.website"
+            [href]="'https://' + church()?.website"
+            target="_blank">
+            🌐 Website
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── CONTENT TABS ── -->
+    <div class="content-section">
+
+      <div class="content-tabs">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'sermons'"
+          (click)="setTab('sermons')">
+          🎵 Sermons
+          <span class="tab-count"
+            *ngIf="sermons().length > 0">
+            {{ sermons().length }}
+          </span>
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'events'"
+          (click)="setTab('events')">
+          📅 Events
+          <span class="tab-count"
+            *ngIf="events().length > 0">
+            {{ events().length }}
+          </span>
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'posts'"
+          (click)="setTab('posts')">
+          📝 Posts
+          <span class="tab-count"
+            *ngIf="posts().length > 0">
+            {{ posts().length }}
+          </span>
+        </button>
+      </div>
+
+      <!-- ── SERMONS TAB ── -->
+      <div *ngIf="activeTab() === 'sermons'">
+
+        <div class="empty-tab"
+          *ngIf="sermons().length === 0">
+          <div>🎵</div>
+          <p>No sermons uploaded yet</p>
+        </div>
+
+        <div class="sermons-grid"
+          *ngIf="sermons().length > 0">
+          <div
+            class="sermon-card"
+            *ngFor="let sermon of sermons()"
+            (click)="watchSermon(sermon.id)">
+
+            <!-- Thumbnail -->
+            <div class="sermon-thumb"
+              [style.backgroundImage]="
+                getThumbnail(sermon) ?
+                'url(' + getThumbnail(sermon) + ')' :
+                'none'">
+              <div class="thumb-placeholder"
+                *ngIf="!getThumbnail(sermon)">
+                🎵
+              </div>
+              <div class="thumb-play">▶</div>
+            </div>
+
+            <!-- Info -->
+            <div class="sermon-info">
+              <h4 class="sermon-title">
+                {{ sermon.title }}
+              </h4>
+              <p class="sermon-speaker">
+                🎤 {{ sermon.speaker }}
+              </p>
+              <p class="sermon-series"
+                *ngIf="sermon.series">
+                📚 {{ sermon.series }}
+              </p>
+              <p class="sermon-date">
+                {{ formatDate(sermon.createdAt) }}
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EVENTS TAB ── -->
+      <div *ngIf="activeTab() === 'events'">
+
+        <div class="empty-tab"
+          *ngIf="events().length === 0">
+          <div>📅</div>
+          <p>No upcoming events</p>
+        </div>
+
+        <div class="events-list"
+          *ngIf="events().length > 0">
+          <div
+            class="event-item"
+            *ngFor="let event of events()">
+
+            <div class="event-date-box">
+              <div class="event-month">
+                {{ formatDate(event.eventDate)
+                  .split(' ')[1] }}
+              </div>
+              <div class="event-day">
+                {{ formatDate(event.eventDate)
+                  .split(' ')[0] }}
+              </div>
+            </div>
+
+            <div class="event-details">
+              <h4 class="event-title">
+                {{ event.title }}
+              </h4>
+              <p class="event-location"
+                *ngIf="event.location">
+                📍 {{ event.location }}
+              </p>
+              <p class="event-online"
+                *ngIf="event.isOnline">
+                💻 Online Event
+              </p>
+              <p class="event-registrations">
+                👥 {{ event.registrationCount }}
+                registered
+              </p>
+            </div>
+
+            <button class="register-btn">
+              Register
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── POSTS TAB ── -->
+      <div *ngIf="activeTab() === 'posts'">
+
+        <div class="empty-tab"
+          *ngIf="posts().length === 0">
+          <div>📝</div>
+          <p>No posts yet</p>
+        </div>
+
+        <div class="posts-list"
+          *ngIf="posts().length > 0">
+          <div
+            class="post-item"
+            *ngFor="let post of posts()">
+
+            <div class="post-header">
+              <div class="post-type-badge"
+                [class]="'type-' +
+                  post.type?.toLowerCase()">
+                {{ post.type }}
+              </div>
+              <span class="post-date">
+                {{ formatDate(post.createdAt) }}
+              </span>
+            </div>
+
+            <h4 class="post-title"
+              *ngIf="post.title">
+              {{ post.title }}
+            </h4>
+
+            <p class="post-content">
+              {{ post.content }}
+            </p>
+
+            <img
+              *ngIf="post.imageUrl"
+              [src]="post.imageUrl"
+              [alt]="post.title"
+              class="post-image"/>
+
+            <div class="post-actions">
+              <span class="post-stat">
+                ❤️ {{ post.likeCount }}
+              </span>
+              <span class="post-stat">
+                💬 {{ post.commentCount }}
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
