@@ -5,7 +5,7 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -14,10 +14,9 @@ import { AuthService } from '../../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-
   loginForm: FormGroup;
   isLoading = signal(false);
   errorMessage = signal('');
@@ -30,11 +29,11 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
     this.generateStars();
@@ -54,46 +53,45 @@ export class LoginComponent {
   }
 
   togglePassword() {
-    this.showPassword.update(v => !v);
+    this.showPassword.update((v) => !v);
   }
 
- onSubmit() {
-  if (this.loginForm.invalid) {
-    this.loginForm.markAllAsTouched();
-    return;
-  }
-
-  this.isLoading.set(true);
-  this.errorMessage.set('');
-
-  this.authService.login(this.loginForm.value).subscribe({
-    next: (user) => {
-      this.isLoading.set(false);
-
-      // Check for return URL
-      const returnUrl = this.route.snapshot
-        .queryParams['returnUrl'];
-
-      if (returnUrl) {
-        this.router.navigateByUrl(returnUrl);
-        return;
-      }
-
-      if (user.role === 'CHURCH_ADMIN') {
-        this.router.navigate(['/app/admin']);
-      } else {
-        this.router.navigate(['/app/feed']);
-      }
-    },
-    error: (err) => {
-      this.isLoading.set(false);
-      this.errorMessage.set(
-        err.error?.message ||
-        'Login failed. Please try again.'
-      );
+  onSubmit() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
     }
-  });
-}
+
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (user) => {
+        this.isLoading.set(false);
+
+        // Check for return URL
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+
+        if (returnUrl) {
+          this.router.navigateByUrl(returnUrl);
+          return;
+        }
+        if (user.role === 'SUPER_ADMIN') {
+          this.router.navigate(['/app/super-admin']);
+        } else if (user.role === 'CHURCH_ADMIN') {
+          this.router.navigate(['/app/admin']);
+        } else {
+          this.router.navigate(['/app/feed']);
+        }
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        this.errorMessage.set(
+          err.error?.message || 'Login failed. Please try again.',
+        );
+      },
+    });
+  }
 
   // Helper for template validation
   isInvalid(field: string): boolean {

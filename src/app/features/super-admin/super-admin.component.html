@@ -1,0 +1,449 @@
+<div class="super-admin-wrapper">
+
+  <!-- Toast -->
+  <div class="toast" *ngIf="toastMessage()">
+    {{ toastMessage() }}
+  </div>
+
+  <!-- Header -->
+  <div class="admin-header">
+    <div>
+      <h1 class="page-title">
+        👑 Super Admin Panel
+      </h1>
+      <p class="page-subtitle">
+        Platform Control Center — OneBody
+      </p>
+    </div>
+    <div class="admin-badge">
+      🛡️ Super Admin
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-screen" *ngIf="isLoading()">
+    <div class="loading-spinner"></div>
+    <p>Loading platform data...</p>
+  </div>
+
+  <div *ngIf="!isLoading()">
+
+    <!-- Stats Cards -->
+    <div class="stats-row" *ngIf="stats()">
+      <div class="stat-card">
+        <div class="stat-icon">⛪</div>
+        <div class="stat-info">
+          <div class="stat-value">
+            {{ stats()!.totalChurches }}
+          </div>
+          <div class="stat-label">
+            Total Churches
+          </div>
+        </div>
+      </div>
+      <div class="stat-card verified">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <div class="stat-value">
+            {{ stats()!.verifiedChurches }}
+          </div>
+          <div class="stat-label">Verified</div>
+        </div>
+      </div>
+      <div class="stat-card pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+          <div class="stat-value">
+            {{ stats()!.pendingChurches }}
+          </div>
+          <div class="stat-label">Pending</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <div class="stat-value">
+            {{ stats()!.totalUsers }}
+          </div>
+          <div class="stat-label">Users</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎵</div>
+        <div class="stat-info">
+          <div class="stat-value">
+            {{ stats()!.totalSermons }}
+          </div>
+          <div class="stat-label">Sermons</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <div class="stat-value">
+            {{ stats()!.totalEvents }}
+          </div>
+          <div class="stat-label">Events</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'overview'"
+        (click)="setTab('overview')">
+        📊 Overview
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'churches'"
+        (click)="setTab('churches')">
+        ⛪ Churches
+        <span class="tab-count">
+          {{ churches().length }}
+        </span>
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'users'"
+        (click)="setTab('users')">
+        👥 Users
+        <span class="tab-count"
+          *ngIf="users().length > 0">
+          {{ users().length }}
+        </span>
+      </button>
+    </div>
+
+    <!-- ── OVERVIEW TAB ── -->
+    <div *ngIf="activeTab() === 'overview'">
+
+      <!-- Pending Verification -->
+      <div class="section">
+        <h2 class="section-title">
+          ⏳ Pending Verification
+          <span class="pending-count">
+            {{ stats()!.pendingChurches }}
+          </span>
+        </h2>
+
+        <div class="empty-section"
+          *ngIf="stats()!.pendingChurches === 0">
+          <p>🎉 All churches are verified!</p>
+        </div>
+
+        <div class="churches-list"
+          *ngIf="stats()!.pendingChurches > 0">
+          <div
+            class="church-row"
+            *ngFor="let church of churches()
+              | slice:0:5">
+            <ng-container *ngIf="!church.verified">
+
+              <!-- Church Logo -->
+              <div class="church-logo-sm">
+                <img
+                  *ngIf="church.logo"
+                  [src]="church.logo"
+                  [alt]="church.name"
+                  class="logo-img"/>
+                <span *ngIf="!church.logo">
+                  {{ getInitials(church.name) }}
+                </span>
+              </div>
+
+              <!-- Church Info -->
+              <div class="church-row-info">
+                <div class="church-row-name">
+                  {{ church.name }}
+                </div>
+                <div class="church-row-meta">
+                  📍 {{ church.city }},
+                  {{ church.state }}
+                  · 👤 {{ church.adminName }}
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="row-actions">
+                <button
+                  class="verify-btn"
+                  (click)="verifyChurch(church)">
+                  ✅ Verify
+                </button>
+                <button
+                  class="delete-btn"
+                  (click)="deleteChurch(church)">
+                  🗑️
+                </button>
+              </div>
+
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── CHURCHES TAB ── -->
+    <div *ngIf="activeTab() === 'churches'">
+
+      <!-- Filter -->
+      <div class="filter-row">
+        <button
+          class="filter-pill"
+          [class.active]="filterVerified() === 'all'"
+          (click)="filterVerified.set('all')">
+          All ({{ churches().length }})
+        </button>
+        <button
+          class="filter-pill"
+          [class.active]="
+            filterVerified() === 'verified'"
+          (click)="filterVerified.set('verified')">
+          ✅ Verified
+          ({{ stats()!.verifiedChurches }})
+        </button>
+        <button
+          class="filter-pill"
+          [class.active]="
+            filterVerified() === 'pending'"
+          (click)="filterVerified.set('pending')">
+          ⏳ Pending
+          ({{ stats()!.pendingChurches }})
+        </button>
+      </div>
+
+      <!-- Churches Table -->
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Church</th>
+              <th>Location</th>
+              <th>Admin</th>
+              <th>Stats</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let church of
+                getFilteredChurches()">
+
+              <!-- Church -->
+              <td>
+                <div class="table-church">
+                  <div class="church-logo-sm">
+                    <img
+                      *ngIf="church.logo"
+                      [src]="church.logo"
+                      class="logo-img"/>
+                    <span *ngIf="!church.logo">
+                      {{ getInitials(church.name) }}
+                    </span>
+                  </div>
+                  <div>
+                    <div class="table-name">
+                      {{ church.name }}
+                    </div>
+                    <div class="table-date">
+                      {{ formatDate(church.createdAt) }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Location -->
+              <td>
+                <span class="table-text">
+                  {{ church.city }},
+                  {{ church.state }}
+                </span>
+              </td>
+
+              <!-- Admin -->
+              <td>
+                <div class="table-text">
+                  {{ church.adminName }}
+                </div>
+                <div class="table-sub">
+                  {{ church.adminEmail }}
+                </div>
+              </td>
+
+              <!-- Stats -->
+              <td>
+                <div class="table-stats">
+                  <span>
+                    👥 {{ church.followerCount }}
+                  </span>
+                  <span>
+                    🎵 {{ church.sermonCount }}
+                  </span>
+                </div>
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span
+                  class="status-badge verified"
+                  *ngIf="church.verified">
+                  ✅ Verified
+                </span>
+                <span
+                  class="status-badge pending"
+                  *ngIf="!church.verified">
+                  ⏳ Pending
+                </span>
+              </td>
+
+              <!-- Actions -->
+              <td>
+                <div class="table-actions">
+                  <button
+                    class="action-btn view"
+                    (click)="viewChurch(church.slug)"
+                    title="View Profile">
+                    👁️
+                  </button>
+                  <button
+                    class="action-btn verify-sm"
+                    *ngIf="!church.verified"
+                    (click)="verifyChurch(church)"
+                    title="Verify">
+                    ✅
+                  </button>
+                  <button
+                    class="action-btn unverify-sm"
+                    *ngIf="church.verified"
+                    (click)="unverifyChurch(church)"
+                    title="Remove Verification">
+                    ⚠️
+                  </button>
+                  <button
+                    class="action-btn delete-sm"
+                    (click)="deleteChurch(church)"
+                    title="Delete">
+                    🗑️
+                  </button>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ── USERS TAB ── -->
+    <div *ngIf="activeTab() === 'users'">
+
+      <div class="loading-screen"
+        *ngIf="users().length === 0">
+        <div class="loading-spinner"></div>
+        <p>Loading users...</p>
+      </div>
+
+      <div class="table-wrapper"
+        *ngIf="users().length > 0">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users()">
+
+              <!-- User -->
+              <td>
+                <div class="table-user">
+                  <div class="user-avatar">
+                    <img
+                      *ngIf="user.profilePic"
+                      [src]="user.profilePic"
+                      class="avatar-img"/>
+                    <span *ngIf="!user.profilePic">
+                      {{ getInitials(user.name) }}
+                    </span>
+                  </div>
+                  <span class="table-name">
+                    {{ user.name }}
+                  </span>
+                </div>
+              </td>
+
+              <!-- Email -->
+              <td>
+                <span class="table-sub">
+                  {{ user.email }}
+                </span>
+              </td>
+
+              <!-- Role -->
+              <td>
+                <span class="role-badge"
+                  [class]="'role-' +
+                    user.role.toLowerCase()">
+                  {{ user.role }}
+                </span>
+              </td>
+
+              <!-- Joined -->
+              <td>
+                <span class="table-sub">
+                  {{ formatDate(user.createdAt) }}
+                </span>
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span
+                  class="status-badge verified"
+                  *ngIf="user.enabled">
+                  ✅ Active
+                </span>
+                <span
+                  class="status-badge pending"
+                  *ngIf="!user.enabled">
+                  ❌ Disabled
+                </span>
+              </td>
+
+              <!-- Action -->
+              <td>
+                <button
+                  class="toggle-btn"
+                  [class.disable]="user.enabled"
+                  (click)="toggleUser(user)"
+                  *ngIf="user.role !== 'SUPER_ADMIN'">
+                  {{ user.enabled ?
+                    'Disable' : 'Enable' }}
+                </button>
+                <span
+                  class="protected-label"
+                  *ngIf="user.role === 'SUPER_ADMIN'">
+                  🛡️ Protected
+                </span>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

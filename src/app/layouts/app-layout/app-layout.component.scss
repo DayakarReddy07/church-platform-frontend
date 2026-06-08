@@ -778,3 +778,8 @@
     transform: translateY(0);
   }
 }
+
+.super-admin-item {
+  .nav-label { color: #E2C17A !important; }
+  .nav-icon { filter: drop-shadow(0 0 4px #C9A84C); }
+}

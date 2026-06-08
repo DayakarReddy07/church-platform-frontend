@@ -31,6 +31,24 @@ export class AppLayoutComponent {
 
   private searchSubject = new Subject<string>();
 
+  // Add to navItems or create separate
+  superAdminItems = [
+    {
+      icon: '👑',
+      label: 'Super Admin',
+      route: '/app/super-admin',
+    },
+    {
+      icon: '⛪',
+      label: 'All Churches',
+      route: '/app/super-admin',
+    },
+  ];
+
+  isSuperAdmin(): boolean {
+    return this.authService.getRole() === 'SUPER_ADMIN';
+  }
+
   navItems = [
     {
       icon: '🏠',

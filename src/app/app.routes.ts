@@ -88,6 +88,13 @@ export const routes: Routes = [
             (m) => m.DiscoverComponent,
           ),
       },
+      {
+        path: 'super-admin',
+        loadComponent: () =>
+          import('./features/super-admin/super-admin.component').then(
+            (m) => m.SuperAdminComponent,
+          ),
+      },
       { path: '', redirectTo: 'feed', pathMatch: 'full' },
     ],
   },
