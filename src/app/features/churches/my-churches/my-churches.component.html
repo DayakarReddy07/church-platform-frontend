@@ -1,0 +1,96 @@
+<div class="my-churches-wrapper">
+
+  <div class="page-header">
+    <h1 class="page-title">⛪ My Churches</h1>
+    <p class="page-subtitle">
+      Churches you are following
+    </p>
+    <button
+      class="discover-btn"
+      routerLink="/app/discover">
+      + Discover More Churches
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-screen" *ngIf="isLoading()">
+    <div class="spinner"></div>
+    <p>Loading your churches...</p>
+  </div>
+
+  <!-- Empty -->
+  <div
+    class="empty-state"
+    *ngIf="!isLoading() &&
+           churches().length === 0">
+    <div class="empty-icon">⛪</div>
+    <h3>Not following any churches yet</h3>
+    <p>
+      Discover and follow churches to see
+      them here!
+    </p>
+    <button
+      class="discover-btn"
+      routerLink="/app/discover">
+      Discover Churches →
+    </button>
+  </div>
+
+  <!-- Churches Grid -->
+  <div
+    class="churches-grid"
+    *ngIf="!isLoading() && churches().length > 0">
+
+    <div
+      class="church-card"
+      *ngFor="let church of churches()">
+
+      <!-- Banner -->
+      <div
+        class="church-banner"
+        (click)="viewChurch(church.slug)">
+        <img
+          *ngIf="church.logo"
+          [src]="church.logo"
+          [alt]="church.name"
+          class="banner-img"/>
+        <div
+          class="banner-initials"
+          *ngIf="!church.logo">
+          {{ getInitials(church.name) }}
+        </div>
+        <div
+          class="verified-badge"
+          *ngIf="church.verified">
+          ✅
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="church-info">
+        <h3 (click)="viewChurch(church.slug)">
+          {{ church.name }}
+        </h3>
+        <p>📍 {{ church.city }}</p>
+        <p>👥 {{ church.followerCount | number }}
+          followers</p>
+
+        <div class="card-actions">
+          <button
+            class="view-btn"
+            (click)="viewChurch(church.slug)">
+            View Church →
+          </button>
+          <button
+            class="unfollow-btn"
+            (click)="unfollowChurch(church.id)">
+            Unfollow
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,1 +1,135 @@
-<p>events works!</p>
+<div class="events-wrapper">
+  <div class="page-header">
+    <h1 class="page-title">📅 Events</h1>
+    <p class="page-subtitle">Upcoming events from churches on OneBody</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="events-tabs">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'upcoming'"
+      (click)="switchTab('upcoming')"
+    >
+      🌐 Upcoming Events
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab() === 'mine'"
+      (click)="switchTab('mine')"
+    >
+      ✅ My Registrations
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-screen" *ngIf="isLoading()">
+    <div class="spinner"></div>
+    <p>Loading events...</p>
+  </div>
+
+  <!-- Upcoming Events -->
+  <div *ngIf="activeTab() === 'upcoming' && !isLoading()">
+    <div class="empty-state" *ngIf="events().length === 0">
+      <div>📅</div>
+      <h3>No upcoming events</h3>
+      <p>Check back later!</p>
+    </div>
+
+    <div class="events-list">
+      <div class="event-card" *ngFor="let event of events()">
+        <!-- Date Box -->
+        <div class="event-date-col">
+          <div class="date-box">
+            <div class="date-month">
+              {{ formatDate(event.eventDate).split(" ")[2] }}
+            </div>
+
+            <div class="date-day">
+              {{ formatDate(event.eventDate).split(" ")[1] }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Image -->
+        <div class="event-image" *ngIf="event.imageUrl">
+          <img [src]="event.imageUrl" [alt]="event.title" class="event-img" />
+        </div>
+
+        <!-- Event Info -->
+        <div class="event-info">
+          <div class="event-church">
+            <div class="church-avatar-xs">
+              <img
+                *ngIf="event.churchLogo"
+                [src]="event.churchLogo"
+                class="church-logo-xs"
+              />
+              <span *ngIf="!event.churchLogo">
+                {{ getInitials(event.churchName) }}
+              </span>
+            </div>
+            <span>{{ event.churchName }}</span>
+          </div>
+
+          <h3 class="event-title">
+            {{ event.title }}
+          </h3>
+
+          <div class="event-meta">
+            <span> 📅 {{ formatDate(event.eventDate) }} </span>
+            <span> 🕐 {{ formatTime(event.eventDate) }} </span>
+            <span *ngIf="event.location"> 📍 {{ event.location }} </span>
+            <span *ngIf="event.isOnline"> 💻 Online Event </span>
+          </div>
+
+          <p class="event-desc" *ngIf="event.description">
+            {{ event.description | slice: 0 : 120 }}...
+          </p>
+
+          <div class="event-footer">
+            <span class="registrations">
+              👥 {{ event.registrationCount }}
+              registered
+            </span>
+            <button
+              class="register-btn"
+              [class.registered]="event.isRegistered"
+              (click)="registerForEvent(event.id)"
+              [disabled]="event.isRegistered"
+            >
+              {{ event.isRegistered ? "✓ Registered" : "Register Now" }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Registrations -->
+  <div *ngIf="activeTab() === 'mine'">
+    <div class="empty-state" *ngIf="myEvents().length === 0">
+      <div>📅</div>
+      <h3>No registrations yet</h3>
+      <p>Register for events to see them here!</p>
+      <button class="tab-btn active" (click)="switchTab('upcoming')">
+        Browse Events
+      </button>
+    </div>
+
+    <div class="events-list" *ngIf="myEvents().length > 0">
+      <div class="event-card registered" *ngFor="let event of myEvents()">
+        <div class="event-info">
+          <h3 class="event-title">
+            {{ event.title }}
+          </h3>
+          <div class="event-meta">
+            <span> 📅 {{ formatDate(event.eventDate) }} </span>
+            <span *ngIf="event.location"> 📍 {{ event.location }} </span>
+          </div>
+          <div class="registered-badge">✅ You are registered!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

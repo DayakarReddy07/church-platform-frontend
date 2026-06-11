@@ -9,6 +9,10 @@ import {
   SearchService,
 } from '../../core/services/search.service';
 import { Subject } from 'rxjs';
+import {
+  Notification,
+  NotificationService,
+} from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-layout',
@@ -30,6 +34,10 @@ export class AppLayoutComponent {
   showSearchResults = signal(false);
 
   private searchSubject = new Subject<string>();
+
+  notifications = signal<Notification[]>([]);
+  showNotifications = signal(false);
+  notifLoading = signal(false);
 
   // Add to navItems or create separate
   superAdminItems = [
@@ -121,6 +129,7 @@ export class AppLayoutComponent {
     public authService: AuthService,
     private router: Router,
     private searchService: SearchService,
+    public notificationService: NotificationService,
   ) {
     // Track current route for active state
     this.router.events
@@ -142,6 +151,14 @@ export class AppLayoutComponent {
           this.showSearchResults.set(false);
         }
       });
+
+    // Load notification count on startup
+    this.loadNotificationCount();
+
+    // Refresh count every 30 seconds
+    setInterval(() => {
+      this.loadNotificationCount();
+    }, 30000);
   }
 
   @HostListener('window:resize')
@@ -279,5 +296,95 @@ export class AppLayoutComponent {
         .substring(0, 2)
         .toUpperCase() || ''
     );
+  }
+
+  loadNotificationCount() {
+    if (this.authService.isLoggedIn()) {
+      this.notificationService.loadUnreadCount();
+    }
+  }
+
+  toggleNotifications() {
+    this.showNotifications.update((v) => !v);
+    if (this.showNotifications()) {
+      this.loadNotifications();
+    }
+  }
+
+  loadNotifications() {
+    this.notifLoading.set(true);
+    this.notificationService.getNotifications().subscribe({
+      next: (notifs) => {
+        this.notifications.set(notifs);
+        this.notifLoading.set(false);
+      },
+      error: () => this.notifLoading.set(false),
+    });
+  }
+
+  markAllRead() {
+    this.notificationService.markAllAsRead().subscribe({
+      next: () => {
+        this.notifications.update((notifs) =>
+          notifs.map((n) => ({ ...n, isRead: true })),
+        );
+        this.notificationService.unreadCount.set(0);
+      },
+    });
+  }
+
+  goToNotification(notif: Notification) {
+    // Mark as read
+    this.notificationService.markAsRead(notif.id).subscribe();
+
+    // Update locally
+    this.notifications.update((notifs) =>
+      notifs.map((n) => (n.id === notif.id ? { ...n, isRead: true } : n)),
+    );
+
+    // Update count
+    this.notificationService.unreadCount.update((c) => Math.max(0, c - 1));
+
+    // Navigate
+    this.showNotifications.set(false);
+    if (notif.link) {
+      this.router.navigateByUrl(notif.link);
+    }
+  }
+
+  closeNotifications() {
+    setTimeout(() => {
+      this.showNotifications.set(false);
+    }, 200);
+  }
+
+  getNotifIcon(type: string): string {
+    switch (type) {
+      case 'NEW_FOLLOWER':
+        return '👥';
+      case 'NEW_SERMON':
+        return '🎵';
+      case 'NEW_EVENT':
+        return '📅';
+      case 'NEW_POST':
+        return '📝';
+      case 'PRAYER_RESPONSE':
+        return '🙏';
+      default:
+        return '🔔';
+    }
+  }
+
+  getTimeAgo(dateStr: string): string {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    return `${days}d ago`;
   }
 }

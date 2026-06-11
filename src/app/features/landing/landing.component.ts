@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -9,10 +16,9 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss']
+  styleUrls: ['./landing.component.scss'],
 })
 export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
-
   // Stats counters
   stats = [
     { value: 0, target: 248, label: 'Churches', suffix: '+' },
@@ -27,37 +33,45 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Latest sermons
   sermons: any[] = [];
 
+  mobileMenuOpen = false;
+
   // Features list
   features = [
     {
       icon: '⛪',
       title: 'Multi-Church Platform',
-      description: 'Every church gets their own space. Members follow their favourite churches.'
+      description:
+        'Every church gets their own space. Members follow their favourite churches.',
     },
     {
       icon: '🎵',
       title: 'Sermon Library',
-      description: 'Watch, listen and download sermons from churches across the nation.'
+      description:
+        'Watch, listen and download sermons from churches across the nation.',
     },
     {
       icon: '📅',
       title: 'Events & Gatherings',
-      description: 'Discover and register for events, conferences and youth camps near you.'
+      description:
+        'Discover and register for events, conferences and youth camps near you.',
     },
     {
       icon: '🙏',
       title: 'Prayer Wall',
-      description: 'Submit prayer requests and pray for others in the community.'
+      description:
+        'Submit prayer requests and pray for others in the community.',
     },
     {
       icon: '💬',
       title: 'Community Feed',
-      description: 'Stay updated with posts, testimonies and devotionals from your churches.'
+      description:
+        'Stay updated with posts, testimonies and devotionals from your churches.',
     },
     {
       icon: '💝',
       title: 'Online Giving',
-      description: 'Support your church and ministries with secure online donations.'
+      description:
+        'Support your church and ministries with secure online donations.',
     },
   ];
 
@@ -67,19 +81,19 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
       name: 'Pastor Samuel',
       church: 'Grace Fellowship, Hyderabad',
       text: 'OneBody has transformed how we connect with our congregation. Our members are more engaged than ever!',
-      avatar: 'PS'
+      avatar: 'PS',
     },
     {
       name: 'Sister Mary',
       church: 'City Harvest, Bangalore',
       text: 'The prayer wall feature is incredible. We have seen so many prayers answered through this platform!',
-      avatar: 'SM'
+      avatar: 'SM',
     },
     {
       name: 'Brother John',
       church: 'Hope Church, Chennai',
       text: 'Finally a platform that understands the needs of the Christian community. Highly recommended!',
-      avatar: 'BJ'
+      avatar: 'BJ',
     },
   ];
 
@@ -95,7 +109,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private http: HttpClient,
-    public authService: AuthService
+    public authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -148,7 +162,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.statsAnimated) return;
     this.statsAnimated = true;
 
-    this.stats.forEach(stat => {
+    this.stats.forEach((stat) => {
       let current = 0;
       const increment = stat.target / 60;
       const timer = setInterval(() => {
@@ -165,84 +179,112 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Watch for stats section visibility
   setupScrollAnimation() {
-  // Wait for DOM to be ready
-  setTimeout(() => {
-    const statsSection = document.getElementById(
-      'stats-section'
-    );
+    // Wait for DOM to be ready
+    setTimeout(() => {
+      const statsSection = document.getElementById('stats-section');
 
-    if (statsSection) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              this.animateStats();
-              // Stop observing after animation
-              observer.disconnect();
-            }
-          });
-        },
-        { threshold: 0.1 } // trigger when 10% visible
-      );
-      observer.observe(statsSection);
-    } else {
-      // If section not found just animate
-      setTimeout(() => this.animateStats(), 1000);
-    }
-  }, 300);
-}
+      if (statsSection) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                this.animateStats();
+                // Stop observing after animation
+                observer.disconnect();
+              }
+            });
+          },
+          { threshold: 0.1 }, // trigger when 10% visible
+        );
+        observer.observe(statsSection);
+      } else {
+        // If section not found just animate
+        setTimeout(() => this.animateStats(), 1000);
+      }
+    }, 300);
+  }
 
   // Load churches from API
   loadChurches() {
-    this.http.get<any[]>(
-      'http://localhost:8080/api/churches/public'
-    ).subscribe({
-      next: (data) => {
-        this.churches = data.slice(0, 6);
-      },
-      error: () => {
-        // Show demo data if API fails
-        this.churches = this.getDemoChurches();
-      }
-    });
+    this.http
+      .get<any[]>('http://localhost:8080/api/churches/public')
+      .subscribe({
+        next: (data) => {
+          this.churches = data.slice(0, 6);
+        },
+        error: () => {
+          // Show demo data if API fails
+          this.churches = this.getDemoChurches();
+        },
+      });
   }
 
   // Load sermons from API
   loadSermons() {
-    this.http.get<any>(
-      'http://localhost:8080/api/sermons/public?page=0&size=4'
-    ).subscribe({
-      next: (data) => {
-        this.sermons = data.content || [];
-      },
-      error: () => {
-        this.sermons = this.getDemoSermons();
-      }
-    });
+    this.http
+      .get<any>('http://localhost:8080/api/sermons/public?page=0&size=4')
+      .subscribe({
+        next: (data) => {
+          this.sermons = data.content || [];
+        },
+        error: () => {
+          this.sermons = this.getDemoSermons();
+        },
+      });
   }
 
   // Demo data
   getDemoChurches() {
     return [
-      { id: 1, name: 'Grace Fellowship', city: 'Hyderabad', followerCount: 2400, verified: true },
-      { id: 2, name: 'City Harvest', city: 'Bangalore', followerCount: 1800, verified: true },
-      { id: 3, name: 'Hope Church', city: 'Chennai', followerCount: 1200, verified: true },
+      {
+        id: 1,
+        name: 'Grace Fellowship',
+        city: 'Hyderabad',
+        followerCount: 2400,
+        verified: true,
+      },
+      {
+        id: 2,
+        name: 'City Harvest',
+        city: 'Bangalore',
+        followerCount: 1800,
+        verified: true,
+      },
+      {
+        id: 3,
+        name: 'Hope Church',
+        city: 'Chennai',
+        followerCount: 1200,
+        verified: true,
+      },
     ];
   }
 
   getDemoSermons() {
     return [
-      { id: 1, title: 'Walking in Faith', speaker: 'Pastor John', churchName: 'Grace Fellowship' },
-      { id: 2, title: 'Grace & Truth', speaker: 'Pastor Mary', churchName: 'City Harvest' },
+      {
+        id: 1,
+        title: 'Walking in Faith',
+        speaker: 'Pastor John',
+        churchName: 'Grace Fellowship',
+      },
+      {
+        id: 2,
+        title: 'Grace & Truth',
+        speaker: 'Pastor Mary',
+        churchName: 'City Harvest',
+      },
     ];
   }
 
   navigateTo(path: string) {
+    this.mobileMenuOpen = false;
     this.router.navigate([path]);
   }
 
   getChurchInitials(name: string): string {
-    return name.split(' ')
+    return name
+      .split(' ')
       .map((w: string) => w[0])
       .join('')
       .substring(0, 2)
@@ -250,12 +292,26 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getUserInitials(): string {
-  const name = this.authService
-    .currentUser()?.name || '';
-  return name.split(' ')
-    .map(w => w[0])
-    .join('')
-    .substring(0, 2)
-    .toUpperCase();
-}
+    const name = this.authService.currentUser()?.name || '';
+    return name
+      .split(' ')
+      .map((w) => w[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  }
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  scrollToSection(sectionId: string) {
+    this.mobileMenuOpen = false;
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }
 }

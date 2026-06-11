@@ -40,14 +40,32 @@
         >
       </div>
 
-      <!-- Nav Links -->
-      <div class="nav-links">
-        <a (click)="navigateTo('/discover')">Discover</a>
-        <a (click)="navigateTo('/sermons')">Sermons</a>
-        <a href="#features">Features</a>
-        <a href="#about">About</a>
+      <div class="nav-links" [class.open]="mobileMenuOpen">
+        <a
+          (click)="
+            navigateTo(
+              authService.isLoggedIn() ? '/app/discover' : '/auth/register'
+            )
+          "
+        >
+          Discover
+        </a>
+
+        <a (click)="scrollToSection('features')"> Features </a>
+
+        <a (click)="scrollToSection('churches')"> Churches </a>
+
+        <a (click)="scrollToSection('about')"> About </a>
       </div>
 
+      <!-- Mobile Hamburger -->
+      <button
+        class="hamburger"
+        (click)="toggleMobileMenu()"
+        *ngIf="!authService.isLoggedIn()"
+      >
+        <span [class.open]="mobileMenuOpen">☰</span>
+      </button>
       <!-- Nav Actions -->
       <!-- Nav Actions -->
       <div class="nav-actions">
@@ -66,8 +84,18 @@
           <button class="btn-outline" (click)="navigateTo('/app/feed')">
             My Feed 🏠
           </button>
+
+          <!-- Avatar with profile pic support -->
           <div class="nav-avatar" (click)="navigateTo('/app/feed')">
-            {{ getUserInitials() }}
+            <img
+              *ngIf="authService.currentUser()?.profilePic"
+              [src]="authService.currentUser()!.profilePic!"
+              alt="Profile"
+              class="nav-avatar-img"
+            />
+            <span *ngIf="!authService.currentUser()?.profilePic">
+              {{ getUserInitials() }}
+            </span>
           </div>
         </ng-container>
       </div>
@@ -216,7 +244,7 @@
   </section>
 
   <!-- ═══ CHURCHES SECTION ═══ -->
-  <section class="churches-section" *ngIf="churches.length > 0">
+  <section class="churches-section" id="churches" *ngIf="churches.length > 0">
     <div class="section-container">
       <div class="section-header">
         <p class="section-eyebrow">Our Community</p>
@@ -261,7 +289,14 @@
       </div>
 
       <div class="section-footer">
-        <button class="btn-outline" (click)="navigateTo('/discover')">
+        <button
+          class="btn-outline"
+          (click)="
+            navigateTo(
+              authService.isLoggedIn() ? '/app/discover' : '/auth/register'
+            )
+          "
+        >
           View All Churches →
         </button>
       </div>
@@ -269,7 +304,7 @@
   </section>
 
   <!-- ═══ TESTIMONIALS ═══ -->
-  <section class="testimonials-section">
+  <section class="testimonials-section" id="about">
     <div class="section-container">
       <div class="section-header">
         <p class="section-eyebrow">Testimonials</p>

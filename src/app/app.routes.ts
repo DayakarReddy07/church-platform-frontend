@@ -95,6 +95,30 @@ export const routes: Routes = [
             (m) => m.SuperAdminComponent,
           ),
       },
+      {
+        path: 'churches',
+        loadComponent: () =>
+          import('./features/churches/my-churches/my-churches.component').then(
+            (m) => m.MyChurchesComponent,
+          ),
+      },
+      // Sermons Page
+      {
+        path: 'sermons',
+        loadComponent: () =>
+          import('./features/sermons/sermons-page.component').then(
+            (m) => m.SermonsPageComponent,
+          ),
+      },
+
+      // Events (already exists, just verify)
+      {
+        path: 'events',
+        loadComponent: () =>
+          import('./features/events/events.component').then(
+            (m) => m.EventsComponent,
+          ),
+      },
       { path: '', redirectTo: 'feed', pathMatch: 'full' },
     ],
   },

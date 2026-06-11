@@ -64,6 +64,12 @@ churchError = signal('');
   // Setup steps
   setupStep = signal(1);
   errorMessage: any;
+ 
+settingsSuccess = signal('');
+isSavingSettings = signal(false);
+
+// Add new form
+editChurchForm: FormGroup;
 
   constructor(
     private churchService: ChurchService,
@@ -109,6 +115,19 @@ churchError = signal('');
       type: ['ANNOUNCEMENT'],
       imageUrl: ['']
     });
+
+    // Edit church form
+  this.editChurchForm = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    location: ['', Validators.required],
+    city: ['', Validators.required],
+    state: ['', Validators.required],
+    country: ['India'],
+    website: [''],
+    phone: [''],
+    logo: ['']
+  });
   }
 
   ngOnInit() {
@@ -122,8 +141,20 @@ churchError = signal('');
       this.church.set(church);
       this.hasChurch.set(true);
       this.isLoading.set(false);
-      // ✅ Load all content after church loads
       this.loadAllContent();
+
+      // Populate edit form with church data
+      this.editChurchForm.patchValue({
+        name: church.name,
+        description: church.description,
+        location: church.location,
+        city: church.city,
+        state: church.state,
+        country: church.country,
+        website: church.website,
+        phone: church.phone,
+        logo: church.logo
+      });
     },
     error: (err) => {
       if (err.status === 404 ||
@@ -134,7 +165,7 @@ churchError = signal('');
       this.isLoading.set(false);
     }
   });
- }
+}
 
 loadAllContent() {
   // Load sermons
@@ -390,24 +421,63 @@ onChurchLogoUploaded(url: string) {
   });
 }
 
-updateChurchLogo(url: string) {
-  if (!url || !this.church()) return;
+// Save church details
+saveChurchDetails() {
+  if (this.editChurchForm.invalid) {
+    this.editChurchForm.markAllAsTouched();
+    return;
+  }
 
-  // Update church with new logo
+  this.isSavingSettings.set(true);
+
+  this.churchService.updateChurch(
+    this.church()!.id,
+    this.editChurchForm.value
+  ).subscribe({
+    next: (updated) => {
+      this.church.set(updated);
+      this.isSavingSettings.set(false);
+      this.settingsSuccess.set(
+        'Church details updated successfully!'
+      );
+      setTimeout(() =>
+        this.settingsSuccess.set(''), 3000
+      );
+    },
+    error: (err) => {
+      this.isSavingSettings.set(false);
+      alert(
+        err.error?.message ||
+        'Failed to update church details!'
+      );
+    }
+  });
+}
+
+// Handle logo upload
+onLogoUploaded(url: string) {
+  if (!url) return;
+
+  // Update form value
+  this.editChurchForm.patchValue({ logo: url });
+
+  // Also update church immediately
   this.churchService.updateChurch(
     this.church()!.id,
     { logo: url }
   ).subscribe({
     next: (updated) => {
       this.church.set(updated);
-      this.submitSuccess.set('Logo updated! ✅');
+      this.settingsSuccess.set('Logo updated! ✅');
       setTimeout(() =>
-        this.submitSuccess.set(''), 3000
+        this.settingsSuccess.set(''), 3000
       );
-    },
-    error: () => {
-      alert('Failed to update logo!');
     }
   });
+}
+
+// Keep old method name for compatibility
+updateChurchLogo(url: string) {
+  this.onLogoUploaded(url);
 }
 }

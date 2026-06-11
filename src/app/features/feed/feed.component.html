@@ -98,11 +98,13 @@
               {{ item.title }}
             </h3>
             <p class="card-content">{{ item.content }}</p>
-            <div
-              class="card-image"
+            <img
               *ngIf="item.imageUrl"
-              [style.backgroundImage]="'url(' + item.imageUrl + ')'"
-            ></div>
+              [src]="item.imageUrl"
+              [alt]="item.title"
+              class="post-feed-img"
+              (error)="$any($event.target).style.display = 'none'"
+            />
           </div>
 
           <!-- Post Actions -->
@@ -130,8 +132,16 @@
         <ng-container *ngIf="item.itemType === 'SERMON'">
           <div class="card-header">
             <div class="church-info">
-              <div class="church-avatar">
-                {{ getChurchInitials(item.churchName) }}
+              <div class="church-avatar" [class.has-image]="item.churchLogo">
+                <img
+                  *ngIf="item.churchLogo"
+                  [src]="item.churchLogo"
+                  [alt]="item.churchName"
+                  class="avatar-img"
+                />
+                <span *ngIf="!item.churchLogo">
+                  {{ getChurchInitials(item.churchName) }}
+                </span>
               </div>
               <div class="church-details">
                 <div class="church-name">
@@ -149,20 +159,20 @@
 
           <div class="card-body">
             <!-- Sermon Thumbnail -->
-            <div
-              class="sermon-thumbnail"
-              [style.backgroundImage]="
-                item.imageUrl ? 'url(' + item.imageUrl + ')' : 'none'
-              "
-            >
+            <div class="sermon-thumbnail">
+              <img
+                *ngIf="item.imageUrl"
+                [src]="item.imageUrl"
+                [alt]="item.title"
+                class="sermon-thumb-img"
+              />
+              <div class="sermon-thumb-placeholder" *ngIf="!item.imageUrl">
+                🎵
+              </div>
               <div class="play-overlay">
                 <div class="play-btn">▶</div>
               </div>
-              <div class="sermon-thumbnail-placeholder" *ngIf="!item.imageUrl">
-                🎵
-              </div>
             </div>
-
             <h3 class="card-title">{{ item.title }}</h3>
             <p class="sermon-speaker">
               🎤 {{ item.speaker }}
@@ -175,11 +185,12 @@
 
           <div class="card-actions">
             <button
-  class="action-btn sermon-watch-btn"
-  (click)="watchSermon(item.id)">
-  <span>▶️</span>
-  <span>Watch Now</span>
-</button>
+              class="action-btn sermon-watch-btn"
+              (click)="watchSermon(item.id)"
+            >
+              <span>▶️</span>
+              <span>Watch Now</span>
+            </button>
             <button class="action-btn">
               <span>🔖</span>
               <span>Save</span>
@@ -195,8 +206,16 @@
         <ng-container *ngIf="item.itemType === 'EVENT'">
           <div class="card-header">
             <div class="church-info">
-              <div class="church-avatar">
-                {{ getChurchInitials(item.churchName) }}
+              <div class="church-avatar" [class.has-image]="item.churchLogo">
+                <img
+                  *ngIf="item.churchLogo"
+                  [src]="item.churchLogo"
+                  [alt]="item.churchName"
+                  class="avatar-img"
+                />
+                <span *ngIf="!item.churchLogo">
+                  {{ getChurchInitials(item.churchName) }}
+                </span>
               </div>
               <div class="church-details">
                 <div class="church-name">

@@ -103,4 +103,10 @@ cancelRegistration(eventId: number): Observable<any> {
     `${this.api}/events/${eventId}/register`
   );
 }
+
+getFollowedChurches(): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.api}/follows/my-churches`
+  );
+}
 }

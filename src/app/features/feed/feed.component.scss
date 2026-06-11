@@ -99,29 +99,34 @@
     gap: 12px;
   }
 
-  .church-avatar {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, #c9a84c, #e2c17a);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: #060919;
-    font-size: 14px;
-    flex-shrink: 0;
-    &.has-image {
-      background: none;
-    }
+ .church-avatar {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(
+    135deg, #C9A84C, #E2C17A
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #060919;
+  font-size: 14px;
+  flex-shrink: 0;
+  overflow: hidden;
 
-    .avatar-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
+  &.has-image {
+    background: none;
   }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+}
 
   .church-name {
     font-weight: 600;
@@ -684,5 +689,45 @@
     color: #c9a84c;
     font-size: 13px;
     font-weight: 600;
+  }
+}
+
+.post-feed-img {
+  width: 100%;
+  max-height: 400px;
+  min-height: 200px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  margin-top: 12px;
+  display: block;
+}
+
+.sermon-thumbnail {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  background: #0A0E27;
+  cursor: pointer;
+
+  .sermon-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .sermon-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    opacity: 0.3;
   }
 }

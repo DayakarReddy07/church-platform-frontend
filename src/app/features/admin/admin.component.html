@@ -627,19 +627,15 @@
     <!-- ── SETTINGS TAB ── -->
     <div *ngIf="activeTab() === 'settings'">
       <h2 class="section-title">⚙️ Church Settings</h2>
-      <div class="settings-card glass">
-        <div class="church-logo-large" [class.has-image]="church()?.logo">
-          <img
-            *ngIf="church()?.logo"
-            [src]="church()?.logo"
-            [alt]="church()?.name"
-            class="logo-img-large"
-          />
-          <span *ngIf="!church()?.logo">
-            {{ getChurchInitials() }}
-          </span>
-        </div>
 
+      <!-- Success Message -->
+      <div class="settings-success" *ngIf="settingsSuccess()">
+        ✅ {{ settingsSuccess() }}
+      </div>
+
+      <!-- Settings Form -->
+      <div class="settings-card glass">
+        <!-- Logo Section -->
         <div class="settings-logo-section">
           <!-- Current Logo -->
           <div class="church-logo-large" [class.has-image]="church()?.logo">
@@ -660,54 +656,154 @@
             <app-image-upload
               placeholder="Upload New Logo"
               uploadType="church-logo"
-              (imageUploaded)="updateChurchLogo($event)"
+              (imageUploaded)="onLogoUploaded($event)"
             >
             </app-image-upload>
           </div>
         </div>
-        <div class="settings-info">
-          <div class="info-row">
-            <span class="info-label">Church Name</span>
-            <span class="info-value">
-              {{ church()?.name }}
-            </span>
+
+        <!-- Edit Form -->
+        <form [formGroup]="editChurchForm" (ngSubmit)="saveChurchDetails()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Church Name *</label>
+              <div class="input-wrap">
+                <span>⛪</span>
+                <input
+                  type="text"
+                  formControlName="name"
+                  placeholder="Church name"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Phone</label>
+              <div class="input-wrap">
+                <span>📞</span>
+                <input
+                  type="text"
+                  formControlName="phone"
+                  placeholder="+91 9876543210"
+                />
+              </div>
+            </div>
           </div>
-          <div class="info-row">
-            <span class="info-label">Location</span>
-            <span class="info-value">
-              {{ church()?.city }}, {{ church()?.state }}
-            </span>
+
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea
+              formControlName="description"
+              placeholder="Tell people about your church..."
+              rows="4"
+            >
+            </textarea>
           </div>
-          <div class="info-row">
-            <span class="info-label">Followers</span>
-            <span class="info-value">
-              {{ church()?.followerCount || 0 }}
-            </span>
+
+          <div class="form-group">
+            <label>Full Address *</label>
+            <div class="input-wrap">
+              <span>📍</span>
+              <input
+                type="text"
+                formControlName="location"
+                placeholder="123 Church Street"
+              />
+            </div>
           </div>
-          <div class="info-row">
-            <span class="info-label">Status</span>
-            <span class="info-value">
-              <span *ngIf="church()?.verified" class="verified">
-                ✅ Verified
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City *</label>
+              <div class="input-wrap">
+                <span>🏙️</span>
+                <input
+                  type="text"
+                  formControlName="city"
+                  placeholder="Hyderabad"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>State *</label>
+              <div class="input-wrap">
+                <span>🗺️</span>
+                <input
+                  type="text"
+                  formControlName="state"
+                  placeholder="Telangana"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Country</label>
+              <div class="input-wrap">
+                <span>🌍</span>
+                <input
+                  type="text"
+                  formControlName="country"
+                  placeholder="India"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Website</label>
+              <div class="input-wrap">
+                <span>🌐</span>
+                <input
+                  type="text"
+                  formControlName="website"
+                  placeholder="www.mychurch.com"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Church Info Display -->
+          <div class="church-info-display">
+            <div class="info-row">
+              <span class="info-label">Status</span>
+              <span class="info-value">
+                <span *ngIf="church()?.verified" class="verified">
+                  ✅ Verified
+                </span>
+                <span *ngIf="!church()?.verified" class="pending">
+                  ⏳ Pending Verification
+                </span>
               </span>
-              <span *ngIf="!church()?.verified" class="pending">
-                ⏳ Pending Verification
+            </div>
+            <div class="info-row">
+              <span class="info-label">Followers</span>
+              <span class="info-value">
+                {{ church()?.followerCount || 0 }}
               </span>
-            </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Joined</span>
+              <span class="info-value">
+                {{ formatDate(church()!.createdAt) }}
+              </span>
+            </div>
           </div>
-          <div class="info-row" *ngIf="church()?.website">
-            <span class="info-label">Website</span>
-            <span class="info-value">
-              {{ church()?.website }}
+
+          <!-- Save Button -->
+          <button
+            type="submit"
+            class="save-btn"
+            [disabled]="isSavingSettings()"
+          >
+            <span *ngIf="!isSavingSettings()"> 💾 Save Changes </span>
+            <span *ngIf="isSavingSettings()" class="loading-text">
+              <span class="spinner"></span>
+              Saving...
             </span>
-          </div>
-          <div class="info-row" *ngIf="church()?.phone">
-            <span class="info-label">Phone</span>
-            <span class="info-value">
-              {{ church()?.phone }}
-            </span>
-          </div>
-        </div>
+          </button>
+        </form>
       </div>
     </div>
   </div>

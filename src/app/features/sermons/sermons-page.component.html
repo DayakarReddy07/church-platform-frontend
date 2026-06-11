@@ -1,0 +1,100 @@
+<div class="sermons-wrapper">
+
+  <div class="page-header">
+    <h1 class="page-title">🎵 Sermons</h1>
+    <p class="page-subtitle">
+      Watch sermons from churches on OneBody
+    </p>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-screen"
+    *ngIf="isLoading() && sermons().length === 0">
+    <div class="spinner"></div>
+    <p>Loading sermons...</p>
+  </div>
+
+  <!-- Sermons Grid -->
+  <div
+    class="sermons-grid"
+    *ngIf="sermons().length > 0">
+
+    <div
+      class="sermon-card"
+      *ngFor="let sermon of sermons()"
+      (click)="watchSermon(sermon.id)">
+
+      <!-- Thumbnail -->
+      <div class="sermon-thumb">
+        <img
+          *ngIf="getThumbnail(sermon)"
+          [src]="getThumbnail(sermon)"
+          [alt]="sermon.title"
+          class="thumb-img"
+          (error)="$any($event.target)
+            .style.display='none'"/>
+        <div
+          class="thumb-placeholder"
+          *ngIf="!getThumbnail(sermon)">
+          🎵
+        </div>
+        <div class="play-overlay">▶</div>
+      </div>
+
+      <!-- Info -->
+      <div class="sermon-info">
+
+        <!-- Church -->
+        <div class="sermon-church">
+          <div class="church-avatar-xs">
+            <img
+              *ngIf="sermon.churchLogo"
+              [src]="sermon.churchLogo"
+              class="church-logo-xs"/>
+            <span *ngIf="!sermon.churchLogo">
+              {{ getInitials(sermon.churchName) }}
+            </span>
+          </div>
+          <span>{{ sermon.churchName }}</span>
+        </div>
+
+        <h4 class="sermon-title">
+          {{ sermon.title }}
+        </h4>
+
+        <p class="sermon-speaker">
+          🎤 {{ sermon.speaker }}
+          <span *ngIf="sermon.series">
+            · {{ sermon.series }}
+          </span>
+        </p>
+
+        <p class="sermon-date">
+          {{ formatDate(sermon.createdAt) }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Load More -->
+  <div
+    class="load-more"
+    *ngIf="hasMore() && !isLoading()">
+    <button
+      class="load-more-btn"
+      (click)="loadMore()">
+      Load More Sermons
+    </button>
+  </div>
+
+  <!-- Loading more -->
+  <div
+    class="loading-more"
+    *ngIf="isLoading() && sermons().length > 0">
+    <div class="spinner"></div>
+  </div>
+
+</div>
