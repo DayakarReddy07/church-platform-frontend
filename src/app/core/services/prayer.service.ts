@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Prayer {
   id: number;
@@ -16,7 +17,7 @@ export interface Prayer {
 @Injectable({ providedIn: 'root' })
 export class PrayerService {
 
-  private api = 'http://localhost:8080/api/prayers';
+  private api = `${environment.apiUrl}/prayers`;
 
   constructor(private http: HttpClient) {}
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface FeedItem {
   itemType: 'POST' | 'SERMON' | 'EVENT';
@@ -50,7 +51,7 @@ export interface FeedStats {
 @Injectable({ providedIn: 'root' })
 export class FeedService {
 
-  private api = 'http://localhost:8080/api';
+  private api = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 

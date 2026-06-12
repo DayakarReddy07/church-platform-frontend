@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface PlatformStats {
   totalChurches: number;
@@ -15,7 +16,7 @@ export interface PlatformStats {
 export class SuperAdminService {
 
   private api =
-    'http://localhost:8080/api/super-admin';
+    `${environment.apiUrl}/super-admin`;
 
   constructor(private http: HttpClient) {}
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface SearchResult {
   type: 'CHURCH' | 'SERMON' | 'EVENT' | 'POST';
@@ -16,7 +17,7 @@ export interface SearchResult {
 @Injectable({ providedIn: 'root' })
 export class SearchService {
 
-  private api = 'http://localhost:8080/api';
+  private api = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
