@@ -8,11 +8,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleSigninButtonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -40,6 +41,19 @@ export class LoginComponent {
     });
 
     this.generateStars();
+
+    // Just listen to auth service events
+  this.authService.googleAuthSuccess$.subscribe((user: any) => {
+    if (user?.role === 'CHURCH_ADMIN') {
+      this.router.navigate(['/app/admin']);
+    } else {
+      this.router.navigate(['/app/feed']);
+    }
+  });
+
+  this.authService.googleAuthError$.subscribe((msg: string) => {
+    this.googleError.set(msg);
+  });
   }
 
   generateStars() {
@@ -103,24 +117,25 @@ export class LoginComponent {
   }
 
   // Add Google login method
-loginWithGoogle() {
-  this.isGoogleLoading.set(true);
-  this.googleError.set('');
+// loginWithGoogle() {
+//   this.isGoogleLoading.set(true);
+//   this.googleError.set('');
 
-  this.authService.loginWithGoogle()
-    .then((user: any) => {
-      this.isGoogleLoading.set(false);
-      if (user?.role === 'CHURCH_ADMIN') {
-        this.router.navigate(['/app/admin']);
-      } else {
-        this.router.navigate(['/app/feed']);
-      }
-    })
-    .catch((err: any) => {
-      this.isGoogleLoading.set(false);
-      this.googleError.set(
-        'Google login failed. Please try again!'
-      );
-    });
-}
+//   this.authService.loginWithGoogle()
+//     .then((user: any) => {
+//       this.isGoogleLoading.set(false);
+//       if (user?.role === 'CHURCH_ADMIN') {
+//         this.router.navigate(['/app/admin']);
+//       } else {
+//         this.router.navigate(['/app/feed']);
+//       }
+//     })
+//     .catch((err: any) => {
+//   this.isGoogleLoading.set(false);
+//   console.error('Google error:', err);  // ← add this
+//   this.googleError.set(
+//     err?.error?.message || err?.message || 'Google login failed!'
+//   );
+// });
+// }
 }

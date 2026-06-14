@@ -5,14 +5,15 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleSigninButtonModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -40,6 +41,17 @@ export class RegisterComponent {
     });
 
     this.generateStars();
+    this.authService.googleAuthSuccess$.subscribe((user: any) => {
+    if (user?.role === 'CHURCH_ADMIN') {
+      this.router.navigate(['/app/admin']);
+    } else {
+      this.router.navigate(['/app/feed']);
+    }
+  });
+
+  this.authService.googleAuthError$.subscribe((msg: string) => {
+    this.googleError.set(msg);
+  });
   }
 
   generateStars() {
@@ -58,6 +70,7 @@ export class RegisterComponent {
   selectRole(role: 'MEMBER' | 'CHURCH_ADMIN') {
     this.selectedRole.set(role);
     this.registerForm.patchValue({ role });
+     this.authService.setGoogleRole(role);
   }
 
   togglePassword() {
@@ -96,26 +109,27 @@ export class RegisterComponent {
     return !!(control?.invalid && control?.touched);
   }
 
-  loginWithGoogle() {
-  this.isGoogleLoading.set(true);
+//   loginWithGoogle() {
+//   this.isGoogleLoading.set(true);
 
-  // Get selected role
-  const role = this.selectedRole();
+//   // Get selected role
+//   const role = this.selectedRole();
 
-  this.authService.loginWithGoogle(role)
-    .then((user: any) => {
-      this.isGoogleLoading.set(false);
-      if (user?.role === 'CHURCH_ADMIN') {
-        this.router.navigate(['/app/admin']);
-      } else {
-        this.router.navigate(['/app/feed']);
-      }
-    })
-    .catch(() => {
-      this.isGoogleLoading.set(false);
-      this.googleError.set(
-        'Google signup failed!'
-      );
-    });
-}
+//   this.authService.loginWithGoogle(role)
+//     .then((user: any) => {
+//       this.isGoogleLoading.set(false);
+//       if (user?.role === 'CHURCH_ADMIN') {
+//         this.router.navigate(['/app/admin']);
+//       } else {
+//         this.router.navigate(['/app/feed']);
+//       }
+//     })
+//     .catch((err: any) => {
+//   this.isGoogleLoading.set(false);
+//   console.error('Google error:', err);  // ← add this
+//   this.googleError.set(
+//     err?.error?.message || err?.message || 'Google login failed!'
+//   );
+// });
+// }
 }

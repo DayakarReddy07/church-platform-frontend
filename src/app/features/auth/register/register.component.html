@@ -1,16 +1,17 @@
 <div class="auth-wrapper">
-
   <!-- Stars -->
   <div class="stars-bg">
-    <div *ngFor="let star of stars" class="star"
+    <div
+      *ngFor="let star of stars"
+      class="star"
       [style.left.%]="star.x"
       [style.top.%]="star.y"
       [style.width.px]="star.size"
       [style.height.px]="star.size"
       [style.opacity]="star.opacity"
       [style.animation-duration.s]="star.duration"
-      [style.animation-delay.s]="star.delay">
-    </div>
+      [style.animation-delay.s]="star.delay"
+    ></div>
   </div>
 
   <!-- Left Side -->
@@ -18,23 +19,21 @@
     <div class="brand-section">
       <div class="brand-logo" routerLink="/">
         <div class="logo-icon">✝</div>
-        <span class="logo-text">
-          One<span class="gold">Body</span>
-        </span>
+        <span class="logo-text"> One<span class="gold">Body</span> </span>
       </div>
 
       <div class="brand-content">
-        <h1>Join the<br>
+        <h1>
+          Join the<br />
           <span class="gold-text">OneBody Family! 🙏</span>
         </h1>
         <p>
-          Whether you are a church leader or a believer
-          looking to grow — OneBody has a place for you.
+          Whether you are a church leader or a believer looking to grow —
+          OneBody has a place for you.
         </p>
 
         <!-- Role Benefits -->
         <div class="role-benefits">
-
           <div class="benefit-section">
             <h4>👤 As a Member</h4>
             <div class="benefit-item">
@@ -74,7 +73,6 @@
               <span>Analytics dashboard</span>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -83,7 +81,6 @@
   <!-- Right Side -->
   <div class="auth-right">
     <div class="auth-form-container">
-
       <div class="form-header">
         <h2>Create Account</h2>
         <p>Join thousands of believers on OneBody</p>
@@ -94,27 +91,29 @@
         <div
           class="role-option"
           [class.active]="selectedRole() === 'MEMBER'"
-          (click)="selectRole('MEMBER')">
+          (click)="selectRole('MEMBER')"
+        >
           <span class="role-emoji">👤</span>
           <div>
             <div class="role-name">Member</div>
             <div class="role-desc">I want to follow churches</div>
           </div>
-          <span class="role-check"
-            *ngIf="selectedRole() === 'MEMBER'">✓</span>
+          <span class="role-check" *ngIf="selectedRole() === 'MEMBER'">✓</span>
         </div>
 
         <div
           class="role-option"
           [class.active]="selectedRole() === 'CHURCH_ADMIN'"
-          (click)="selectRole('CHURCH_ADMIN')">
+          (click)="selectRole('CHURCH_ADMIN')"
+        >
           <span class="role-emoji">⛪</span>
           <div>
             <div class="role-name">Church Admin</div>
             <div class="role-desc">I manage a church</div>
           </div>
-          <span class="role-check"
-            *ngIf="selectedRole() === 'CHURCH_ADMIN'">✓</span>
+          <span class="role-check" *ngIf="selectedRole() === 'CHURCH_ADMIN'"
+            >✓</span
+          >
         </div>
       </div>
 
@@ -125,51 +124,30 @@
       </div>
 
       <!-- Google Signup -->
-<button
-  class="google-btn"
-  (click)="loginWithGoogle()"
-  [disabled]="isGoogleLoading()">
-  <svg width="18" height="18"
-    viewBox="0 0 18 18">
-    <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18
-      1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0
-      2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
-    <path fill="#34A853" d="M8.98 17c2.16 0
-      3.97-.72 5.3-1.94l-2.6-2.04a4.8 4.8 0 0
-      1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/>
-    <path fill="#FBBC05" d="M4.5 10.52a4.8 4.8
-      0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0
-      7.18l2.67-2.07z"/>
-    <path fill="#EA4335" d="M8.98 4.18c1.17 0
-      2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0
-      1.83 5.4L4.5 7.49a4.77 4.77 0 0 1
-      4.48-3.31z"/>
-  </svg>
-  <span *ngIf="!isGoogleLoading()">
-    Continue with Google
-  </span>
-  <span *ngIf="isGoogleLoading()">
-    Signing up...
-  </span>
-</button>
+      <asl-google-signin-button
+        type="standard"
+        size="large"
+        [width]="350"
+        text="signin_with"
+      >
+      </asl-google-signin-button>
 
-<div class="or-divider">
-  <span>or sign up with email</span>
-</div>
+      <div class="or-divider">
+        <span>or sign up with email</span>
+      </div>
 
       <!-- Form -->
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
         <!-- Name -->
         <div class="form-group">
           <label>Full Name</label>
-          <div class="input-wrapper"
-            [class.error]="isInvalid('name')">
+          <div class="input-wrapper" [class.error]="isInvalid('name')">
             <span class="input-icon">👤</span>
             <input
               type="text"
               formControlName="name"
-              placeholder="Pastor John / Your Name"/>
+              placeholder="Pastor John / Your Name"
+            />
           </div>
           <span class="error-text" *ngIf="isInvalid('name')">
             Name must be at least 2 characters
@@ -179,13 +157,13 @@
         <!-- Email -->
         <div class="form-group">
           <label>Email Address</label>
-          <div class="input-wrapper"
-            [class.error]="isInvalid('email')">
+          <div class="input-wrapper" [class.error]="isInvalid('email')">
             <span class="input-icon">📧</span>
             <input
               type="email"
               formControlName="email"
-              placeholder="your@email.com"/>
+              placeholder="your@email.com"
+            />
           </div>
           <span class="error-text" *ngIf="isInvalid('email')">
             Please enter a valid email
@@ -195,53 +173,41 @@
         <!-- Password -->
         <div class="form-group">
           <label>Password</label>
-          <div class="input-wrapper"
-            [class.error]="isInvalid('password')">
+          <div class="input-wrapper" [class.error]="isInvalid('password')">
             <span class="input-icon">🔒</span>
             <input
               [type]="showPassword() ? 'text' : 'password'"
               formControlName="password"
-              placeholder="Min 6 characters"/>
-            <span class="password-toggle"
-              (click)="togglePassword()">
-              {{ showPassword() ? '🙈' : '👁️' }}
+              placeholder="Min 6 characters"
+            />
+            <span class="password-toggle" (click)="togglePassword()">
+              {{ showPassword() ? "🙈" : "👁️" }}
             </span>
           </div>
-          <span class="error-text"
-            *ngIf="isInvalid('password')">
+          <span class="error-text" *ngIf="isInvalid('password')">
             Password must be at least 6 characters
           </span>
         </div>
 
         <!-- Submit -->
-        <button
-          type="submit"
-          class="submit-btn"
-          [disabled]="isLoading()">
-          <span *ngIf="!isLoading()">
-            Create Account ✨
-          </span>
+        <button type="submit" class="submit-btn" [disabled]="isLoading()">
+          <span *ngIf="!isLoading()"> Create Account ✨ </span>
           <span *ngIf="isLoading()" class="loading">
             <span class="spinner"></span>
             Creating Account...
           </span>
         </button>
-
       </form>
 
       <div class="divider">
         <span>Already have an account?</span>
       </div>
 
-      <button class="login-btn" routerLink="/auth/login">
-        Sign In →
-      </button>
+      <button class="login-btn" routerLink="/auth/login">Sign In →</button>
 
       <div class="back-home">
         <a routerLink="/">← Back to Home</a>
       </div>
-
     </div>
   </div>
-
 </div>
