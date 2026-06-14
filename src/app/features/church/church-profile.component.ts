@@ -19,6 +19,7 @@ import { FollowService }
 import { AuthService }
   from '../../core/services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-church-profile',
@@ -38,7 +39,7 @@ export class ChurchProfileComponent implements OnInit {
   isFollowing = signal(false);
   isFollowInProgress = signal(false);
 
-  private api = 'http://localhost:8080/api';
+  private api = environment.apiUrl;
 
   constructor(
     private route: ActivatedRoute,

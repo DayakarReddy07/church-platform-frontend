@@ -87,7 +87,7 @@ export class AuthService {
   // Update profile picture
 updateProfilePic(profilePicUrl: string): Observable<any> {
   return this.http.put(
-    'http://localhost:8080/api/users/update-profile-pic',
+    `${environment.apiUrl}/users/update-profile-pic`,
     { profilePic: profilePicUrl }
   ).pipe(
     tap((user: any) => {

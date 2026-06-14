@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-landing',
@@ -206,23 +207,21 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Load churches from API
   loadChurches() {
-    this.http
-      .get<any[]>('http://localhost:8080/api/churches/public')
-      .subscribe({
-        next: (data) => {
-          this.churches = data.slice(0, 6);
-        },
-        error: () => {
-          // Show demo data if API fails
-          this.churches = this.getDemoChurches();
-        },
-      });
+    this.http.get<any[]>(`${environment.apiUrl}/churches/public`).subscribe({
+      next: (data) => {
+        this.churches = data.slice(0, 6);
+      },
+      error: () => {
+        // Show demo data if API fails
+        this.churches = this.getDemoChurches();
+      },
+    });
   }
 
   // Load sermons from API
   loadSermons() {
     this.http
-      .get<any>('http://localhost:8080/api/sermons/public?page=0&size=4')
+      .get<any>(`${environment.apiUrl}/sermons/public?page=0&size=4`)
       .subscribe({
         next: (data) => {
           this.sermons = data.content || [];
