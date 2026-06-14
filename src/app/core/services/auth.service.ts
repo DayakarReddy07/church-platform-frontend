@@ -4,6 +4,11 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  SocialUser,
+} from '@abacritt/angularx-social-login';
 
 export interface AuthUser {
   name: string;
@@ -16,32 +21,30 @@ export interface AuthUser {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
   private apiUrl = `${environment.apiUrl}/auth`;
 
   // signal = Angular's new way to track state
   // Like a variable that auto updates the UI
-  currentUser = signal<AuthUser | null>(
-    this.getUserFromStorage()
-  );
+  currentUser = signal<AuthUser | null>(this.getUserFromStorage());
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private socialAuthService: SocialAuthService,
   ) {}
 
   // Register
   register(data: any) {
     return this.http
       .post<AuthUser>(`${this.apiUrl}/register`, data)
-      .pipe(tap(user => this.saveUser(user)));
+      .pipe(tap((user) => this.saveUser(user)));
   }
 
   // Login
   login(data: any) {
     return this.http
       .post<AuthUser>(`${this.apiUrl}/login`, data)
-      .pipe(tap(user => this.saveUser(user)));
+      .pipe(tap((user) => this.saveUser(user)));
   }
 
   // Logout
@@ -71,10 +74,7 @@ export class AuthService {
   //  Save user to localStorage
   public saveUser(user: AuthUser) {
     localStorage.setItem('onebody_token', user.token);
-    localStorage.setItem(
-      'onebody_user',
-      JSON.stringify(user)
-    );
+    localStorage.setItem('onebody_user', JSON.stringify(user));
     this.currentUser.set(user);
   }
 
@@ -85,23 +85,45 @@ export class AuthService {
   }
 
   // Update profile picture
-updateProfilePic(profilePicUrl: string): Observable<any> {
-  return this.http.put(
-    `${environment.apiUrl}/users/update-profile-pic`,
-    { profilePic: profilePicUrl }
-  ).pipe(
-    tap((user: any) => {
-      // Update stored user with new profilePic
-      const currentUser = this.currentUser();
-      if (currentUser) {
-        const updatedUser = {
-          ...currentUser,
-          profilePic: profilePicUrl,
-          token: user.token
-        };
-        this.saveUser(updatedUser);
-      }
-    })
-  );
-}
+  updateProfilePic(profilePicUrl: string): Observable<any> {
+    return this.http
+      .put(`${environment.apiUrl}/users/update-profile-pic`, {
+        profilePic: profilePicUrl,
+      })
+      .pipe(
+        tap((user: any) => {
+          // Update stored user with new profilePic
+          const currentUser = this.currentUser();
+          if (currentUser) {
+            const updatedUser = {
+              ...currentUser,
+              profilePic: profilePicUrl,
+              token: user.token,
+            };
+            this.saveUser(updatedUser);
+          }
+        }),
+      );
+  }
+
+  // Google Login method
+  loginWithGoogle(role: string = 'MEMBER') {
+    return this.socialAuthService
+      .signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then((socialUser: SocialUser) => {
+        // Send Google token to our backend
+        return this.http
+          .post<AuthUser>(`${environment.apiUrl}/auth/google`, {
+            token: socialUser.idToken,
+            role: role,
+          })
+          .pipe(tap((user) => this.saveUser(user)))
+          .toPromise();
+      });
+  }
+
+  // Google Logout
+  logoutGoogle() {
+    this.socialAuthService.signOut().catch(() => {});
+  }
 }

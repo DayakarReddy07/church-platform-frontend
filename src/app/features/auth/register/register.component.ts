@@ -24,6 +24,8 @@ export class RegisterComponent {
   showPassword = signal(false);
   selectedRole = signal<'MEMBER' | 'CHURCH_ADMIN'>('MEMBER');
   stars: any[] = [];
+  isGoogleLoading = signal(false);
+  googleError = signal('');
 
   constructor(
     private fb: FormBuilder,
@@ -93,4 +95,27 @@ export class RegisterComponent {
     const control = this.registerForm.get(field);
     return !!(control?.invalid && control?.touched);
   }
+
+  loginWithGoogle() {
+  this.isGoogleLoading.set(true);
+
+  // Get selected role
+  const role = this.selectedRole();
+
+  this.authService.loginWithGoogle(role)
+    .then((user: any) => {
+      this.isGoogleLoading.set(false);
+      if (user?.role === 'CHURCH_ADMIN') {
+        this.router.navigate(['/app/admin']);
+      } else {
+        this.router.navigate(['/app/feed']);
+      }
+    })
+    .catch(() => {
+      this.isGoogleLoading.set(false);
+      this.googleError.set(
+        'Google signup failed!'
+      );
+    });
+}
 }

@@ -22,6 +22,9 @@ export class LoginComponent {
   errorMessage = signal('');
   showPassword = signal(false);
 
+  isGoogleLoading = signal(false);
+  googleError = signal('');
+
   // Animated stars
   stars: any[] = [];
 
@@ -98,4 +101,26 @@ export class LoginComponent {
     const control = this.loginForm.get(field);
     return !!(control?.invalid && control?.touched);
   }
+
+  // Add Google login method
+loginWithGoogle() {
+  this.isGoogleLoading.set(true);
+  this.googleError.set('');
+
+  this.authService.loginWithGoogle()
+    .then((user: any) => {
+      this.isGoogleLoading.set(false);
+      if (user?.role === 'CHURCH_ADMIN') {
+        this.router.navigate(['/app/admin']);
+      } else {
+        this.router.navigate(['/app/feed']);
+      }
+    })
+    .catch((err: any) => {
+      this.isGoogleLoading.set(false);
+      this.googleError.set(
+        'Google login failed. Please try again!'
+      );
+    });
+}
 }
